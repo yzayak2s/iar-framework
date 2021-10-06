@@ -26,6 +26,7 @@
 
 # dependencies
 /frontend/node_modules
+/backend/node_modules
 
 # profiling files
 /frontend/chrome-profiler-events*.json
@@ -44,3 +45,4 @@
 # System Files
 /frontend/.DS_Store
 /frontend/Thumbs.db
+

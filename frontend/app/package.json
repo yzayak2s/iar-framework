@@ -1,6 +1,7 @@
 {
   "name": "app",
   "version": "0.0.0",
+  "author": "Luca Ringhausen <luca.ringhausen@h-brs.de>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
