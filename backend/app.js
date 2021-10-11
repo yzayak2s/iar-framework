@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const upload = multer();
 const app = express();
+const crypto = require('crypto');
 
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
@@ -26,9 +27,23 @@ if(username && username !== ''){
     credentials = username+':'+password+'@';
 }
 
-MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then(dbo =>{ //connect to MongoDb
-    app.set('db', dbo.db(databaseName));
+MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then(async dbo =>{ //connect to MongoDb
+    const db = dbo.db(databaseName);
+    await initDb(db);
+    app.set('db',db);
     app.listen(8080, () => { //start webserver
         console.log('Webserver started.');
     });
 });
+
+async function initDb(db){
+    if(await db.collection('users').count() < 1){ //if no user exists create admin user
+        const userService = require('./services/user-service');
+        const User = require("./models/User");
+
+        const adminPassword = crypto.randomBytes(8).toString('base64');
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
+
+        console.log('created admin user with password: '+adminPassword);
+    }
+}

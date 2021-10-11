@@ -1,10 +1,8 @@
-export class User{
-    constructor(firstname, lastname, email, password, isAdmin) {
-        this._id = undefined;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
+class Credentials{
+    constructor(username, password) {
+        this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
     }
 }
+
+module.exports = Credentials;

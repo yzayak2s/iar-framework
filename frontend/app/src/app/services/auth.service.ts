@@ -11,10 +11,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(credentials: Credentials):Observable<HttpResponse<any>>{
-    return this.http.post('/api/login', credentials, {observe: 'response'});
+    return this.http.post('/api/login', credentials, {observe: 'response', responseType: 'text'});
   }
 
   logout():Observable<HttpResponse<any>>{
-    return this.http.delete('/api/login', {observe: 'response'});
+    return this.http.delete('/api/login', {observe: 'response', responseType: 'text'});
   }
 }

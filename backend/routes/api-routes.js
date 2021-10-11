@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/login');
+const authApi = require('../apis/auth-api')
+
+router.post('/login', authApi.login);
 
 module.exports = router;
