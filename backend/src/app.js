@@ -1,4 +1,6 @@
 const express = require('express');
+const session = require('express-session');
+
 const multer = require('multer');
 const upload = multer();
 const app = express();
@@ -18,9 +20,18 @@ app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
 
+app.use(session({
+    secret: crypto.randomBytes(32).toString('hex'),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false
+    }
+}));
+
 const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
 app.use('/api', apiRouter); //mount api-router at path "/api"
-
+// !!!! attention all middlewares, mounted after the router wont be called for any requests
 
 let credentials = '';
 if(username && username !== ''){

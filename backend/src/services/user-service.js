@@ -7,11 +7,17 @@ exports.add = async function (db, user){
     return (await db.collection('users').insertOne(user)).insertedId; //return unique ID
 }
 
-exports.authenticate = async function (db, credentials){
-    let user = await db.collection('users').findOne({username: credentials.username}); //retrieve user with given email from database
+exports.get = async function (db, username){
+    return db.collection('users').findOne({username: username});
+}
+
+exports.verify = async function (db, credentials){
+    let user = await this.get(db, credentials.username); //retrieve user with given email from database
 
     if(!user) throw new Error('User was not found!'); //no user found -> throw error
     if(!verifyPassword(credentials.password, user.password)) throw new Error('Password wrong!');
+
+    return user;
 }
 
 function hashPassword(password){
