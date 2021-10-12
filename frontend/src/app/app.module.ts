@@ -9,20 +9,35 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatIconModule} from "@angular/material/icon";
+import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import {AuthGuardService} from "./services/auth-guard.service";
+import { ExamplePageComponent } from './pages/example-page/example-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     LoginComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    MenuBarComponent,
+    ExamplePageComponent
   ],
   imports: [
     BrowserModule,
     AppRouting,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,12 +1,11 @@
 :host{ /* :host selects the DOM element of the current component */
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#wrapper{
+mat-card{
   width: 100%;
   max-width: 300px;
 }

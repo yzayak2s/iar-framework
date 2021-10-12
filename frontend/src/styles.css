@@ -7,5 +7,9 @@ body{
   margin: 0;
 }
 
-html, body { height: 100%; }
+mat-card{
+  padding: 24px !important;
+}
+
+html, body {}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
