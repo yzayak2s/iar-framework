@@ -1,1 +1,4 @@
-<router-outlet></router-outlet>
+<app-menu-bar *ngIf="authService.isLoggedIn()"></app-menu-bar>
+<main>
+  <router-outlet></router-outlet>
+</main>
