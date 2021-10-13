@@ -4,8 +4,6 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, Observer} from "rxjs";
 import {map, tap} from "rxjs/operators";
 
-const authCheckInterval = 60000; //in milliseconds
-
 @Injectable({
   providedIn: 'root'
 })
