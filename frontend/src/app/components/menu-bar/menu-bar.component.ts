@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {User} from "../../models/User";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-menu-bar',
@@ -9,14 +11,17 @@ import {Router} from "@angular/router";
 })
 export class MenuBarComponent implements OnInit {
 
+  user:User;
+
   buttons = [
     {title: 'Welcome', routerLink: ''},
     {title: 'Example', routerLink: 'example'},
   ];
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private userService:UserService) { }
 
   ngOnInit(): void {
+    this.fetchUser();
   }
 
   handleLogout(){
@@ -24,4 +29,9 @@ export class MenuBarComponent implements OnInit {
     this.router.navigate(['login']);
   }
 
+  fetchUser(){
+    this.userService.getOwnUser().subscribe(user => {
+      this.user = user
+    });
+  }
 }
