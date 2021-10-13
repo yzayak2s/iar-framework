@@ -1,5 +1,6 @@
 exports.authenticate = function (session, user){
     session.authenticated = true;
+    delete user.password;
     session.user = user;
 }
 

@@ -19,8 +19,8 @@ exports.logout = function (req, res){
 
 exports.isLoggedIn = function (req, res){
     if(authService.isAuthenticated(req.session)){
-        res.send();
+        res.send({loggedIn: true});
     }else {
-        res.status(401).send();
+        res.send({loggedIn: false});
     }
 }

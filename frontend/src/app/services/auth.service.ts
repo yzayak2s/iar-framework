@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Credentials} from "../models/Credentials";
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, Observer} from "rxjs";
 import {map, tap} from "rxjs/operators";
 
 const authCheckInterval = 60000; //in milliseconds
@@ -12,21 +12,37 @@ const authCheckInterval = 60000; //in milliseconds
 export class AuthService {
 
   loggedIn: boolean = false;
-  lastAuthCheck: Date;
+  authPreCheck: boolean = false;
+  listeners: ((boolean)=>void)[] = [];
 
   constructor(private http: HttpClient) { }
 
-  isLoggedIn(): boolean{
-    return this.loggedIn;
+  isLoggedIn(): Observable<boolean>{
+    if(!this.authPreCheck){
+      return this.checkLogin()
+        .pipe(
+          map((response: HttpResponse<{loggedIn: boolean}>) => {
+            this.emitLoginChange(response.body.loggedIn);
+            return response.body.loggedIn;
+          })
+        );
+    }
+    return new Observable((observer: Observer<boolean>) => {
+      observer.next(this.loggedIn);
+      observer.complete();
+    });
   }
 
-  checkLogin():Observable<HttpResponse<any>>{
-    this.updateAuthCheckDate();
-    return this.http.get('/api/login', {observe: 'response'});
+  subscribeLoginChange(callback: (boolean)=>void){
+    this.listeners.push(callback);
   }
 
-  updateAuthCheckDate(){
-    this.lastAuthCheck = new Date();
+  emitLoginChange(newState: boolean){
+    this.listeners.forEach(callback => {callback(newState)});
+  }
+
+  checkLogin():Observable<HttpResponse<{loggedIn: boolean}>>{
+    return this.http.get<{loggedIn: boolean}>('/api/login', {observe: 'response'});
   }
 
   login(credentials: Credentials):Observable<HttpResponse<any>>{
@@ -35,7 +51,7 @@ export class AuthService {
         tap(response => {
           if(response.status === 200){
             this.loggedIn = true;
-            this.updateAuthCheckDate();
+            this.emitLoginChange(true);
           }
         })
       );
@@ -46,7 +62,7 @@ export class AuthService {
       tap(response => {
         if(response.status === 200){
           this.loggedIn = false;
-          this.updateAuthCheckDate();
+          this.emitLoginChange(false);
         }
       })
     );
