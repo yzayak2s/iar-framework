@@ -1,3 +1,6 @@
+/**
+ * this model specifies the format to exchange a user with the backend
+ */
 export class User{
   constructor(
     public _id: string,

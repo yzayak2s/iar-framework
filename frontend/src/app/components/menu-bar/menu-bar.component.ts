@@ -13,6 +13,9 @@ export class MenuBarComponent implements OnInit {
 
   user:User;
 
+  /*
+    This array holds the definition of the menu's buttons.
+   */
   buttons = [
     {title: 'Welcome', routerLink: ''},
     {title: 'Example', routerLink: 'example'},
@@ -24,11 +27,17 @@ export class MenuBarComponent implements OnInit {
     this.fetchUser();
   }
 
+  /**
+   * function which handles clicking the logout button
+   */
   handleLogout(){
     this.authService.logout().subscribe();
     this.router.navigate(['login']);
   }
 
+  /**
+   * fetches information about logged-in user
+   */
   fetchUser(){
     this.userService.getOwnUser().subscribe(user => {
       this.user = user

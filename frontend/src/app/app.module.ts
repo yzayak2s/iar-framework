@@ -17,6 +17,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import {AuthGuardService} from "./services/auth-guard.service";
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
     LoginComponent,
     LandingPageComponent,
     MenuBarComponent,
-    ExamplePageComponent
+    ExamplePageComponent,
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,

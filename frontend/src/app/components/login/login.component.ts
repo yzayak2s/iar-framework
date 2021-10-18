@@ -21,9 +21,12 @@ export class LoginComponent implements OnInit {
     this.resetCredentials();
   }
 
+  /**
+   * handles login operation, by calling the authService
+   */
   performLogin(){
     this.authService.login(this.credentials).subscribe(response => {
-        if(response.status === 200){
+        if(response.status === 200){ //if response status is 200, assume login was successful
           this.resetCredentials();
           this.enterApplication();
         }else{
@@ -36,10 +39,16 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  /**
+   * resets login form
+   */
   resetCredentials(){
     this.credentials = new Credentials('', '');
   }
 
+  /**
+   * redirects to the landing page
+   */
   enterApplication(){
     this.router.navigate(['']);
   }
