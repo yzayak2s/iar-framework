@@ -25,7 +25,8 @@ Jetbrains (IntelliJ, WebStorm etc.).
 
  1. **Cloning this git repository**
 
-    You need to clone this repository. This can simply be done through your IDE or using git bash.
+    You need to clone this repository. It can simply be done through your IDE or using git bash.
+    
     ![IntelliJ git clone](readme_resources/new_from_version_control.png)
     In the IDEs from Jetbrains git repositories can be cloned by selecting *File > New > Project from Version Control* (Shown on the left of the screenshot).
     Also, there is a "Get from VCS" button on the welcome-screen, when no project is opened.
@@ -55,4 +56,4 @@ So you can just start them by running `npm run start` in their respective direct
 After they are done starting, the frontend can be reached from your browser at: http://localhost:4200/
 [![Login page of template](readme_resources/login.png)](http://localhost:4200/)
 You can log in with username *admin* and the password, which is printed out to the console output of the backend.
-<br>**!!! Attention: The password will only be printed on the first startup (e.g. when no user is present in the database).<br>So please write it down!**
+<br>**!!! Attention: The password will only be printed out on first startup (e.g. when no user is present in the database).<br>So please write it down!**
