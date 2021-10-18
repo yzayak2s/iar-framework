@@ -1,9 +1,10 @@
-# Integration-Architectrues-MEAN-Template
+# Integration-Architectures-MEAN-Template
 
 This template is meant to support students getting started with the Integration Architectures project.
 
 ## Prerequisites
  1. You need a Node.js runtime. It is available at: https://nodejs.org/ .
+    
     [![NodeJs Website](readme_resources/node.png)](https://nodejs.org/)
     Please download a version >14.x.x (The current LTS version 14.18.x works, but also the newest version 16.11.x should
     be fine).
@@ -32,7 +33,7 @@ Jetbrains (IntelliJ, WebStorm etc.).
  <br><br>
     Alternatively git bash can be used. Simply type/paste this at the desired location:
 
-    `git clone https://github.com/LUC4R4T0R/Integration-Architectrues-MEAN-Template`
+    `git clone https://github.com/LUC4R4T0R/Integration-Architectures-MEAN-Template`
 
 
  2. **Installing dependencies**
