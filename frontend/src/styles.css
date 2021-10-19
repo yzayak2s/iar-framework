@@ -13,3 +13,9 @@ mat-card{
 
 html, body {}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+code{
+  background: #00000010;
+  border-radius: 4px;
+  padding: 3px;
+}

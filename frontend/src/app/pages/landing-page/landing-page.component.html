@@ -1,7 +1,29 @@
 <h1>Welcome in the <em>Integration Architectures</em> Template Webapp!</h1>
 
-<p>You can add your own content to this page. <br> You will find its files at: <text style="font-family: monospace">frontend/src/app/pages/landing-page/</text></p>
+<p>You can add your own content to this page. <br> You will find its files at: <code>frontend/src/app/pages/landing-page/</code></p>
 
 <h2>How to add new pages?</h2>
-<p>The pages, which are handled by the angular router, are basically angular components. So first of all, we need to add a new component.<br>
-To preserve the syntactic structure of the project, you may put this component inside the directory <text style="font-family: monospace">frontend/src/app/pages/</text> .</p>
+<ol>
+  <li>
+    <u>Create a new Component</u>
+    <p>
+      The pages, which are handled by the angular router, are basically angular components. So first of all, we need to add a new component.
+      (In IntelliJ, you can simply right-click the target directory and select <em>New > Angular Schematic... > component</em>)<br>
+      To preserve the syntactic structure of this project, you may put this component inside the directory <code>frontend/src/app/pages/</code> .
+    </p>
+  </li>
+  <li>
+    <u>Register Component in the Angular Router</u>
+    <p>
+      After you created your new component, its needs to be registered in the angular router, to make it accessible via an URL.<br>
+      Please edit <code>frontend/src/app/app.routing.ts</code> to register your component.
+    </p>
+  </li>
+  <li>
+    <u>(Optional) Add Menu-Button</u>
+    <p>
+      The menu-buttons are specified in an array in <code>frontend/src/app/components/menu-bar/menu-bar.component.ts</code> .<br>
+      Simply add your new page there with its path from the router.
+    </p>
+  </li>
+</ol>
