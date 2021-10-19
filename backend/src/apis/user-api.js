@@ -1,7 +1,9 @@
-const userService = require('../services/user-service');
-
+/**
+ * endpoint, which returns information about the user, which is currently authenticated
+ * @param req express request
+ * @param res express response
+ * @return {Promise<void>}
+ */
 exports.getSelf = async function(req, res){
-    const db = req.db;
-
-    res.send(req.session.user);
+    res.send(req.session.user); //retrieve userdata of authenticated user from session and return it
 }

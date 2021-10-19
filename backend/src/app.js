@@ -1,3 +1,7 @@
+/*
+    This file acts as the entrypoint for node.js
+ */
+
 const express = require('express');
 const session = require('express-session');
 
@@ -33,16 +37,19 @@ const apiRouter = require('./routes/api-routes'); //get api-router from routes/a
 app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
+//preparing database credentials for establishing the connection:
 let credentials = '';
-if(username && username !== ''){
+if(username && username){
     credentials = username+':'+password+'@';
 }
 
 MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then(async dbo =>{ //connect to MongoDb
+
     const db = dbo.db(databaseName);
-    await initDb(db);
-    app.set('db',db);
-    app.listen(8080, () => { //start webserver
+    await initDb(db); //run initialization function
+    app.set('db',db); //register database in the express app
+
+    app.listen(8080, () => { //start webserver, after database-connection was established
         console.log('Webserver started.');
     });
 });
