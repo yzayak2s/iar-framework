@@ -62,4 +62,4 @@ You can log in with username *admin* and the password, which is printed out to t
 
 If your Login was successful, you will see this page:
 
-![Login page of template](readme_resources/landing-page.png)]
+![Login page of template](readme_resources/landing-page.png)
