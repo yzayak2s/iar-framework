@@ -1,9 +1,9 @@
-# Integration-Architectures-MEAN-Template
+# *Integration Architectures* MEAN-Template
 
 This template is meant to support students getting started with the Integration Architectures project.
 
 ## Prerequisites
- 1. You need a Node.js runtime. It is available at: https://nodejs.org/ .
+ 1. You need a **Node.js** runtime. It is available at: https://nodejs.org/ .
     
     [![NodeJs Website](readme_resources/node.png)](https://nodejs.org/)
     Please download a version >14.x.x (The current LTS version 14.18.x works, but also the newest version 16.11.x should
@@ -13,7 +13,7 @@ This template is meant to support students getting started with the Integration 
     step, to refresh the PATH and make `node` commands available in shell.__
 
 
- 2. Access to a MongoDB server is necessary. If you don't have one already, you should download the community server at:
+ 2. Access to a **MongoDB** server is necessary. If you don't have one already, you should download the community server at:
     https://www.mongodb.com/try/download/community .
     [![MongoDB Website](readme_resources/mongodb.png)](https://www.mongodb.com/try/download/community)
     Upon installation, I would recommend you to select, that MongoDB
@@ -57,3 +57,9 @@ After they are done starting, the frontend can be reached from your browser at: 
 [![Login page of template](readme_resources/login.png)](http://localhost:4200/)
 You can log in with username *admin* and the password, which is printed out to the console output of the backend.
 <br>**!!! Attention: The password will only be printed out on first startup (e.g. when no user is present in the database).<br>So please write it down!**
+
+### Result
+
+If your Login was successful, you will see this page:
+
+![Login page of template](readme_resources/landing-page.png)]
