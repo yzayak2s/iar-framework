@@ -17,10 +17,16 @@ export class MenuBarComponent implements OnInit {
     This array holds the definition of the menu's buttons.
    */
   buttons = [
-    {title: 'Welcome', routerLink: ''},
+    {title: 'Welcome', routerLink: ''}, //the tile is the text on the button, the routerLink specifies, where it will navigate
     {title: 'Example', routerLink: 'example'},
   ];
 
+  /**
+   * The following parameters specify objects, which will be provided by dependency injection
+   * @param authService
+   * @param router
+   * @param userService
+   */
   constructor(private authService: AuthService, private router: Router, private userService:UserService) { }
 
   ngOnInit(): void {
@@ -32,7 +38,7 @@ export class MenuBarComponent implements OnInit {
    */
   handleLogout(){
     this.authService.logout().subscribe();
-    this.router.navigate(['login']);
+    this.router.navigate(['login']); //after logout go back to the login-page
   }
 
   /**
