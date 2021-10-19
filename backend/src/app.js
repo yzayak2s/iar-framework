@@ -39,7 +39,7 @@ app.use('/api', apiRouter); //mount api-router at path "/api"
 
 //preparing database credentials for establishing the connection:
 let credentials = '';
-if(username && username){
+if(username){
     credentials = username+':'+password+'@';
 }
 
