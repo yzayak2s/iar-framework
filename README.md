@@ -34,7 +34,7 @@ Jetbrains (IntelliJ, WebStorm etc.).
  <br><br>
     Alternatively git bash can be used. Simply type/paste this at the desired location:
 
-    `git clone https://github.com/LUC4R4T0R/Integration-Architectures-MEAN-Template`
+    `git clone https://github.com/aldaGit/iar-framework`
 
 
  2. **Installing dependencies**
@@ -57,6 +57,17 @@ After they are done starting, the frontend can be reached from your browser at: 
 [![Login page of template](readme_resources/login.png)](http://localhost:4200/)
 You can log in with username *admin* and the password, which is printed out to the console output of the backend.
 <br>**!!! Attention: The password will only be printed out on first startup (e.g. when no user is present in the database).<br>So please write it down!**
+
+It is possible in IntelliJ or WebStorm, to store these start commands in a convenient way and start your applications at a push of a button.
+To do so, select "Add Configuration..." at the upper right of your IntelliJ Window. A window will open, which looks like this:
+
+![startup configuration window](readme_resources/intellij_startup_configs.png)
+
+In that window, you click the plus in the upper left corner and then select "npm" from the dropdown menu. This creates a new run configuration.
+On the right of the window, you can give your run configuration a name, like "frontend". Also, you have to select the `package.json`. In this example, the one of the frontend.
+Make sure "run" is selected as the command and "start" is selected as the script.
+After that, you can save your run configuration and try it out.
+These steps have to be repeated for the backend. In this case, obviously selecting the `package.json` of the backend.
 
 ### Result
 
