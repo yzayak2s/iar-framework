@@ -17,6 +17,7 @@ import {MatIconModule} from "@angular/material/icon";
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { ExamplePageComponent } from './pages/example-page/example-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -28,18 +29,19 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
     ExamplePageComponent,
     NotFoundPageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRouting,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRouting,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatTableModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -6,7 +6,7 @@ This template is meant to support students getting started with the Integration 
  1. You need a **Node.js** runtime. It is available at: https://nodejs.org/ .
     
     [![NodeJs Website](readme_resources/node.png)](https://nodejs.org/)
-    Please download a version >14.x.x (The current LTS version 14.18.x works, but also the newest version 16.11.x should
+    Please download a version >14.x.x (The current LTS version 16.15.x works, but also the newest version 18.4.0 should
     be fine).
  
     __!!! Important: On Windows (and maybe also other operating systems) it is necessary to reboot the device after this

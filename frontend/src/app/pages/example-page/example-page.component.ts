@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {PeopleDemoService} from "../../services/people-demo.service";
+import {ExampleDatapoint} from "../../interfaces/example-datapoint";
 
 @Component({
   selector: 'app-example-page',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExamplePageComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns = ['id', 'name', 'color', 'age'];
+  people: ExampleDatapoint[] = [];
+
+  constructor(private peopleDemoService: PeopleDemoService) { }
 
   ngOnInit(): void {
+    this.fetchPeople();
   }
 
+  fetchPeople(){
+    this.peopleDemoService.getPeople().subscribe(response => {
+      if(response.status === 200){
+        this.people = response.body;
+      }
+    });
+  }
 }
