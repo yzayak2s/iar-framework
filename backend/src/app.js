@@ -3,34 +3,42 @@
  */
 
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 
 const multer = require('multer');
 const upload = multer();
 const app = express();
 const crypto = require('crypto');
+const cors = require('cors');
 
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
+const port = 8080;
+
 // MongoDB connection details:
-const domain = 'localhost';
-const port = '27017';
-const username = '';
-const password = '';
+const db_domain = 'localhost';
+const db_port = '27017';
+const db_username = '';
+const db_password = '';
 const databaseName = 'intArch';
+
+const corsOrigins= ['http://localhost:4200'];
 
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
 
-app.use(session({
+app.use(cookieSession({
     secret: crypto.randomBytes(32).toString('hex'),
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false
-    }
+    sameSite: false,
+    secure: false,
+    httpOnly: false
+}));
+
+app.use(cors({
+    origin: corsOrigins,
+    credentials: true
 }));
 
 const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
@@ -38,18 +46,18 @@ app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
 //preparing database credentials for establishing the connection:
-let credentials = '';
-if(username){
-    credentials = username+':'+password+'@';
+let db_credentials = '';
+if(db_username){
+    db_credentials = db_username+':'+db_password+'@';
 }
 
-MongoClient.connect('mongodb://' + credentials + domain + ':' + port + '/').then(async dbo =>{ //connect to MongoDb
+MongoClient.connect('mongodb://' + db_credentials + db_domain + ':' + db_port + '/').then(async dbo =>{ //connect to MongoDb
 
     const db = dbo.db(databaseName);
     await initDb(db); //run initialization function
     app.set('db',db); //register database in the express app
 
-    app.listen(8080, () => { //start webserver, after database-connection was established
+    app.listen(port, () => { //start webserver, after database-connection was established
         console.log('Webserver started.');
     });
 });

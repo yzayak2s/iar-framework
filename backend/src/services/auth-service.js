@@ -25,5 +25,5 @@ exports.isAuthenticated = function (session){
 exports.deAuthenticate = function (session){
     session.authenticated = false;
     session.user = undefined;
-    session.destroy();
+    session = null;
 }

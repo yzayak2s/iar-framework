@@ -3,6 +3,7 @@ import {Credentials} from "../models/Credentials";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, Observer} from "rxjs";
 import {map, tap} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 /**
  * Services specify logic, which is instantiated singularly -> it is shared between components
@@ -58,7 +59,7 @@ export class AuthService {
    * retrieves the login state from backend
    */
   checkLogin():Observable<HttpResponse<{loggedIn: boolean}>>{
-    return this.http.get<{loggedIn: boolean}>('/api/login', {observe: 'response'});
+    return this.http.get<{loggedIn: boolean}>(environment.apiEndpoint + '/api/login', {withCredentials: true, observe: 'response'});
   }
 
   /**
@@ -66,7 +67,7 @@ export class AuthService {
    * @param credentials consisting of username and password
    */
   login(credentials: Credentials):Observable<HttpResponse<any>>{
-    return this.http.post('/api/login', credentials, {observe: 'response', responseType: 'text'})
+    return this.http.post(environment.apiEndpoint + '/api/login', credentials, {withCredentials: true, observe: 'response', responseType: 'text'})
       .pipe(
         tap(response => {
           if(response.status === 200){ //if request was successful
@@ -81,7 +82,7 @@ export class AuthService {
    *
    */
   logout():Observable<HttpResponse<any>>{
-    return this.http.delete('/api/login', {observe: 'response', responseType: 'text'}).pipe(
+    return this.http.delete(environment.apiEndpoint + '/api/login', {withCredentials: true, observe: 'response', responseType: 'text'}).pipe(
       tap(response => {
         if(response.status === 200){
           this.loggedIn = false;
