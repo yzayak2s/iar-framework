@@ -40,7 +40,9 @@
               "optimization": {
                   "scripts": true,
                   "styles": true,
-                  "fonts": false
+                  "fonts": {
+                      "inline": false
+                  }
               },
               "outputHashing": "all",
               "sourceMap": false,
