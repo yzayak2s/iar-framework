@@ -4,15 +4,26 @@ stages:
   - build
   - deploy
 
+.backend_rules:
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      changes:
+        - backend/*
+
+.frontend_rules:
+  rules:
+      - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+        changes:
+          - frontend/*
+
 install-dependencies:backend:
   image: node:16-alpine
   stage: dependencies
   script:
     - cd backend
     - npm install
-  only:
-    changes:
-      - backend/*
+  rules:
+    - !reference [.backend_rules, rules]
   cache:
     key:
       files:
@@ -23,9 +34,8 @@ install-dependencies:backend:
 unit-test:backend:
   image: node:16-alpine
   stage: test
-  only:
-    changes:
-      - backend/*
+  rules:
+    - !reference [ .backend_rules, rules ]
   needs:
     - install-dependencies:backend
   script:
@@ -51,9 +61,8 @@ unit-test:backend:
 deploy:backend:
   stage: deploy
   image: alpine
-  only:
-    changes:
-      - backend/*
+  rules:
+    - !reference [ .backend_rules, rules ]
   needs:
     - unit-test:backend
   script:
@@ -65,9 +74,8 @@ install-dependencies:frontend:
   script:
     - cd frontend
     - npm install
-  only:
-    changes:
-      - frontend/*
+  rules:
+    - !reference [ .frontend_rules, rules ]
   cache:
     key:
       files:
@@ -78,9 +86,8 @@ install-dependencies:frontend:
 lint:frontend:
   image: node:16-alpine
   stage: test
-  only:
-    changes:
-      - frontend/*
+  rules:
+    - !reference [ .frontend_rules, rules ]
   needs:
     - install-dependencies:frontend
   script:
@@ -98,9 +105,8 @@ lint:frontend:
 build:frontend:
   image: node:16-alpine
   stage: build
-  only:
-    changes:
-      - frontend/*
+  rules:
+    - !reference [ .frontend_rules, rules ]
   needs:
     - lint:frontend
   script:
@@ -125,9 +131,8 @@ build:frontend:
 deploy:frontend:
   image: alpine
   stage: deploy
-  only:
-    changes:
-      - frontend/*
+  rules:
+    - !reference [ .frontend_rules, rules ]
   needs:
     - build:frontend
   variables:
