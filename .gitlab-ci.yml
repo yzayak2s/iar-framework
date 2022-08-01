@@ -25,6 +25,11 @@ install-dependencies:backend:
 unit-test:backend:
   image: node:16-alpine
   stage: test
+  only:
+    refs:
+      - main
+    changes:
+      - backend/*
   needs:
     - install-dependencies:backend
   script:
@@ -50,6 +55,11 @@ unit-test:backend:
 deploy:backend:
   stage: deploy
   image: alpine
+  only:
+    refs:
+      - main
+    changes:
+      - backend/*
   needs:
     - unit-test:backend
   script:
@@ -76,6 +86,11 @@ install-dependencies:frontend:
 lint:frontend:
   image: node:16-alpine
   stage: test
+  only:
+    refs:
+      - main
+    changes:
+      - frontend/*
   needs:
     - install-dependencies:frontend
   script:
@@ -93,6 +108,11 @@ lint:frontend:
 build:frontend:
   image: node:16-alpine
   stage: build
+  only:
+    refs:
+      - main
+    changes:
+      - frontend/*
   needs:
     - lint:frontend
   script:
@@ -117,6 +137,11 @@ build:frontend:
 deploy:frontend:
   image: alpine
   stage: deploy
+  only:
+    refs:
+      - main
+    changes:
+      - frontend/*
   needs:
     - build:frontend
   variables:
