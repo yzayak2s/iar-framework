@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import {PeopleDemoService} from "../../services/people-demo.service";
-import {ExampleDatapoint} from "../../interfaces/example-datapoint";
+import {PeopleDemoService} from '../../services/people-demo.service';
+import {ExampleDatapoint} from '../../interfaces/example-datapoint';
 
 @Component({
-  selector: 'app-example-page',
-  templateUrl: './example-page.component.html',
-  styleUrls: ['./example-page.component.css']
+    selector: 'app-example-page',
+    templateUrl: './example-page.component.html',
+    styleUrls: ['./example-page.component.css']
 })
 export class ExamplePageComponent implements OnInit {
 
-  displayedColumns = ['id', 'name', 'color', 'age'];
-  people: ExampleDatapoint[] = [];
+    displayedColumns = ['id', 'name', 'color', 'age'];
+    people: ExampleDatapoint[] = [];
 
-  constructor(private peopleDemoService: PeopleDemoService) { }
+    constructor(private peopleDemoService: PeopleDemoService) { }
 
-  ngOnInit(): void {
-    this.fetchPeople();
-  }
+    ngOnInit(): void {
+        this.fetchPeople();
+    }
 
-  fetchPeople(){
-    this.peopleDemoService.getPeople().subscribe(response => {
-      if(response.status === 200){
-        this.people = response.body;
-      }
-    });
-  }
+    fetchPeople(): void{
+        this.peopleDemoService.getPeople().subscribe((response): void => {
+            if (response.status === 200){
+                this.people = response.body;
+            }
+        });
+    }
 }

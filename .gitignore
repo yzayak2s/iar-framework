@@ -47,3 +47,7 @@
 /frontend/Thumbs.db
 
 /frontend/.angular/
+
+/backend/coverage
+/backend/results
+backend/.nyc_output

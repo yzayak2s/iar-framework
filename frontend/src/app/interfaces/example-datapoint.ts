@@ -1,9 +1,9 @@
 export interface ExampleDatapoint{
-  id: string;
-  name: string;
-  favourite_color: {
+    id: string;
     name: string;
-    code: string;
-  };
-  age: number
+    favourite_color: {
+        name: string;
+        code: string;
+    };
+    age: number;
 }

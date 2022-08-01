@@ -19,7 +19,7 @@ exports.isAuthenticated = function (session){
 }
 
 /**
- * resets session to a 'non authenticated' state
+ * resets session to a 'non-authenticated' state
  * @param session current session
  */
 exports.deAuthenticate = function (session){
