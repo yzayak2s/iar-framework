@@ -1,7 +1,6 @@
 stages:
   - dependencies
   - test
-  - analyze
   - build
   - deploy
 
@@ -90,33 +89,6 @@ lint:frontend:
     paths:
       - frontend/node_modules
     policy: pull
-
-#.test_frontend:
-#  image: container.docker.inf.h-brs.de/diarchitect/docker-node-chrome-firefox:master
-#  stage: test
-#  needs:
-#    - install_dependencies_frontend
-#  script:
-#    - cd frontend
-#    - npm link @angular/cli@13.3.2
-#    - npm test -- --browsers=ChromeHeadlessNoSandbox,FirefoxHeadless --watch=false
-#  artifacts:
-#    when: always
-#    expire_in: 1 week
-#    reports:
-#      junit:
-#        - "./frontend/reports/chrome.xml"
-#        - "./frontend/reports/firefox.xml"
-#      coverage_report:
-#        coverage_format: cobertura
-#        path: ./frontend/coverage/app/cobertura-coverage.xml
-#  cache:
-#    key:
-#      files:
-#        - frontend/package-lock.json
-#    paths:
-#      - frontend/node_modules
-#    policy: pull
 
 build:frontend:
   image: node:16-alpine
