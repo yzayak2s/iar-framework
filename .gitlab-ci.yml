@@ -11,8 +11,6 @@ install-dependencies:backend:
     - cd backend
     - npm install
   only:
-    refs:
-      - main
     changes:
       - backend/*
   cache:
@@ -26,8 +24,6 @@ unit-test:backend:
   image: node:16-alpine
   stage: test
   only:
-    refs:
-      - main
     changes:
       - backend/*
   needs:
@@ -56,8 +52,6 @@ deploy:backend:
   stage: deploy
   image: alpine
   only:
-    refs:
-      - main
     changes:
       - backend/*
   needs:
@@ -72,8 +66,6 @@ install-dependencies:frontend:
     - cd frontend
     - npm install
   only:
-    refs:
-      - main
     changes:
       - frontend/*
   cache:
@@ -87,8 +79,6 @@ lint:frontend:
   image: node:16-alpine
   stage: test
   only:
-    refs:
-      - main
     changes:
       - frontend/*
   needs:
@@ -109,8 +99,6 @@ build:frontend:
   image: node:16-alpine
   stage: build
   only:
-    refs:
-      - main
     changes:
       - frontend/*
   needs:
@@ -138,8 +126,6 @@ deploy:frontend:
   image: alpine
   stage: deploy
   only:
-    refs:
-      - main
     changes:
       - frontend/*
   needs:
