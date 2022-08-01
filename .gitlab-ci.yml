@@ -27,7 +27,7 @@ unit-test:backend:
   image: node:16-alpine
   stage: test
   needs:
-    - install-dependencies-backend
+    - install-dependencies:backend
   script:
     - cd backend
     - npm run coverage
@@ -52,7 +52,7 @@ deploy:backend:
   stage: deploy
   image: alpine
   needs:
-    - unit_test_backend
+    - unit-test:backend
   script:
     - ls backend
 
@@ -78,7 +78,7 @@ lint:frontend:
   image: node:16-alpine
   stage: test
   needs:
-    - install-dependencies-frontend
+    - install-dependencies:frontend
   script:
     - cd frontend
     - npm link @angular/cli@13.3.2
@@ -122,7 +122,7 @@ build:frontend:
   image: node:16-alpine
   stage: build
   needs:
-    - lint-frontend
+    - lint:frontend
   script:
     - cd frontend
     - npm link @angular/cli@13.3.2
@@ -146,7 +146,7 @@ deploy:frontend:
   image: alpine
   stage: deploy
   needs:
-    - build-frontend
+    - build:frontend
   variables:
     BUILD_JOB_ID: JOB_ID
     ARTIFACT_URL: "https://git.inf.h-brs.de/api/v4/projects/$CI_PROJECT_ID/jobs/$JOB_ID/artifacts?job_token=$CI_JOB_TOKEN"
