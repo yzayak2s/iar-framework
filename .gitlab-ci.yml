@@ -28,6 +28,8 @@ unit_test_backend:
   stage: test
   needs:
     - install_dependencies_backend
+  dependencies:
+    - install_dependencies_backend
   script:
     - cd backend
     - npm run coverage
