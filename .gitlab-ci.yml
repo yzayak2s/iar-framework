@@ -5,7 +5,7 @@ stages:
   - build
   - deploy
 
-install_dependencies_backend:
+install-dependencies:backend:
   image: node:16-alpine
   stage: dependencies
   script:
@@ -23,13 +23,11 @@ install_dependencies_backend:
     paths:
       - backend/node_modules
 
-unit_test_backend:
+unit-test:backend:
   image: node:16-alpine
   stage: test
   needs:
-    - install_dependencies_backend
-  dependencies:
-    - install_dependencies_backend
+    - install-dependencies-backend
   script:
     - cd backend
     - npm run coverage
@@ -50,7 +48,7 @@ unit_test_backend:
       - backend/node_modules
     policy: pull
 
-deploy_backend:
+deploy:backend:
   stage: deploy
   image: alpine
   needs:
@@ -58,7 +56,7 @@ deploy_backend:
   script:
     - ls backend
 
-install_dependencies_frontend:
+install-dependencies:frontend:
   image: node:16-alpine
   stage: dependencies
   script:
@@ -76,13 +74,11 @@ install_dependencies_frontend:
     paths:
       - frontend/node_modules
 
-lint_frontend:
+lint:frontend:
   image: node:16-alpine
   stage: test
   needs:
-    - install_dependencies_frontend
-  dependencies:
-    - install_dependencies_frontend
+    - install-dependencies-frontend
   script:
     - cd frontend
     - npm link @angular/cli@13.3.2
@@ -122,14 +118,11 @@ lint_frontend:
 #      - frontend/node_modules
 #    policy: pull
 
-build_frontend:
+build:frontend:
   image: node:16-alpine
   stage: build
   needs:
-    - install_dependencies_frontend
-    - lint_frontend
-  dependencies:
-    - install_dependencies_frontend
+    - lint-frontend
   script:
     - cd frontend
     - npm link @angular/cli@13.3.2
@@ -149,11 +142,11 @@ build_frontend:
       - frontend/node_modules
     policy: pull
 
-deploy_frontend:
+deploy:frontend:
   image: alpine
   stage: deploy
   needs:
-    - build_frontend
+    - build-frontend
   variables:
     BUILD_JOB_ID: JOB_ID
     ARTIFACT_URL: "https://git.inf.h-brs.de/api/v4/projects/$CI_PROJECT_ID/jobs/$JOB_ID/artifacts?job_token=$CI_JOB_TOKEN"
