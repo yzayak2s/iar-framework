@@ -8,13 +8,13 @@ stages:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
       changes:
-        - backend/*
+        - backend/**/*
 
 .frontend_rules:
   rules:
-      - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-        changes:
-          - frontend/*
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      changes:
+        - frontend/**/*
 
 install-dependencies:backend:
   image: node:16-alpine
