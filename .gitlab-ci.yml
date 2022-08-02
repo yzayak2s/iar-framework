@@ -4,6 +4,9 @@ stages:
   - build
   - deploy
 
+variables:
+  ANGULAR_CLI_VERSION: 13.3.11
+
 .backend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
@@ -92,7 +95,7 @@ lint:frontend:
     - install-dependencies:frontend
   script:
     - cd frontend
-    - npm link @angular/cli@13.3.2
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
     - ng lint
   cache:
     key:
@@ -111,7 +114,7 @@ lint:frontend:
     - !reference [ .frontend_rules, rules ]
   script:
     - cd frontend
-    - npm link @angular/cli@13.3.2
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
     - npm test -- --browsers=ChromeHeadlessNoSandbox,FirefoxHeadless --watch=false
   artifacts:
     when: always
@@ -141,7 +144,7 @@ build:frontend:
     #- test:frontend
   script:
     - cd frontend
-    - npm link @angular/cli@13.3.2
+    - npm link @angular/cli@$ANGULAR_CLI_VERSION
     - npm run build
   after_script:
     - echo "JOB_ID=$CI_JOB_ID" >> job.env
