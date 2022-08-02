@@ -7,8 +7,8 @@ stages:
 .backend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-      changes:
-        - backend/*
+      #changes:
+      #  - backend/*
 
 .frontend_rules:
   rules:
@@ -22,6 +22,8 @@ install-dependencies:backend:
   script:
     - cd backend
     - npm install
+  rules:
+    - !reference [.backend_rules, rules]
   cache:
     key:
       files:
