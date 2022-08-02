@@ -22,8 +22,6 @@ install-dependencies:backend:
   script:
     - cd backend
     - npm install
-  rules:
-    - !reference [.backend_rules, rules]
   cache:
     key:
       files:
