@@ -7,8 +7,8 @@ stages:
 .backend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
-      #changes:
-      #  - backend/*
+      changes:
+        - backend/*
 
 .frontend_rules:
   rules:
