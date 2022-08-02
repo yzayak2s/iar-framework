@@ -5,19 +5,21 @@ stages:
   - deploy
 
 variables:
-  ANGULAR_CLI_VERSION: 13.3.11
+  ANGULAR_CLI_VERSION: 13.3.9
 
 .backend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
       changes:
         - backend/**/*
+        - .gitlab-ci.yml
 
 .frontend_rules:
   rules:
     - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
       changes:
         - frontend/**/*
+        - .gitlab-ci.yml
 
 install-dependencies:backend:
   image: node:16-alpine
