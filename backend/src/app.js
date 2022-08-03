@@ -21,6 +21,7 @@ const db_domain = 'localhost';
 const db_port = '27017';
 const db_username = '';
 const db_password = '';
+const db_authSource = 'admin';
 const databaseName = 'intArch';
 
 const corsOrigins= ['http://localhost:4200'];
@@ -51,7 +52,7 @@ if(db_username){
     db_credentials = db_username+':'+db_password+'@';
 }
 
-MongoClient.connect('mongodb://' + db_credentials + db_domain + ':' + db_port + '/').then(async dbo =>{ //connect to MongoDb
+MongoClient.connect('mongodb://' + db_credentials + db_domain + ':' + db_port + '/?authSource='+db_authSource).then(async dbo =>{ //connect to MongoDb
 
     const db = dbo.db(databaseName);
     await initDb(db); //run initialization function
