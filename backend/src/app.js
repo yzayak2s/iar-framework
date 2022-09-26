@@ -14,17 +14,14 @@ const cors = require('cors');
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-const port = 8080;
+let environment;
+if(process.env.NODE_ENV === 'development'){
+    environment = require('../environments/environment.js').default;
+}else{
+    environment = require('../environments/environment.prod.js').default;
+}
 
-// MongoDB connection details:
-const db_domain = 'localhost';
-const db_port = '27017';
-const db_username = '';
-const db_password = '';
-const db_authSource = 'admin';
-const databaseName = 'intArch';
-
-const corsOrigins= ['http://localhost:4200'];
+app.set('environment', environment);
 
 app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies
@@ -38,7 +35,7 @@ app.use(cookieSession({
 }));
 
 app.use(cors({
-    origin: corsOrigins,
+    origin: environment.corsOrigins,
     credentials: true
 }));
 
@@ -48,17 +45,17 @@ app.use('/api', apiRouter); //mount api-router at path "/api"
 
 //preparing database credentials for establishing the connection:
 let db_credentials = '';
-if(db_username){
-    db_credentials = db_username+':'+db_password+'@';
+if(environment.db.username){
+    db_credentials = environment.db.username+':'+environment.db.password+'@';
 }
 
-MongoClient.connect('mongodb://' + db_credentials + db_domain + ':' + db_port + '/?authSource='+db_authSource).then(async dbo =>{ //connect to MongoDb
+MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + environment.db.port + '/?authSource='+environment.db.authSource).then(async dbo =>{ //connect to MongoDb
 
-    const db = dbo.db(databaseName);
+    const db = dbo.db(environment.db.name);
     await initDb(db); //run initialization function
     app.set('db',db); //register database in the express app
 
-    app.listen(port, () => { //start webserver, after database-connection was established
+    app.listen(environment.port, () => { //start webserver, after database-connection was established
         console.log('Webserver started.');
     });
 });
@@ -68,7 +65,7 @@ async function initDb(db){
         const userService = require('./services/user-service');
         const User = require("./models/User");
 
-        const adminPassword = crypto.randomBytes(8).toString('base64');
+        const adminPassword = environment.defaultAdminPassword;
         await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
 
         console.log('created admin user with password: '+adminPassword);
