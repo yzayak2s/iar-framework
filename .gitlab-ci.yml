@@ -67,7 +67,7 @@ unit-test:backend:
 
 deploy:backend:
   stage: deploy
-  image: keymetrics/pm2:6
+  image: keymetrics/pm2:16-alpine
   rules:
     - !reference [ .backend_rules, rules ]
   needs:
