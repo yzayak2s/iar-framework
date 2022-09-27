@@ -3,7 +3,7 @@ const environment = {
     port: 8080,
     defaultAdminPassword: 'c3uz#3zd',
     db:{
-        host: '10.20.107.96',
+        host: 'iar-mongo.inf.h-brs.de',
         port: 27017,
         username: '<username>',
         password: '<password>',
@@ -11,7 +11,7 @@ const environment = {
         name: '<dbName>'
     },
     corsOrigins: [
-        'http://10.20.107.128'
+        'http://iar-frontend.inf.h-brs.de'
     ]
 };
 

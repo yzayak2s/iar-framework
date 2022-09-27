@@ -75,15 +75,15 @@ deploy:backend:
   script:
     - echo "====== Deploy backend to production server ======"
     - apk update && apk upgrade
-    - apk add git openssh bash
+    - apk add openssh
     # Add target server`s secret key
     - mkdir ~/.ssh
     - echo $TARGET_SERVER_SECRET_KEY_BASE64 | base64 -d > ~/.ssh/id_rsa
     - chmod 700 ~/.ssh && chmod 600 ~/.ssh/*
     - echo "Test ssh connection"
-    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$TARGET_SERVER_HOST" pm2 status
+    - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$BACKEND_SERVER_HOST" pm2 status
     # Deploy
-    - echo "Setup tagget server directories"
+    - echo "Setup tagged server directories"
     - pm2 deploy backend/ecosystem.config.js production setup 2>&1 || true
     - echo "make deploy"
     - pm2 deploy backend/ecosystem.config.js production
