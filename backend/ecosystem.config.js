@@ -38,7 +38,7 @@ module.exports = {
             repo: REPO,
             ssh_options: 'StrictHostKeyChecking=no',
             path: TARGET_SERVER_APP_PATH,
-            'pre-deploy': 'rm -R backend',
+            'pre-setup': 'rm -R backend',
             'post-deploy': 'cd backend && npm install --production'
                 + ' && pm2 startOrRestart ecosystem.config.js --env=production'
                 + ' && pm2 save'
