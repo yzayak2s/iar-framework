@@ -5,7 +5,7 @@ const TARGET_SERVER_USER = process.env.TARGET_SERVER_USER ? process.env.TARGET_S
 // Target server application path
 const TARGET_SERVER_APP_PATH = `/home/${TARGET_SERVER_USER}/app`;
 // Your repository
-const REPO = 'git@git.inf.h-brs.de:diarchitect/iar-framework.git';
+const REPO = 'git@git.inf.h-brs.de:/diarchitect/iar-framework.git';
 
 module.exports = {
     /**
