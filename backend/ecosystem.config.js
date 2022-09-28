@@ -5,7 +5,7 @@ const TARGET_SERVER_USER = process.env.TARGET_SERVER_USER ? process.env.TARGET_S
 // Target server application path
 const TARGET_SERVER_APP_PATH = `/home/${TARGET_SERVER_USER}/app`;
 // Your repository
-const REPO = 'https://git.inf.h-brs.de/diarchitect/iar-framework.git';
+const REPO =  process.env.CI_REPOSITORY_URL;
 
 module.exports = {
     /**
@@ -38,7 +38,6 @@ module.exports = {
             repo: REPO,
             ssh_options: 'StrictHostKeyChecking=no',
             path: TARGET_SERVER_APP_PATH,
-            'pre-setup': 'ls .',
             'post-deploy': 'cd backend && npm install --production'
                 + ' && pm2 startOrRestart ecosystem.config.js --env=production'
                 + ' && pm2 save'
