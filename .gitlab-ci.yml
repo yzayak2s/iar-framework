@@ -165,7 +165,7 @@ build:frontend:
   script:
     - cd frontend
     - npm link @angular/cli@$ANGULAR_CLI_VERSION
-    - npm run build
+    - npm run build --prod --baseHref=/$TARGET_SERVER_USER/
   artifacts:
     paths:
       - $CI_PROJECT_DIR/frontend/dist
