@@ -56,9 +56,8 @@ the _backend_ with `npm run start_win`, because there environment variables are 
 
 After they are done starting, the frontend can be reached from your browser at: http://localhost:4200/
 [![Login page of template](readme_resources/login.png)](http://localhost:4200/)
-You can log in with username *admin* and the password, which is printed out to the console output of the backend.
-<br>**!!! Attention: The password will only be printed out on first startup (e.g. when no user is present in the database). So please write it down!**
-In case you forgot that, you can still empty the collection 'user' in the database and restart the backend.
+You can log in with username *admin* and the password, which is preconfigured at `backend/environment/environment.js` for local use or `backend/environment/environment.prod.js` remote deployment.
+In case you changed and forgot your password, you can still empty the collection 'user' in the database and restart the backend. Then a new admin user will be created upon restart/redeployment.
 
 It is possible in IntelliJ or WebStorm, to store these start commands in a convenient way and start your applications at a push of a button.
 To do so, select "Add Configuration..." at the upper right of your IntelliJ Window. A window will open, which looks like this:
