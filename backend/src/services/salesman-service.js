@@ -7,6 +7,25 @@ exports.getAll = async (db) => {
     return await db.collection('salesmen').find({}).toArray(); // use of toArray() is important here.
 }
 
+/**
+ * retrieves salesmen by firstname from database
+ * @param db source database
+ * @param firstname
+ * @return {Promise<SalesMan>}
+ */
+exports.getSalesManByFirstname = async (db, firstname) => {
+    return await db.collection('salesmen').find({firstname: firstname}).toArray();
+}
+
+/**
+ * retrieves salesmen by _id from database
+ * @param db source database
+ * @param _id
+ * @return {Promise<SalesMan>}
+ */
+exports.getSalesManById = async (db, _id) => {
+    return await db.collection('salesmen').findOne({_id: parseInt(_id)});
+}
 
 /**
  * insert a new salesman into database
@@ -15,13 +34,39 @@ exports.getAll = async (db) => {
  */
 exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
-    // console.log(salesman)
+
     if (existingSalesmanId) {
         if (existingSalesmanId._id === salesman._id) {
-            throw new Error('Salesman already exist!');
+            throw new Error('Salesman with id ' + salesman._id + ' already exist!');
         }
     }
     return db.collection('salesmen').insertOne(salesman);
+}
+
+/**
+ * update an existing salesman
+ * @param db target database
+ * @param _id
+ * @param salesman
+ * @return {Promise<SalesMan>} salesman
+ */
+exports.update = async (db, _id, salesman) => {
+    const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
+
+    if (existingSalesmanId) {
+        return await db.collection('salesmen').updateOne(
+            {
+                _id: parseInt(_id)
+            },
+            { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
+                $set: {
+                    firstname: salesman.firstname,
+                    lastname: salesman.lastname
+                }
+            }
+        );
+    }
+    throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
 }
 
 /**
@@ -34,7 +79,7 @@ exports.delete = async (db, _id) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
     if (!existingSalesMan) {
-        throw new Error("Salesman with: " + _id + " doesn't exist!")
+        throw new Error("Salesman with id " + _id + " doesn't exist!")
     }
     return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
 }
