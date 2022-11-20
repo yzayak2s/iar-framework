@@ -38,8 +38,8 @@ exports.addSalesman = (req, res) => {
     salesmenService.add(db, req.body)
         .then(_id => {
             res.send(_id);
-        }).catch(() => {
-        res.send('ID is already taken. Please try again with another one!');
+        }).catch((e) => {
+        res.send(e.message);
     }).catch(_ => {
         res.status(500).send();
     })
@@ -51,8 +51,8 @@ exports.updateSalesManById = (req, res) => {
     salesmenService.update(db, req.params._id, req.body)
         .then((salesMan) => {
             res.send(salesMan);
-        }).catch(() => {
-            res.send('ID not found. Please enter an existing one!');
+        }).catch((e) => {
+            res.send(e.message);
     }).catch(_ => {
         res.status(500).send();
     })
@@ -64,8 +64,8 @@ exports.deleteSalesMan = (req, res) => {
     salesmenService.delete(db, req.params._id)
         .then(_id => {
             res.send(_id);
-        }).catch(() => {
-            res.send('ID not found!');
+        }).catch((e) => {
+            res.send(e.message);
     }).catch(_ => {
         res.status(500).send();
     })
