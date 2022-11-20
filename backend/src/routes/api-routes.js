@@ -20,9 +20,9 @@ router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 const salesmenApi = require('../apis/salesman-api');
 router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
 router.get('/salesmen/read/firstname/:firstname', checkAuthorization(), salesmenApi.getSalesManByFirstname);
-router.get('/salesmen/read/_id/:_id', checkAuthorization(), salesmenApi.getSalesManById);
+router.get('/salesmen/read/id/:_id', checkAuthorization(), salesmenApi.getSalesManById);
 router.post('/salesmen/create', checkAuthorization(), salesmenApi.addSalesman);
 router.put('/salesmen/update/:_id', checkAuthorization(), salesmenApi.updateSalesManById);
-router.delete('/salesmen/delete/_id/:_id', checkAuthorization(), salesmenApi.deleteSalesMan);
+router.delete('/salesmen/delete/id/:_id', checkAuthorization(), salesmenApi.deleteSalesMan);
 
 module.exports = router;
