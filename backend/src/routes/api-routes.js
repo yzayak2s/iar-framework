@@ -20,6 +20,15 @@ router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 const salesmenApi = require('../apis/salesman-api');
 router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
 router.post('/salesmen/create', checkAuthorization(), salesmenApi.addSalesman);
-router.delete('/salesmen/delete/_id/:_id', checkAuthorization(), salesmenApi.deleteSalesMan);
+router.delete('/salesmen/delete/id/:_id', checkAuthorization(), salesmenApi.deleteSalesMan);
+
+const evaRecApi = require('../apis/evaluation-record-api');
+router.get('/evaluationRecords/read/all', checkAuthorization(), evaRecApi.getAllEvaluationRecords);
+router.get('/evaluationRecords/read/id/:_id', checkAuthorization(), evaRecApi.getEvaluationRecordsById);
+router.get('/evaluationRecords/read/salesmanId/:salesManID', checkAuthorization(), evaRecApi.getEvaluationRecordsOfSalesmanById);
+router.post('/evaluationRecords/create', checkAuthorization(), evaRecApi.addEvaluationRecord);
+router.put('/evaluationRecords/update/id/:_id', checkAuthorization(), evaRecApi.updateEvaluationRecordById);
+router.delete('/evaluationRecords/delete/id/:_id', checkAuthorization(), evaRecApi.deleteEvaluationRecord);
+router.delete('/evaluationRecords/delete/salesmanId/:salesManID', checkAuthorization(), evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
 
 module.exports = router;
