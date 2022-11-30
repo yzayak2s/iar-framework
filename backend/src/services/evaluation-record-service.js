@@ -4,7 +4,7 @@
  * @return {Promise<EvaluationRecord>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('evaluationRecord').find({}).toArray(); // use of toArray() is important here.
+    return await db.collection('evaluation_record').find({}).toArray(); // use of toArray() is important here.
 }
 
 /**
@@ -14,7 +14,7 @@ exports.getAll = async (db) => {
  * @returns {EvaluationRecord} evaluationRecord
  */
 exports.getById = async (db, _id) => {
-    return await db.collection('evaluationRecord').findOne({_id: parseInt(_id)});
+    return await db.collection('evaluation_record').findOne({_id: parseInt(_id)});
 }
 
 /**
@@ -24,7 +24,7 @@ exports.getById = async (db, _id) => {
  * @returns {EvaluationRecord} evaluationRecord
  */
 exports.getBySalesmanID = async (db, salesManID) => {
-    return await db.collection('evaluationRecord').find({salesManID: parseInt(salesManID)}).toArray();
+    return await db.collection('evaluation_record').find({salesManID: parseInt(salesManID)}).toArray();
 }
 
 
@@ -34,7 +34,7 @@ exports.getBySalesmanID = async (db, salesManID) => {
  * @param {EvaluationRecord} evaluationRecord
  */
 exports.add = async (db, evaluationRecord) => {
-    const existingEvaluationRecordId = await db.collection('evaluationRecord').findOne({_id: evaluationRecord._id});
+    const existingEvaluationRecordId = await db.collection('evaluation_record').findOne({_id: evaluationRecord._id});
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
 
     if (!existingSalesMan){
@@ -44,7 +44,7 @@ exports.add = async (db, evaluationRecord) => {
     if (existingEvaluationRecordId) {
         throw new Error('EvaluationRecord with id ' + evaluationRecord._id + ' already exists!');
     }
-    return db.collection('evaluationRecord').insertOne(evaluationRecord);
+    return (await db.collection('evaluation_record').insertOne(evaluationRecord)).insertedId;
 }
 
 /**
@@ -54,13 +54,13 @@ exports.add = async (db, evaluationRecord) => {
  * @param {*} evaluationRecord The new evaluationRecord
  */
 exports.updateById = async (db, _id, evaluationRecord) => {
-    const existingEvaluationRecord = await db.collection('evaluationRecord').findOne({_id: parseInt(_id)});
+    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: parseInt(_id)});
 
     if (!existingEvaluationRecord){
         throw new Error("No EvaluationRecord with id " + _id + " exists!");
     }
 
-    return await db.collection('evaluationRecord').updateOne(
+    return await db.collection('evaluation_record').updateOne(
         {
             _id: parseInt(_id)
         },
@@ -68,9 +68,11 @@ exports.updateById = async (db, _id, evaluationRecord) => {
             $set: {
                 goalDescription: evaluationRecord.goalDescription,
                 targetValue: evaluationRecord.targetValue,
-                actualValue: evaluationRecord.targetValue,
+                actualValue: evaluationRecord.actualValue,
                 year: evaluationRecord.year,
-                salesManID: evaluationRecord.salesManID
+                // TODO: Remove this part because it shouldn't be able to assign a already existing
+                //  evaluation-record to an another salesman...
+                //salesManID: evaluationRecord.salesManID
             }
         }
     );
@@ -83,12 +85,12 @@ exports.updateById = async (db, _id, evaluationRecord) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    const existingEvaluationRecord = await db.collection('evaluationRecord').findOne({_id: parseInt(_id)});
+    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: parseInt(_id)});
 
     if (!existingEvaluationRecord) {
         throw new Error("EvaluationRecord with: " + _id + " doesn't exist!")
     }
-    return db.collection('evaluationRecord').deleteOne({_id: parseInt(_id)})
+    return db.collection('evaluation_record').deleteOne({_id: parseInt(_id)})
 }
 
 /**
@@ -103,5 +105,5 @@ exports.deleteBySalesmanID = async (db, salesManID) => {
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
 
-    return db.collection('evaluationRecord').deleteMany({salesManID: parseInt(salesManID)});
+    return db.collection('evaluation_record').deleteMany({salesManID: parseInt(salesManID)});
 }
