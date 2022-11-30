@@ -6,8 +6,7 @@ stages:
 
 variables:
   ANGULAR_CLI_VERSION: 13.3.9
-  http_proxy: "http://www-cache:8080"
-  https_proxy: "http://www-cache:8080"
+  NODE_VERSION: 18
 
 .backend_rules:
   rules:
@@ -23,8 +22,13 @@ variables:
         - frontend/**/*
         - .gitlab-ci.yml
 
+.node:
+  image: node:${NODE_VERSION}-alpine
+  before_script:
+    - npm config set registry http://sepp-nexus.inf.h-brs.de:8081/repository/npm/
+
 install-dependencies:backend:
-  image: node:16-alpine
+  extends: .node
   stage: dependencies
   script:
     - cd backend
@@ -39,7 +43,7 @@ install-dependencies:backend:
       - backend/node_modules
 
 unit-test:backend:
-  image: node:16-alpine
+  extends: .node
   stage: test
   rules:
     - !reference [ .backend_rules, rules ]
@@ -92,7 +96,7 @@ deploy:backend:
     - pm2 deploy backend/ecosystem.config.js production
 
 install-dependencies:frontend:
-  image: node:16-alpine
+  extends: .node
   stage: dependencies
   script:
     - cd frontend
@@ -107,7 +111,7 @@ install-dependencies:frontend:
       - frontend/node_modules
 
 lint:frontend:
-  image: node:16-alpine
+  extends: .node
   stage: test
   rules:
     - !reference [ .frontend_rules, rules ]
@@ -155,7 +159,7 @@ lint:frontend:
     policy: pull
 
 build:frontend:
-  image: node:16-alpine
+  extends: .node
   stage: build
   rules:
     - !reference [ .frontend_rules, rules ]
@@ -180,6 +184,9 @@ build:frontend:
 deploy:frontend:
   image: alpine
   stage: deploy
+  variables:
+    HTTP_PROXY: "http://www-cache:8080"
+    HTTPS_PROXY: "http://www-cache:8080"
   rules:
     - !reference [ .frontend_rules, rules ]
   needs:
@@ -200,4 +207,3 @@ deploy:frontend:
     - ssh -o StrictHostKeyChecking=no -T "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" hostname
     - ssh  "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST" rm -rf app
     - scp -r dist/app "$TARGET_SERVER_USER@$FRONTEND_SERVER_HOST:."
-
