@@ -52,7 +52,7 @@ describe('salesman-service unit-tests', function() {
     describe('salesman actualisation tests', function(){
         it('update salesman in db', async function() {
             await salesmanService.add(db, copyObject(salesMan));
-            await salesmanService.update(db, salesMan.sid, copyObject(salesMan3));
+            await salesmanService.update(db, salesMan._id, copyObject(salesMan3));
             await expect(db.collection('salesmen').findOne()).to.eventually.be.eqls(salesMan3);
         });
     });
