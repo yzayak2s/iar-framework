@@ -14,7 +14,7 @@ exports.getAll = async (db) => {
  * @return {Promise<SalesMan>}
  */
 exports.getSalesManByFirstname = async (db, firstname) => {
-    return await db.collection('salesmen').find({firstname: firstname}).toArray();
+    return await db.collection('salesmen').findOne({firstname: firstname});
 }
 
 /**
@@ -40,7 +40,7 @@ exports.add = async (db, salesman) => {
             throw new Error('Salesman with id ' + salesman._id + ' already exist!');
         }
     }
-    return db.collection('salesmen').insertOne(salesman);
+    return (await db.collection('salesmen').insertOne(salesman)).insertedId;
 }
 
 /**
