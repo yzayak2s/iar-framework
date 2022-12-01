@@ -19,7 +19,7 @@ class EvaluationRecord {
         year,
         salesManID
     ) {
-        this._id = _id;
+        this._id = _goalID;
         this.goalDescription = goalDescription;
         this.targetValue = targetValue;
         this.actualValue = actualValue;
