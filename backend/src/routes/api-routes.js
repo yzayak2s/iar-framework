@@ -35,7 +35,38 @@ const authApi = require('../apis/auth-api'); //api-endpoints are loaded from sep
  *              description: Login failed!
  */
 router.post('/login', authApi.login); //the function decides which request type should be accepted
+/**
+ * @swagger
+ * /api/login:
+ *  delete:
+ *      summary: Logout
+ *      tags:
+ *          - Authentification
+ *      responses:
+ *          200:
+ *              description: You successfully logged out!
+ *          401:
+ *              description: You are not logged in!
+ */
 router.delete('/login', checkAuthorization(), authApi.logout); //middlewares can be defined in parameters
+/**
+ * @swagger
+ * /api/login:
+ *  get:
+ *      summary: Check if currently logged in
+ *      tags:
+ *          - Authentification
+ *      responses:
+ *          200:
+ *              description: You are logged in!
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          properties:
+ *                              loggedIn:
+ *                                  type: boolean
+ *                                  description: true or false
+ */
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
 const userApi = require('../apis/user-api');
