@@ -1,9 +1,23 @@
 /**
- * this model specifies the format to exchange 'salesman-data'
- * with the frontend and store it in mongoDB
- * @param {string} firstname
- * @param {string} lastname
- * @param {number} _id
+ * @swagger
+ * components:
+ *  schemas:
+ *      SalesMan:
+ *          type: object
+ *          required:
+ *              - id
+ *              - firstname
+ *              - lastname
+ *          properties:
+ *              id:
+ *                  type: int
+ *                  description: id of the salesman
+ *              firstname:
+ *                  type: string
+ *                  description: The first name of the salesman
+ *              lastname:
+ *                  type: string
+ *                  description: The last name of the salesman
  */
 
 class SalesMan {
