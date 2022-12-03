@@ -30,6 +30,13 @@
  *              salesManID:
  *                  type: int
  *                  description: The id of the salesman this record belongs to
+ *          example:
+ *              goalID: 2
+ *              goalDescription: Make 2000€ of sales this year
+ *              targetValue: 2000
+ *              actualValue: 1520
+ *              year: 2021
+ *              salesManID: 5
  */
 
 class EvaluationRecord {

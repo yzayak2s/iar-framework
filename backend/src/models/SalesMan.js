@@ -18,6 +18,10 @@
  *              lastname:
  *                  type: string
  *                  description: The last name of the salesman
+ *          example:
+ *              id: 5
+ *              firstname: Max
+ *              lastname: Mustermann
  */
 
 class SalesMan {
