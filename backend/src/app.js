@@ -4,7 +4,9 @@
 
 const express = require('express');
 const cookieSession = require('cookie-session');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerDocument = require('../swagger.json');
 const multer = require('multer');
 const upload = multer();
 const app = express();
@@ -38,6 +40,13 @@ app.use(cors({
     origin: environment.corsOrigins,
     credentials: true
 }));
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
+
 
 const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
 app.use('/api', apiRouter); //mount api-router at path "/api"
