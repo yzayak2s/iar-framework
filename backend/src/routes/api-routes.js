@@ -6,6 +6,34 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
     In this file is the routing for the REST-endpoints under /api managed
  */
 const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
+/**
+ * @swagger
+ * /api/login:
+ *  post:
+ *      summary: Login
+ *      tags:
+ *          - Authentification
+ *      requestBody:
+ *          description: Login Details
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *                      required:
+ *                          - username
+ *                          - password
+ *      responses:
+ *          200:
+ *              description: You are logged in!
+ *          401:
+ *              description: Login failed!
+ */
 router.post('/login', authApi.login); //the function decides which request type should be accepted
 router.delete('/login', checkAuthorization(), authApi.logout); //middlewares can be defined in parameters
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
@@ -23,6 +51,8 @@ const salesmenApi = require('../apis/salesman-api');
  * /api/salesmen/read/all:
  *  get:
  *      summary: Returns the list of all salesman
+ *      tags:
+ *          - Salesman
  *      responses:
  *          200:
  *              description: The list of salesman
@@ -42,6 +72,8 @@ router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
  * /api/salesmen/read/firstname/{firstname}:
  *  get: 
  *      summary: returns salesman with firstname
+ *      tags:
+ *          - Salesman
  *      parameters:
  *          - in: path
  *            name: firstname
