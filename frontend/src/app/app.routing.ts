@@ -19,7 +19,7 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
-    {path: '', component: SalesManComponent, canActivate: [AuthGuardService]},
+    {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];
 
