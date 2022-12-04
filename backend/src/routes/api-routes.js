@@ -75,7 +75,7 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 const peopleDemoApi = require('../apis/people-demo-api');
 router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 
-// TODO: Outsource endpoints in to separate files
+// TODO: Outsource endpoints in to separate files ( if possible)
 const salesmenApi = require('../apis/salesman-api');
 
 /**
@@ -131,12 +131,16 @@ router.delete('/salesmen/delete/id/:_id', checkAuthorization(), salesmenApi.dele
 
 const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', checkAuthorization(), evaRecApi.getAllEvaluationRecords);
-
 router.get('/evaluationRecords/read/id/:_id', checkAuthorization(), evaRecApi.getEvaluationRecordsById);
 router.get('/evaluationRecords/read/salesmanId/:salesManID', checkAuthorization(), evaRecApi.getEvaluationRecordsOfSalesmanById);
 router.post('/evaluationRecords/create', checkAuthorization(), evaRecApi.addEvaluationRecord);
 router.put('/evaluationRecords/update/id/:_id', checkAuthorization(), evaRecApi.updateEvaluationRecordById);
 router.delete('/evaluationRecords/delete/id/:_id', checkAuthorization(), evaRecApi.deleteEvaluationRecord);
 router.delete('/evaluationRecords/delete/salesmanId/:salesManID', checkAuthorization(), evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
+
+const openCRX = require('../apis/openCRX-api');
+router.get('/accounts/read/all', checkAuthorization(), openCRX.getAccounts);
+router.get('/products/read/all', checkAuthorization(), openCRX.getProducts);
+router.get('/salesorders/read/all', checkAuthorization(), openCRX.getSalesOrders);
 
 module.exports = router;
