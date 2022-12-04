@@ -1,0 +1,34 @@
+<h2>SalesMans table:</h2>
+<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="salesmens">
+    <ng-container matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let person">{{person._id}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+        <th mat-header-cell *matHeaderCellDef>Firstname</th>
+        <td mat-cell *matCellDef="let person">{{person.firstname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+        <th mat-header-cell *matHeaderCellDef>Lastname</th>
+        <td mat-cell *matCellDef="let person" >{{person.lastname}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell   *matHeaderCellDef >Actions</th>
+        <td mat-cell *matCellDef="let row" >
+            <button mat-button (click)="showSalesMan(row)">Update</button>
+            <button mat-button (click)="deleteMethod(row)">Delete</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+
+    <tr
+        mat-row
+        (click)="showSalesMan(row)"
+        *matRowDef="let row; columns: displayedColumns;"
+    ></tr>
+</table>
