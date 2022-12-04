@@ -5,10 +5,68 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
 /*
     In this file is the routing for the REST-endpoints under /api managed
  */
-
 const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
+/**
+ * @swagger
+ * /api/login:
+ *  post:
+ *      summary: Login
+ *      tags:
+ *          - Authentification
+ *      requestBody:
+ *          description: Login Details
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                          password:
+ *                              type: string
+ *                      required:
+ *                          - username
+ *                          - password
+ *      responses:
+ *          200:
+ *              description: You are logged in!
+ *          401:
+ *              description: Login failed!
+ */
 router.post('/login', authApi.login); //the function decides which request type should be accepted
+/**
+ * @swagger
+ * /api/login:
+ *  delete:
+ *      summary: Logout
+ *      tags:
+ *          - Authentification
+ *      responses:
+ *          200:
+ *              description: You successfully logged out!
+ *          401:
+ *              description: You are not logged in!
+ */
 router.delete('/login', checkAuthorization(), authApi.logout); //middlewares can be defined in parameters
+/**
+ * @swagger
+ * /api/login:
+ *  get:
+ *      summary: Check if currently logged in
+ *      tags:
+ *          - Authentification
+ *      responses:
+ *          200:
+ *              description: You are logged in!
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          properties:
+ *                              loggedIn:
+ *                                  type: boolean
+ *                                  description: true or false
+ */
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
 const userApi = require('../apis/user-api');
@@ -18,7 +76,52 @@ const peopleDemoApi = require('../apis/people-demo-api');
 router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 
 const salesmenApi = require('../apis/salesman-api');
+
+/**
+ * @swagger
+ * /api/salesmen/read/all:
+ *  get:
+ *      summary: Returns the list of all salesman
+ *      tags:
+ *          - Salesman
+ *      responses:
+ *          200:
+ *              description: The list of salesman
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/SalesMan'
+ *          401:
+ *              description: Unauthorized 
+ */
 router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
+
+/**
+ * @swagger
+ * /api/salesmen/read/firstname/{firstname}:
+ *  get: 
+ *      summary: returns salesman with firstname
+ *      tags:
+ *          - Salesman
+ *      parameters:
+ *          - in: path
+ *            name: firstname
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: First name of salesman
+ *      responses:
+ *          200:
+ *              description: The salesman
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SalesMan'       
+ *          401:
+ *              description: Unauthorized 
+ */
 router.get('/salesmen/read/firstname/:firstname', checkAuthorization(), salesmenApi.getSalesManByFirstname);
 router.get('/salesmen/read/id/:_id', checkAuthorization(), salesmenApi.getSalesManById);
 router.post('/salesmen/create', checkAuthorization(), salesmenApi.addSalesman);
@@ -27,6 +130,7 @@ router.delete('/salesmen/delete/id/:_id', checkAuthorization(), salesmenApi.dele
 
 const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', checkAuthorization(), evaRecApi.getAllEvaluationRecords);
+
 router.get('/evaluationRecords/read/id/:_id', checkAuthorization(), evaRecApi.getEvaluationRecordsById);
 router.get('/evaluationRecords/read/salesmanId/:salesManID', checkAuthorization(), evaRecApi.getEvaluationRecordsOfSalesmanById);
 router.post('/evaluationRecords/create', checkAuthorization(), evaRecApi.addEvaluationRecord);

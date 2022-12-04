@@ -5,6 +5,24 @@
 const express = require('express');
 const cookieSession = require('cookie-session');
 
+// Implements Swagger UI with swagger jsdoc
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc')
+
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Library API",
+            version: "1.0.0",
+            description: "A simple Express Library API"
+        },
+    },
+    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`]
+}
+
+const openAPISpecs = swaggerJsDoc(options);
+
 const multer = require('multer');
 const upload = multer();
 const app = express();
@@ -38,6 +56,14 @@ app.use(cors({
     origin: environment.corsOrigins,
     credentials: true
 }));
+
+// Swagger-UI
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(openAPISpecs)
+);
+
 
 const apiRouter = require('./routes/api-routes'); //get api-router from routes/api
 app.use('/api', apiRouter); //mount api-router at path "/api"
