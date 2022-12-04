@@ -75,6 +75,7 @@ router.get('/user', checkAuthorization(), userApi.getSelf);
 const peopleDemoApi = require('../apis/people-demo-api');
 router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
 
+// TODO: Outsource endpoints in to separate files
 const salesmenApi = require('../apis/salesman-api');
 
 /**
