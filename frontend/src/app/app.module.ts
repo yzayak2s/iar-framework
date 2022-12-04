@@ -19,6 +19,7 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import {SalesManComponent} from './components/sales-man/sales-man.component';
+import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
         MenuBarComponent,
         ExamplePageComponent,
         NotFoundPageComponent,
-        SalesManComponent
+        SalesManComponent,
+        EvaluationRecordComponent
     ],
     imports: [
         BrowserModule,
