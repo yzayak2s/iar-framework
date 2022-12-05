@@ -1,6 +1,6 @@
 const openCRXService = require("../services/openCRX-service");
 const https = require("https");
-const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 exports.getAccounts = (req, res) => {
     const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
@@ -41,7 +41,7 @@ exports.getAccountByUID = (req, res) => {
         .then((accountByUID) => {
             res.send(accountByUID);
         }).catch(_ => {
-            res.status(500).send();
+        res.status(500).send();
     });
 }
 
@@ -66,6 +66,29 @@ exports.getProducts = (req, res) => {
     });
 }
 
+exports.getProductByUID = (req, res) => {
+    const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
+    const credentials = {
+        username: 'guest',
+        password: 'guest'
+    };
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent, // this was missing (for what is this)?
+        auth: credentials,
+    };
+
+    openCRXService.getProductByUID(baseUrl, config, req.params.uid)
+        .then((productByUID) => {
+            res.send(productByUID);
+        }).catch(_ => {
+        res.status(500).send();
+    });
+
+}
+
 exports.getSalesOrders = (req, res) => {
     const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
     const credentials = {
@@ -85,4 +108,44 @@ exports.getSalesOrders = (req, res) => {
     }).catch(_ => {
         res.status(500).send();
     });
+}
+
+exports.getSalesOrderByUID = (req, res) => {
+    const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
+    const credentials = {
+        username: 'guest',
+        password: 'guest'
+    };
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent, // this was missing (for what is this)?
+        auth: credentials,
+    };
+
+    openCRXService.getSalesOrderByUID(baseUrl, config, req.params.uid)
+        .then((salesOrderByUID) => {
+            res.send(salesOrderByUID);
+        }).catch(_ => {
+        res.status(500).send();
+    });
+}
+
+exports.getPositions = (req, res) => {
+    const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
+    const credentials = {
+        username: 'guest',
+        password: 'guest'
+    };
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent, // this was missing (for what is this)?
+        auth: credentials,
+    };
+
+    //openCRXService...
+
 }

@@ -142,6 +142,8 @@ const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', checkAuthorization(), openCRX.getAccounts);
 router.get('/accounts/read/uid/:uid', checkAuthorization(), openCRX.getAccountByUID);
 router.get('/products/read/all', checkAuthorization(), openCRX.getProducts);
-router.get('/salesorders/read/all', checkAuthorization(), openCRX.getSalesOrders);
+router.get('/products/read/uid/:uid', checkAuthorization(), openCRX.getProductByUID);
+router.get('/salesOrders/read/all', checkAuthorization(), openCRX.getSalesOrders);
+router.get('/salesOrders/read/uid/:uid', checkAuthorization(), openCRX.getSalesOrderByUID);
 
 module.exports = router;
