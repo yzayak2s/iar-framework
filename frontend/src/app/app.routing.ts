@@ -19,6 +19,7 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
   Look at: frontend/src/app/components/menu-bar/menu-bar.component.ts
  */
 const routes: Routes = [
+    {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', component: LoginPageComponent},
     {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
     {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService]},
