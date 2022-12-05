@@ -204,6 +204,8 @@ exports.getSalesOrderByUID = async (baseUrl,config, uid) => {
 /**
  * retrieves positions from OpenCRX
  */
+// TODO: still needed to be done. SalesOrderUID is necessary for requesting postions
+//  for example: 'salesOrders/9DTSXR06DLHPM0EBHQA5MAZ7J/position/3CZN0GINLXPT60EBHQA5MAZ7J'
 exports.getAllPositions = async (baseUrl, config) => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/contract`
