@@ -51,6 +51,6 @@ export class LoginComponent implements OnInit {
      * redirects to the landing page
      */
     enterApplication(): void{
-        void this.router.navigate(['/salesman']);
+        void this.router.navigate(['/dashboard']);
     }
 }
