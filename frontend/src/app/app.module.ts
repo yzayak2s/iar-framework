@@ -19,7 +19,9 @@ import { ExamplePageComponent } from './pages/example-page/example-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {MatTableModule} from '@angular/material/table';
 import {SalesManComponent} from './components/sales-man/sales-man.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
     declarations: [
@@ -31,7 +33,8 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
         ExamplePageComponent,
         NotFoundPageComponent,
         SalesManComponent,
-        EvaluationRecordComponent
+        EvaluationRecordComponent,
+        DashboardComponent
     ],
     imports: [
         BrowserModule,
@@ -44,7 +47,8 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
         MatCardModule,
         MatToolbarModule,
         MatIconModule,
-        MatTableModule
+        MatTableModule,
+        MatListModule
     ],
     providers: [],
     bootstrap: [AppComponent]
