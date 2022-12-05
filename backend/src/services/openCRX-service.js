@@ -47,6 +47,27 @@ exports.getAllAccounts = async (baseUrl, config) => {
 }
 
 /**
+ * retrieves an account from openCRX by uid
+ */
+exports.getAccountByUID = async (baseUrl, config, uid) => {
+    const contact = await axios.get(
+        `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${uid}`,
+        config
+    );
+
+    const account = contact.data;
+
+    return {
+        accountType: account['@type'].split('account1.')[1],
+        accountUID: account['@href'].split('account/')[1],
+        //name: account['name'],
+        fullName: account['fullName'],
+        accountRating: account['accountRating'],
+        accountState: account['accountState']
+    }
+}
+
+/**
  * retrieves products from openCRX
  */
 exports.getAllProducts = async (baseUrl, config) => {
