@@ -23,6 +23,28 @@ exports.getAccounts = (req, res) => {
     });
 }
 
+exports.getAccountByUID = (req, res) => {
+    const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
+    const credentials = {
+        username: 'guest',
+        password: 'guest'
+    };
+    const config = {
+        headers: {
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent, // this was missing (for what is this)?
+        auth: credentials,
+    };
+
+    openCRXService.getAccountByUID(baseUrl, config, req.params.uid)
+        .then((accountByUID) => {
+            res.send(accountByUID);
+        }).catch(_ => {
+            res.status(500).send();
+    });
+}
+
 exports.getProducts = (req, res) => {
     const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
     const credentials = {
