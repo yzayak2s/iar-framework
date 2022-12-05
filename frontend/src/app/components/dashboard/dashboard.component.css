@@ -1,0 +1,8 @@
+.example-card {
+    max-width: 250px;
+}
+
+.example-header-image {
+    background-image: url('../../../assets/images/user.png');
+    background-size: cover;
+}
