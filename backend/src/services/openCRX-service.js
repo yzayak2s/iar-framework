@@ -16,14 +16,16 @@ exports.getAllAccounts = async (baseUrl, config) => {
     accounts.map((value) => {
         if (value['@type'].endsWith('LegalEntity')) {
             const {
-                name,
+                fullName,
                 accountRating,
                 accessLevelBrowse,
                 accountState
             } = value;
 
             customersArray.push({
-                name,
+                accountType: value['@type'].split('account1.')[1],
+                accountUID: value['@href'].split('account/')[1],
+                fullName,
                 accountRating,
                 accessLevelBrowse,
                 accountState
@@ -37,6 +39,8 @@ exports.getAllAccounts = async (baseUrl, config) => {
             } = value;
 
             salesMenArray.push({
+                accountType: value['@type'].split('account1.')[1],
+                accountUID: value['@href'].split('account/')[1],
                 firstName,
                 lastName,
                 governmentId
@@ -76,9 +80,9 @@ exports.getAllProducts = async (baseUrl, config) => {
         config
     );
 
-    var productsArray = [];
-
     const products = response.data.objects;
+
+    var productsArray = [];
 
     products.map((value) => {
         const {
@@ -88,6 +92,8 @@ exports.getAllProducts = async (baseUrl, config) => {
         } = value;
 
         productsArray.push({
+            productType: value['@type'].split('product1.')[1],
+            productUID: value['@href'].split('product/')[1],
             productNumber,
             name,
             description
@@ -98,7 +104,34 @@ exports.getAllProducts = async (baseUrl, config) => {
 }
 
 /**
- * retrieves salesorders from OpenCRX
+ * retrieves a product by
+ */
+exports.getProductByUID = async (baseUrl, config, uid) => {
+    const response = await axios.get(
+        `${baseUrl}/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/${uid}`,
+        config
+    );
+
+    const product = response.data;
+
+    const {
+        productNumber,
+        name,
+        description
+    } = product;
+
+    return {
+        productType: product['@type'].split('product1.')[1],
+        productUID: product['@href'].split('product/.')[1],
+        productNumber,
+        name,
+        description
+    }
+}
+
+
+/**
+ * retrieves salesOrders from OpenCRX
  */
 exports.getAllSalesOrders = async (baseUrl, config) => {
     const response = await axios.get(
@@ -106,14 +139,12 @@ exports.getAllSalesOrders = async (baseUrl, config) => {
         config
     );
 
-    var salesOrdersArray = [];
-
     const salesOrders = response.data.objects;
+
+    var salesOrdersArray = [];
 
     salesOrders.map((value) => {
         const {
-            customer,
-            salesRep,
             priority,
             contractNumber,
             totalTaxAmount,
@@ -121,23 +152,11 @@ exports.getAllSalesOrders = async (baseUrl, config) => {
             totalAmountIncludingTax,
         } = value;
 
-        var customerUID;
-        Object.entries(customer).forEach(([key,value]) => {
-            if (key === '@href') {
-                customerUID = value.split('account/')[1];
-            }
-        });
-
-        var salesManUID ;
-        Object.entries(salesRep).forEach(([key,value]) => {
-           if (key === '@href') {
-               salesManUID = value.split('account/')[1];
-           }
-        });
-
         salesOrdersArray.push({
-            customer: customerUID,
-            salesRep: salesManUID,
+            contractType: value['@type'].split('contract1.')[1],
+            salesOrderUID: value['@href'].split('salesOrder/')[1],
+            customerUID: value['customer']['@href'].split('account/')[1],
+            salesRep: value['salesRep']['@href'].split('account/')[1],
             priority,
             contractNumber,
             totalTaxAmount,
@@ -147,4 +166,46 @@ exports.getAllSalesOrders = async (baseUrl, config) => {
 
     });
         return salesOrdersArray;
+}
+
+/**
+ * retrieves a salesOrder from openCRX
+ */
+exports.getSalesOrderByUID = async (baseUrl,config, uid) => {
+    const response = await axios.get(
+        `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${uid}`,
+        config
+    );
+
+    const salesOrder = response.data;
+
+    const {
+        priority,
+        contractNumber,
+        totalTaxAmount,
+        totalBaseAmount,
+        totalAmountIncludingTax,
+    } = salesOrder;
+
+    return {
+        contractType: salesOrder['@type'].split('contract1.')[1],
+        salesOrderUID: salesOrder['@href'].split('salesOrder/')[1],
+        customerUID: salesOrder['customer']['@href'].split('account/')[1],
+        salesRep: salesOrder['salesRep']['@href'].split('account/')[1],
+        priority,
+        contractNumber,
+        totalTaxAmount,
+        totalBaseAmount,
+        totalAmountIncludingTax,
+    }
+
+}
+
+/**
+ * retrieves positions from OpenCRX
+ */
+exports.getAllPositions = async (baseUrl, config) => {
+    const response = await axios.get(
+        `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/contract`
+    )
 }
