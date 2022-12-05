@@ -6,7 +6,8 @@ import {AuthGuardService} from './services/auth-guard.service';
 import {ExamplePageComponent} from './pages/example-page/example-page.component';
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 import {SalesManComponent} from './components/sales-man/sales-man.component';
-import {EvaluationRecordComponent} from "./components/evaluation-record/evaluation-record.component";
+import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 /*
   This array holds the relation of paths and components which angular router should resolve.
@@ -19,6 +20,7 @@ import {EvaluationRecordComponent} from "./components/evaluation-record/evaluati
  */
 const routes: Routes = [
     {path: 'login', component: LoginPageComponent},
+    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
     {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService]},
     {path: 'evaluationrecord', component: EvaluationRecordComponent, canActivate: [AuthGuardService]},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
