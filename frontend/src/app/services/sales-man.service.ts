@@ -18,10 +18,10 @@ export class SalesManService {
             withCredentials: true
         });
     }
-    deleteSalesman(salesmanid: string): void{
+    deleteSalesman(salesmanid: string): void {
         this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
             withCredentials: true
-        }) .subscribe(() =>  console.log('Call delete service'));
+        }) .subscribe((): void =>  console.log('Call delete service'));
     }
 
 }
