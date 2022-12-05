@@ -140,6 +140,7 @@ router.delete('/evaluationRecords/delete/salesmanId/:salesManID', checkAuthoriza
 
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', checkAuthorization(), openCRX.getAccounts);
+router.get('/accounts/read/uid/:uid', checkAuthorization(), openCRX.getAccountByUID);
 router.get('/products/read/all', checkAuthorization(), openCRX.getProducts);
 router.get('/salesorders/read/all', checkAuthorization(), openCRX.getSalesOrders);
 
