@@ -31,3 +31,29 @@ exports.getAllEmployees = async (baseUrl, body, config) => {
     console.log(new Date().getTime())
     console.log(new Date().getTime() + 3600 * 60)*/
 }
+
+/**
+ * retrieves an employee by code from orangeHRM
+ */
+exports.getEmployeeByCode = async (baseUrl, body, config, code) => {
+    const response = await axios.post(
+        `${baseUrl}/oauth/issueToken`,
+        body,
+        config
+    );
+
+    const accessToken = response.data['access_token']; // also with .access_token accessible
+
+    const {httpsAgent} = config
+    const configWithToken = {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent, // this was missing (for what is this)?
+    }
+
+    const employeeByCode = await axios.get(`${baseUrl}/api/v1/employee/${code}`, configWithToken);
+    return employeeByCode.data.data;
+}
