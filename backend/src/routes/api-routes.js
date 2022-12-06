@@ -149,5 +149,6 @@ router.get('/salesOrders/read/uid/:uid', checkAuthorization(), openCRX.getSalesO
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', checkAuthorization(), orangeHRM.getEmployees);
 router.get('/employees/code/:code', checkAuthorization(), orangeHRM.getEmployeeByCode);
+router.get('/employees/code/:code/bonussalary', checkAuthorization(), orangeHRM.getBonusSalariesByEmployee)
 
 module.exports = router;
