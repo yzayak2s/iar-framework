@@ -69,12 +69,16 @@ router.delete('/login', checkAuthorization(), authApi.logout); //middlewares can
  */
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
+// Add checkAuthorization as middleware
+router.use(checkAuthorization());
+
 const userApi = require('../apis/user-api');
-router.get('/user', checkAuthorization(), userApi.getSelf);
+router.get('/user', userApi.getSelf);
 
 const peopleDemoApi = require('../apis/people-demo-api');
-router.get('/people', checkAuthorization(), peopleDemoApi.getPeople);
+router.get('/people', peopleDemoApi.getPeople);
 
+// TODO: Outsource endpoints in to separate files ( if possible)
 const salesmenApi = require('../apis/salesman-api');
 
 /**
@@ -96,7 +100,7 @@ const salesmenApi = require('../apis/salesman-api');
  *          401:
  *              description: Unauthorized 
  */
-router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
+router.get('/salesmen/read/all', salesmenApi.getSalesmen);
 
 /**
  * @swagger
@@ -122,20 +126,32 @@ router.get('/salesmen/read/all', checkAuthorization(), salesmenApi.getSalesmen);
  *          401:
  *              description: Unauthorized 
  */
-router.get('/salesmen/read/firstname/:firstname', checkAuthorization(), salesmenApi.getSalesManByFirstname);
-router.get('/salesmen/read/id/:_id', checkAuthorization(), salesmenApi.getSalesManById);
-router.post('/salesmen/create', checkAuthorization(), salesmenApi.addSalesman);
-router.put('/salesmen/update/:_id', checkAuthorization(), salesmenApi.updateSalesManById);
-router.delete('/salesmen/delete/id/:_id', checkAuthorization(), salesmenApi.deleteSalesMan);
+router.get('/salesmen/read/firstname/:firstname', salesmenApi.getSalesManByFirstname);
+router.get('/salesmen/read/id/:_id', salesmenApi.getSalesManById);
+router.post('/salesmen/create', salesmenApi.addSalesman);
+router.put('/salesmen/update/:_id', salesmenApi.updateSalesManById);
+router.delete('/salesmen/delete/id/:_id', salesmenApi.deleteSalesMan);
 
 const evaRecApi = require('../apis/evaluation-record-api');
-router.get('/evaluationRecords/read/all', checkAuthorization(), evaRecApi.getAllEvaluationRecords);
+router.get('/evaluationRecords/read/all', evaRecApi.getAllEvaluationRecords);
+router.get('/evaluationRecords/read/id/:_id', evaRecApi.getEvaluationRecordsById);
+router.get('/evaluationRecords/read/salesmanId/:salesManID', evaRecApi.getEvaluationRecordsOfSalesmanById);
+router.post('/evaluationRecords/create', evaRecApi.addEvaluationRecord);
+router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecordById);
+router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
+router.delete('/evaluationRecords/delete/salesmanId/:salesManID', evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
 
-router.get('/evaluationRecords/read/id/:_id', checkAuthorization(), evaRecApi.getEvaluationRecordsById);
-router.get('/evaluationRecords/read/salesmanId/:salesManID', checkAuthorization(), evaRecApi.getEvaluationRecordsOfSalesmanById);
-router.post('/evaluationRecords/create', checkAuthorization(), evaRecApi.addEvaluationRecord);
-router.put('/evaluationRecords/update/id/:_id', checkAuthorization(), evaRecApi.updateEvaluationRecordById);
-router.delete('/evaluationRecords/delete/id/:_id', checkAuthorization(), evaRecApi.deleteEvaluationRecord);
-router.delete('/evaluationRecords/delete/salesmanId/:salesManID', checkAuthorization(), evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
+const openCRX = require('../apis/openCRX-api');
+router.get('/accounts/read/all', openCRX.getAccounts);
+router.get('/accounts/read/uid/:uid', openCRX.getAccountByUID);
+router.get('/products/read/all', openCRX.getProducts);
+router.get('/products/read/uid/:uid', openCRX.getProductByUID);
+router.get('/salesOrders/read/all', openCRX.getSalesOrders);
+router.get('/salesOrders/read/uid/:uid', openCRX.getSalesOrderByUID);
+
+const orangeHRM = require('../apis/orangeHRM-api')
+router.get('/employees/read/all', orangeHRM.getEmployees);
+router.get('/employees/code/:code', orangeHRM.getEmployeeByCode);
+router.get('/employees/code/:code/bonussalary', orangeHRM.getBonusSalariesByEmployee)
 
 module.exports = router;
