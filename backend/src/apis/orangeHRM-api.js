@@ -65,3 +65,32 @@ exports.getEmployeeByCode = (req, res) => {
             res.status(500).send();
     });
 }
+
+exports.getBonusSalariesByEmployee = (req, res) => {
+    const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
+    //let accessToken = req.app.get('environment').accessToken;
+    //let expiresAt = process.env.ORANGEHRM_TOKEN_EXPIRES_AT;
+
+    const body = qs.stringify({
+        client_id: 'api_oauth_id',
+        client_secret: 'oauth_secret',
+        grant_type: 'password',
+        username: 'zayakh',
+        password: '*Safb02da42Demo$'
+    });
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+        },
+        httpsAgent: httpsAgent,
+    };
+
+    orangeHRMService.getBonusSalariesByEmployee(baseUrl, body, config, req.params.code)
+        .then((bonusSalaries) => {
+            res.send(bonusSalaries);
+        }).catch(_ => {
+            res.status(500).send();
+    });
+}
