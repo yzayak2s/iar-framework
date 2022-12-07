@@ -1,17 +1,11 @@
 const orangeHRMService = require('../services/orangeHRM-service');
 const https = require('https');
 const qs = require("querystring");
+const axios = require("axios");
 const httpsAgent = new https.Agent({rejectUnauthorized: false});
-
-// 2 Possibilities to get accessToken
-//console.log('TEST1: ' + process.env.ORANGEHRM_ACCESSTOKEN)
-//console.log('TEST2: ' + req.app.get('environment').accessToken)
-
 
 // OrangeHRM HTTP Request Header definition
 const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
-//let accessToken = req.app.get('environment').accessToken;
-//let expiresAt = process.env.ORANGEHRM_TOKEN_EXPIRES_AT;
 
 const body = qs.stringify({
     client_id: 'api_oauth_id',
@@ -44,7 +38,7 @@ const generateToken = async () => {
 }
 
 exports.getEmployees = (req, res) => {
-    orangeHRMService.getAllEmployees(baseUrl, body, config)
+    orangeHRMService.getAllEmployees(baseUrl, body, config, generateToken)
         .then((employees) => {
             res.send(employees);
         }).catch(_ => {
@@ -53,7 +47,7 @@ exports.getEmployees = (req, res) => {
 }
 
 exports.getEmployeeByCode = (req, res) => {
-    orangeHRMService.getEmployeeByCode(baseUrl, body, config, req.params.code)
+    orangeHRMService.getEmployeeByCode(baseUrl, body, config, req.params.code, generateToken)
         .then((employeeByCode) => {
             res.send(employeeByCode);
         }).catch(_ => {
@@ -62,7 +56,7 @@ exports.getEmployeeByCode = (req, res) => {
 }
 
 exports.getBonusSalariesByEmployee = (req, res) => {
-    orangeHRMService.getBonusSalariesByEmployee(baseUrl, body, config, req.params.code)
+    orangeHRMService.getBonusSalariesByEmployee(baseUrl, body, config, req.params.code, generateToken)
         .then((bonusSalaries) => {
             res.send(bonusSalaries);
         }).catch(_ => {
