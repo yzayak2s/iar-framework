@@ -1,86 +1,57 @@
 const axios = require('axios');
 
+var issueToken = {}
+
+async function checkToken(issueToken, generateToken) {
+    return issueToken && (issueToken.expires_at - new Date().getTime() > 0) ? issueToken : await generateToken()
+}
+
 /**
  * retrieves employees from orangeHRM
  */
-exports.getAllEmployees = async (baseUrl, body, config) => {
-    const response = await axios.post(
-        `${baseUrl}/oauth/issueToken`,
-        body,
-        config
-    );
+exports.getAllEmployees = async (baseUrl, body, config, generateToken) => {
+    const currentToken = await checkToken(issueToken, generateToken);
+    const {accessToken, expires_at} = currentToken;
 
-    const accessToken = response.data['access_token']; // also with .access_token accessible
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
 
-    const {httpsAgent} = config
-    const configWithToken = {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
-        },
-        httpsAgent: httpsAgent, // this was missing (for what is this)?
-    }
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const employees = await axios.get(`${baseUrl}/api/v1/employee/search`, configWithToken);
+    const employees = await axios.get(`${baseUrl}/api/v1/employee/search`, config);
 
     return employees.data.data;
-    /*console.log(accessToken)
-    console.log(expiresAt)
-    console.log(response.data.access_token)
-    console.log(new Date().getTime())
-    console.log(new Date().getTime() + 3600 * 60)*/
 }
 
 /**
  * retrieves an employee by code from orangeHRM
  */
-exports.getEmployeeByCode = async (baseUrl, body, config, code) => {
-    const response = await axios.post(
-        `${baseUrl}/oauth/issueToken`,
-        body,
-        config
-    );
+exports.getEmployeeByCode = async (baseUrl, body, config, code, generateToken) => {
+    const currentToken = await checkToken(issueToken, generateToken);
+    const {accessToken, expires_at} = currentToken;
 
-    const accessToken = response.data['access_token']; // also with .access_token accessible
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
 
-    const {httpsAgent} = config
-    const configWithToken = {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
-        },
-        httpsAgent: httpsAgent, // this was missing (for what is this)?
-    }
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const employeeByCode = await axios.get(`${baseUrl}/api/v1/employee/${code}`, configWithToken);
+    const employeeByCode = await axios.get(`${baseUrl}/api/v1/employee/${code}`, config);
+
     return employeeByCode.data.data;
 }
 
 /**
  * retrieves bonusSalary of an employee
  */
-exports.getBonusSalariesByEmployee = async (baseUrl, body, config, code) => {
-    const response = await axios.post(
-        `${baseUrl}/oauth/issueToken`,
-        body,
-        config
-    );
+exports.getBonusSalariesByEmployee = async (baseUrl, body, config, code, generateToken) => {
+    const currentToken = await checkToken(issueToken, generateToken);
+    const {accessToken, expires_at} = currentToken;
 
-    const accessToken = response.data['access_token']; // also with .access_token accessible
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
 
-    const {httpsAgent} = config
-    const configWithToken = {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json'
-        },
-        httpsAgent: httpsAgent, // this was missing (for what is this)?
-    }
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const bonusSalaryByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${code}/bonussalary`, configWithToken);
-    //console.log(bonusSalaryByEmployee)
-    return bonusSalaryByEmployee.data.data;
+    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${code}/bonussalary`, config);
+    return bonusSalariesByEmployee.data.data;
 }
