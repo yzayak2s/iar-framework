@@ -1,5 +1,11 @@
 const axios = require('axios');
 
+var issueToken = {}
+
+async function checkToken(issueToken, generateToken) {
+    return issueToken && (issueToken.expires_at - new Date().getTime() > 0) ? issueToken : await generateToken()
+}
+
 /**
  * retrieves employees from orangeHRM
  */
