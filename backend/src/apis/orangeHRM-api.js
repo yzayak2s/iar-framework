@@ -29,6 +29,20 @@ const config = {
     httpsAgent: httpsAgent,
 };
 
+const generateToken = async () => {
+    const response = await axios.post(
+        `${baseUrl}/oauth/issueToken`,
+        body,
+        config
+    );
+
+    const accessToken = response.data['access_token'];
+    return {
+        accessToken: accessToken,
+        expires_at: new Date().getTime() + 3600 * 60
+    }
+}
+
 exports.getEmployees = (req, res) => {
     orangeHRMService.getAllEmployees(baseUrl, body, config)
         .then((employees) => {
