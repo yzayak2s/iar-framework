@@ -35,7 +35,7 @@ exports.addEvaluationRecord = (req, res) => {
     // console.log(req.body)
    evaluationService.add(db, req.body)
     .then(_id => {
-        res.send(_id);
+        res.send(_id.toString());
     }).catch((e) => {
         res.status(404).send(e.message);
     }).catch(_ => {
@@ -48,7 +48,7 @@ exports.updateEvaluationRecordById = (req, res) => {
 
     evaluationService.updateById(db, req.params._id, req.body)
         .then(_id => {
-            res.send(_id);
+            res.send(_id.toString());
         }).catch((e) => {
             res.status(404).send(e.message);
         }).catch(_ => {
@@ -62,7 +62,7 @@ exports.deleteEvaluationRecord = (req, res) => {
 
    evaluationService.delete(db, req.params._id)
         .then(_id => {
-            res.send(_id);
+            res.send(_id.toString());
         }).catch(() => {
             res.status(404).send('ID not found!');
     }).catch(_ => {
