@@ -20,9 +20,9 @@ export class EvaluationRecordComponent implements OnInit {
     constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     ngOnInit(): void {
         console.log('test');
-        this.fetchSalesmans();
+        this.fetchEvaluationRecords();
     }
-    fetchSalesmans(): void{
+    fetchEvaluationRecords(): void{
         this.evaluationRecordService.getAllEvaluationRecord().subscribe((response): void => {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
