@@ -18,7 +18,7 @@ export class EvaluationRecordService {
             withCredentials: true
         });
     }
-    deleteSalesman(id: string): void{
+    deleteEvaluationRecord(id: number): void{
         this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id, {
             withCredentials: true
         }) .subscribe((): void =>  console.log('Call delete service'));

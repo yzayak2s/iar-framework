@@ -3,7 +3,7 @@
  */
 export class EvaluationRecord{
     constructor(
-        public _goalID: string,
+        public _id: number,
         public goalDescription: string,
         public targetValue: string,
         public actualValue: string,

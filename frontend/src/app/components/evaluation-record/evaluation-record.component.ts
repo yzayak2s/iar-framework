@@ -15,7 +15,7 @@ import {EvaluationRecord} from '../../models/EvaluationRecord';
 })
 export class EvaluationRecordComponent implements OnInit {
 
-    displayedColumns = ['_goalID', 'goalDescription', 'targetValue', 'actualValue', 'year', 'salesManID', 'actions'];
+    displayedColumns = ['_id', 'goalDescription', 'targetValue', 'actualValue', 'year', 'salesManID', 'actions'];
     evaluationrecords: EvaluationRecord[] = [];
     constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     ngOnInit(): void {
@@ -31,9 +31,9 @@ export class EvaluationRecordComponent implements OnInit {
         });
     }
     deleteMethod(row: EvaluationRecord): void {
-        if (confirm('Are you sure to delete evaluation record ' + row._goalID)) {
+        if (confirm('Are you sure to delete evaluation record ' + row._id)) {
             console.log('Implement delete functionality here');
-            this.evaluationRecordService.deleteSalesman(row._goalID);
+            this.evaluationRecordService.deleteEvaluationRecord(row._id);
         }
     }
     showEvaluationRecord(row: EvaluationRecord): void{
