@@ -19,7 +19,7 @@ export class EvaluationRecordService {
         });
     }
     deleteEvaluationRecord(id: number): void{
-        this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id, {
+        this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
             withCredentials: true
         }) .subscribe((): void =>  console.log('Call delete service'));
     }
