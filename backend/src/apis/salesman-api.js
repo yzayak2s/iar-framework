@@ -37,7 +37,7 @@ exports.addSalesman = (req, res) => {
 
     salesmenService.add(db, req.body)
         .then(_id => {
-            res.send(_id);
+            res.send(_id.toString());
         }).catch((e) => {
         res.send(e.message);
     }).catch(_ => {
@@ -63,7 +63,7 @@ exports.deleteSalesMan = (req, res) => {
 
     salesmenService.delete(db, req.params._id)
         .then(_id => {
-            res.send(_id);
+            res.send(_id.toString());
         }).catch((e) => {
             res.send(e.message);
     }).catch(_ => {
