@@ -53,7 +53,7 @@ exports.update = async (db, _id, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
     if (!existingSalesmanId) {
-        throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
+        throw new Error("Salesmen with id ' + salesman._id + ' doesn't exist!");
     }
 
     return await db.collection('salesmen').updateOne(
