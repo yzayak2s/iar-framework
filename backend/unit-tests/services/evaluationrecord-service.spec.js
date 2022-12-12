@@ -36,13 +36,26 @@ describe('evaluation-record-service unit-tests', function () {
         it('insert evaluation-record to db', async function() {
             await salesmanService.add(db, copyObject(salesMan))
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
+
             await expect(db.collection('evaluation_record').findOne()).to.eventually.be.eqls(evaluationRecord);
         });
 
         it('expect correct objectId to be returned', async function() {
             await salesmanService.add(db, copyObject(salesMan))
             const _goalID = await evaluationRecordService.add(db, copyObject(evaluationRecord));
+
             await expect(db.collection('evaluation_record').findOne()).to.eventually.have.property('_id', _goalID);
+        });
+
+        it('expect error if salesman does not exist', async function() {
+            await expect(evaluationRecordService.add(db, copyObject(evaluationRecord))).to.be.rejectedWith('Salesman with id 1 does not exist!');
+        });
+
+        it('expect error if record id already exists', async function() {
+            await salesmanService.add(db, copyObject(salesMan))
+            const _goalID = await evaluationRecordService.add(db, copyObject(evaluationRecord));
+
+            await expect(evaluationRecordService.add(db, copyObject(evaluationRecord))).to.be.rejectedWith('EvaluationRecord with id ' + _goalID + ' already exists!');
         });
     });
 
