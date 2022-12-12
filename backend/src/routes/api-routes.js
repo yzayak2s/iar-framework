@@ -153,5 +153,6 @@ const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
+router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 module.exports = router;
