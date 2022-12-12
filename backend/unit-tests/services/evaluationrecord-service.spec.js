@@ -32,7 +32,7 @@ describe('evaluation-record-service unit-tests', function () {
         closeMockedMongoDB(db);
     });
 
-    describe('evaluation-record creation tests', function() {
+    describe('evaluation record creation tests', function() {
         it('insert evaluation-record to db', async function() {
             await salesmanService.add(db, copyObject(salesMan))
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
@@ -59,7 +59,7 @@ describe('evaluation-record-service unit-tests', function () {
         });
     });
 
-    describe('evaluation-record lookup tests', function () {
+    describe('evaluation record lookup tests', function () {
         it('expect correct evaluation-record to be found', async function () {
             await db.collection('salesmen').insert([salesMan,salesMan2]);
             await db.collection('evaluation_record').insert([
@@ -107,6 +107,27 @@ describe('evaluation-record-service unit-tests', function () {
 
         it('trying to update not existing record', async function () {
             await expect(evaluationRecordService.updateById(db, 0, copyObject(evaluationRecord3))).to.be.rejectedWith('No EvaluationRecord with id 0 exists!');
+        });
+    });
+
+    describe('evaluation record delete tests', function () {
+        it('delete by record id works', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await evaluationRecordService.add(db, copyObject(evaluationRecord));
+
+            await expect(evaluationRecordService.getById(db, 1)).to.eventually.be.eql(evaluationRecord);
+            await expect(evaluationRecordService.delete(db, 1)).to.eventually.be.fulfilled;
+            await expect(evaluationRecordService.getById(db, 1)).to.eventually.be.null;
+        });
+        
+        it('delete by salesman id works', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await evaluationRecordService.add(db, copyObject(evaluationRecord));
+            await evaluationRecordService.add(db, copyObject(evaluationRecord3));
+
+            await expect(evaluationRecordService.getBySalesmanID(db, 1)).to.eventually.be.eqls([evaluationRecord, evaluationRecord3]);
+            await expect(evaluationRecordService.deleteBySalesmanID(db, 1)).to.eventually.be.fulfilled;
+            await expect(evaluationRecordService.getBySalesmanID(db, 1)).to.eventually.be.eql([]);
         });
     });
 });
