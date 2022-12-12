@@ -32,7 +32,7 @@ export class EvaluationRecordComponent implements OnInit {
     }
     deleteMethod(row: EvaluationRecord): void {
         if (confirm('Are you sure to delete evaluation record ' + String(row._id))) {
-            this.evaluationRecordService.deleteEvaluationRecord(row._id as number);
+            this.evaluationRecordService.deleteEvaluationRecord(row._id);
         }
     }
     showEvaluationRecord(row: EvaluationRecord): void{
