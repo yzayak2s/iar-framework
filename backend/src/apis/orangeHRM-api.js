@@ -63,3 +63,16 @@ exports.getBonusSalariesByEmployee = (req, res) => {
             res.status(500).send();
     });
 }
+
+exports.addBonusSalary = (req, res) => {
+    const db = req.app.get('db');
+
+    orangeHRMService.add(db, baseUrl, config, req.body, generateToken)
+        .then((_id) => {
+            res.send(_id.toString());
+        }).catch((e) => {
+            res.send(e.message);
+    }).catch(_ => {
+        res.status(500).send();
+    });
+}
