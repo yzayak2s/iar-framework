@@ -111,7 +111,7 @@ describe('evaluation-record-service unit-tests', function () {
     });
 
     describe('evaluation record delete tests', function () {
-        it('delete by record id works', async function() {
+        it('delete record by id works', async function() {
             await salesmanService.add(db, copyObject(salesMan));
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
 
@@ -119,8 +119,12 @@ describe('evaluation-record-service unit-tests', function () {
             await expect(evaluationRecordService.delete(db, 1)).to.eventually.be.fulfilled;
             await expect(evaluationRecordService.getById(db, 1)).to.eventually.be.null;
         });
+
+        it('delete not existing record by id throws', async function(){
+            await expect(evaluationRecordService.delete(db, 1)).to.be.rejectedWith("EvaluationRecord with id 1 doesn't exist!");
+        });
         
-        it('delete by salesman id works', async function() {
+        it('delete record by salesmanID works', async function() {
             await salesmanService.add(db, copyObject(salesMan));
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
             await evaluationRecordService.add(db, copyObject(evaluationRecord3));
@@ -128,6 +132,10 @@ describe('evaluation-record-service unit-tests', function () {
             await expect(evaluationRecordService.getBySalesmanID(db, 1)).to.eventually.be.eqls([evaluationRecord, evaluationRecord3]);
             await expect(evaluationRecordService.deleteBySalesmanID(db, 1)).to.eventually.be.fulfilled;
             await expect(evaluationRecordService.getBySalesmanID(db, 1)).to.eventually.be.eql([]);
+        });
+
+        it('delete records by SalesmanId throws if salesman does not exist', async function(){
+            await expect(evaluationRecordService.deleteBySalesmanID(db, 1)).to.be.rejectedWith('Salesman with id 1 does not exist!');
         });
     });
 });
