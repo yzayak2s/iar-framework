@@ -53,20 +53,21 @@ exports.add = async (db, salesman) => {
 exports.update = async (db, _id, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
-    if (existingSalesmanId) {
-        return await db.collection('salesmen').updateOne(
-            {
-                _id: parseInt(_id)
-            },
-            { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
-                $set: {
-                    firstname: salesman.firstname,
-                    lastname: salesman.lastname
-                }
-            }
-        );
+    if (!existingSalesmanId) {
+        throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
     }
-    throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
+
+    return await db.collection('salesmen').updateOne(
+        {
+            _id: parseInt(_id)
+        },
+        { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
+            $set: {
+                firstname: salesman.firstname,
+                lastname: salesman.lastname
+            }
+        }
+    );
 }
 
 /**
