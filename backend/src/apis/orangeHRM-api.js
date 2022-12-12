@@ -38,7 +38,7 @@ const generateToken = async () => {
 }
 
 exports.getEmployees = (req, res) => {
-    orangeHRMService.getAllEmployees(baseUrl, body, config, generateToken)
+    orangeHRMService.getAllEmployees(baseUrl, config, generateToken)
         .then((employees) => {
             res.send(employees);
         }).catch(_ => {
@@ -46,17 +46,17 @@ exports.getEmployees = (req, res) => {
     });
 }
 
-exports.getEmployeeByCode = (req, res) => {
-    orangeHRMService.getEmployeeByCode(baseUrl, body, config, req.params.code, generateToken)
-        .then((employeeByCode) => {
-            res.send(employeeByCode);
+exports.getEmployeeById = (req, res) => {
+    orangeHRMService.getEmployeeByID(baseUrl, config, req.params.id, generateToken)
+        .then((employeeById) => {
+            res.send(employeeById);
         }).catch(_ => {
             res.status(500).send();
     });
 }
 
 exports.getBonusSalariesByEmployee = (req, res) => {
-    orangeHRMService.getBonusSalariesByEmployee(baseUrl, body, config, req.params.code, generateToken)
+    orangeHRMService.getBonusSalariesByEmployee(baseUrl, config, req.params.id, generateToken)
         .then((bonusSalaries) => {
             res.send(bonusSalaries);
         }).catch(_ => {
