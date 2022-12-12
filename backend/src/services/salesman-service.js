@@ -4,7 +4,7 @@
  * @return {Promise<SalesMan>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('salesmen').find({}).toArray(); // use of toArray() is important here.
+    return await db.collection('salesmen').find().toArray(); // use of toArray() is important here.
 }
 
 /**
