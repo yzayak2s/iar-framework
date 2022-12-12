@@ -45,14 +45,28 @@ describe('salesman-service unit-tests', function() {
     });
 
     describe('salesman lookup tests', function(){
-        it('expect correct salesman to found', async function(){
+        it('expect correct salesman with firstname to be found', async function(){
             await db.collection('salesmen').insert([salesMan, salesMan2]);
             await expect(salesmanService.getSalesManByFirstname(db, salesMan.firstname)).to.eventually.be.eqls(salesMan);
         });
 
         it('expect null when salesman not found', async function() {
             await expect(salesmanService.getSalesManByFirstname(db, 'firstname')).to.eventually.be.null;
-        })
+        });
+
+        it('expect list of salesman', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await salesmanService.add(db, copyObject(salesMan2));
+
+            await expect(salesmanService.getAll(db)).to.eventually.be.eqls([salesMan, salesMan2]);
+        });
+
+        it('expect correct salesman with id to be found', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await salesmanService.add(db, copyObject(salesMan2));
+
+            await expect(salesmanService.getSalesManById(db, 1)).to.eventually.be.eql(salesMan);
+        });
     });
 
     describe('salesman update tests', function(){
