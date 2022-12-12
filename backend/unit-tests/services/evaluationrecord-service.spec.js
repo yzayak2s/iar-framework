@@ -62,12 +62,16 @@ describe('evaluation-record-service unit-tests', function () {
         });
     });
 
-    describe('evaluation-record actualisation tests', function () {
-        it('update evaluation-record in db', async function () {
+    describe('evaluation record update tests', function () {
+        it('update evaluation-record with id', async function () {
             await salesmanService.add(db, copyObject(salesMan));
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
             await evaluationRecordService.updateById(db, evaluationRecord._id, copyObject(evaluationRecord3));
             await expect(db.collection('evaluation_record').findOne()).to.eventually.excluding(['_id']).be.eqls(evaluationRecord3);
         });
+
+        it('trying to update not existing record', async function () {
+            await expect(evaluationRecordService.updateById(db, 0, copyObject(evaluationRecord3))).to.be.rejectedWith('No EvaluationRecord with id 0 exists!');
+        })
     });
 });
