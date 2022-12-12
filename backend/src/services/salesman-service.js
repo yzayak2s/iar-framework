@@ -36,10 +36,9 @@ exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
 
     if (existingSalesmanId) {
-        if (existingSalesmanId._id === salesman._id) {
-            throw new Error('Salesman with id ' + salesman._id + ' already exist!');
-        }
+        throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
+
     return (await db.collection('salesmen').insertOne(salesman)).insertedId;
 }
 
@@ -82,5 +81,6 @@ exports.delete = async (db, _id) => {
     if (!existingSalesMan) {
         throw new Error("Salesman with id " + _id + " doesn't exist!")
     }
+
     return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
 }
