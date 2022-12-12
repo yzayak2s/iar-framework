@@ -52,8 +52,12 @@ exports.add = async (db, salesman) => {
 exports.update = async (db, _id, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
+    if (!(parseInt(salesman._id) === parseInt(_id))) {
+        throw new Error("Trying to update with a different id! Given id: " + _id + ". New salesman id: " + salesman._id);
+    }
+
     if (!existingSalesmanId) {
-        throw new Error("Salesmen with id ' + salesman._id + ' doesn't exist!");
+        throw new Error("Salesmen with id " + _id + " doesn't exist!");
     }
 
     return await db.collection('salesmen').updateOne(
