@@ -36,6 +36,12 @@ describe('salesman-service unit-tests', function() {
             const sid = await salesmanService.add(db, copyObject(salesMan));
             await expect(db.collection('salesmen').findOne()).to.eventually.have.property('_id', sid);
         });
+
+        it('throws if salesman id is already used', async function() {
+            const sid = await salesmanService.add(db, copyObject(salesMan));
+
+            await expect(salesmanService.add(db, copyObject(salesMan))).to.be.rejectedWith('Salesman with id 1 already exist!')
+        });
     });
 
     describe('salesman lookup tests', function(){
@@ -49,7 +55,7 @@ describe('salesman-service unit-tests', function() {
         })
     });
 
-    describe('salesman actualisation tests', function(){
+    describe('salesman update tests', function(){
         it('update salesman in db', async function() {
             await salesmanService.add(db, copyObject(salesMan));
             await salesmanService.update(db, salesMan._id, copyObject(salesMan3));
