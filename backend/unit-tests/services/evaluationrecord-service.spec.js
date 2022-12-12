@@ -47,7 +47,7 @@ describe('evaluation-record-service unit-tests', function () {
     });
 
     describe('evaluation-record lookup tests', function () {
-        it('expect correct evaluation-record to found', async function () {
+        it('expect correct evaluation-record to be found', async function () {
             await db.collection('salesmen').insert([salesMan,salesMan2]);
             await db.collection('evaluation_record').insert([
                 evaluationRecord,
@@ -59,6 +59,28 @@ describe('evaluation-record-service unit-tests', function () {
 
         it('expect empty array ([]) when evaluation-record not found', async function () {
             await expect(evaluationRecordService.getBySalesmanID(db, 'salesManID')).to.eventually.be.eqls([]);
+        });
+
+        it('expect list of all evaluation records', async function() {
+            await db.collection('salesmen').insert([salesMan,salesMan2]);
+            await db.collection('evaluation_record').insert([
+                evaluationRecord,
+                evaluationRecord2,
+                evaluationRecord3
+            ]);
+
+            await expect(evaluationRecordService.getAll(db)).to.eventually.be.eqls([evaluationRecord, evaluationRecord2, evaluationRecord3]);
+        });
+
+        it('expect evaluation record of id 1', async function() {
+            await db.collection('salesmen').insert([salesMan,salesMan2]);
+            await db.collection('evaluation_record').insert([
+                evaluationRecord,
+                evaluationRecord2,
+                evaluationRecord3
+            ]);
+
+            await expect(evaluationRecordService.getById(db, 1)).to.eventually.be.eql(evaluationRecord);
         });
     });
 
@@ -72,6 +94,6 @@ describe('evaluation-record-service unit-tests', function () {
 
         it('trying to update not existing record', async function () {
             await expect(evaluationRecordService.updateById(db, 0, copyObject(evaluationRecord3))).to.be.rejectedWith('No EvaluationRecord with id 0 exists!');
-        })
+        });
     });
 });
