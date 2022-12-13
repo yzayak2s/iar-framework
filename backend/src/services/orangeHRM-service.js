@@ -57,9 +57,9 @@ exports.getBonusSalariesByEmployee = async (baseUrl, config, employeeId, generat
 }
 
 /**
- * insert a new bonus into database and add it in orangeHRM
+ * insert/add a new bonus in orangeHRM
  */
-exports.add = async (db, baseUrl, config, bonus, generateToken) => {
+exports.add = async (baseUrl, config, bonus, generateToken) => {
     const currentToken = await checkToken(issueToken, generateToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -68,18 +68,9 @@ exports.add = async (db, baseUrl, config, bonus, generateToken) => {
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const existingBonus = await db.collection('bonus').findOne({_id: parseInt(bonus._id)})
-
-    if (existingBonus) {
-        if (existingBonus._id === bonus._id) {
-            throw new Error('Bonus with id ' + bonus._id + ' already exist!');
-        }
-    }
-
     await axios.post(
         `${baseUrl}/api/v1/employee/${bonus.salesManID}/bonussalary`,
         {year: bonus.year, value: bonus.value},
         config
     );
-    return (await db.collection('bonus').insertOne(bonus)).insertedId;
 }
