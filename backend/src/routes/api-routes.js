@@ -148,6 +148,7 @@ router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesman
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
+router.delete('/bonuses/delete/salesmanId/:salesManID', bonusApi.deleteAllBonusesOfSalesmanById);
 
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
