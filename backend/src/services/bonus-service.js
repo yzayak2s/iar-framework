@@ -8,6 +8,13 @@ exports.getAll = async (db) => {
 }
 
 /**
+ * retrieves a bonus by _id from database
+ */
+exports.getBonusById = async (db, _id) => {
+    return await db.collection('bonus').findOne({_id: parseInt(_id)});
+}
+
+/**
  * insert a new bonus into database
  */
 exports.add = async (db, bonus) => {
