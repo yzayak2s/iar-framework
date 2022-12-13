@@ -9,6 +9,9 @@ exports.getAll = async (db) => {
 
 /**
  * retrieves a bonus by _id from database
+ * @param db source database
+ * @param _id
+ * @return {Promise<Bonus>}
  */
 exports.getBonusById = async (db, _id) => {
     return await db.collection('bonus').findOne({_id: parseInt(_id)});
@@ -16,6 +19,8 @@ exports.getBonusById = async (db, _id) => {
 
 /**
  * insert a new bonus into database
+ * @param db target database
+ * @param {Bonus} bonus
  */
 exports.add = async (db, bonus) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: bonus._id});
@@ -27,3 +32,30 @@ exports.add = async (db, bonus) => {
     }
     return (await db.collection('bonus').insertOne(bonus)).insertedId;
 }
+
+/**
+ * update an existing bonus
+ * @param db target database
+ * @param _id
+ * @param bonus
+ * @return {Promise<Bonus>} bonus
+ */
+exports.update = async (db, _id, bonus) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+    if (existingBonusById) {
+        return await db.collection('bonus').updateOne(
+            {
+                _id: parseInt(_id)
+            },
+            {
+                $set: {
+                    year: bonus.year,
+                    value: bonus.value,
+                    verified: bonus.verified,
+                }
+            }
+        );
+    }
+    throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+}
+
