@@ -141,6 +141,13 @@ router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecord
 router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
 router.delete('/evaluationRecords/delete/salesmanId/:salesManID', evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
 
+const bonusApi = require('../apis/bonus-api');
+router.get('/bonuses/read/all', bonusApi.getBonuses);
+router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
+router.post('/bonuses/create', bonusApi.addBonus);
+router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
+router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
+
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
 router.get('/accounts/read/uid/:uid', openCRX.getAccountByUID);
