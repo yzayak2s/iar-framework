@@ -18,6 +18,16 @@ exports.getBonusById = async (db, _id) => {
 }
 
 /**
+ * retrieves all bonuses of a salesman by its id
+ * @param db source database
+ * @param salesManID salesman ID
+ * @returns {Promise<Bonus>}
+ */
+exports.getBonusBySalesmanID = async (db, salesManID) => {
+    return await db.collection('bonus').find({salesManID: parseInt(salesManID)}).toArray();
+}
+
+/**
  * insert a new bonus into database
  * @param db target database
  * @param {Bonus} bonus
