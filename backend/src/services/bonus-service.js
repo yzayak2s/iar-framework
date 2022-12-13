@@ -24,11 +24,14 @@ exports.getBonusById = async (db, _id) => {
  */
 exports.add = async (db, bonus) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: bonus._id});
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: bonus.salesManID});
+
+    if (!existingSalesMan){
+        throw new Error('Salesman with id ' + bonus.salesManID + ' does not exist!');
+    }
 
     if (existingBonusById) {
-        if (existingBonusById._id === bonus._id) {
-            throw new Error('Bonus with id ' + bonus._id + ' already exist!');
-        }
+        throw new Error('Bonus with id ' + bonus._id + ' already exist!');
     }
     return (await db.collection('bonus').insertOne(bonus)).insertedId;
 }
