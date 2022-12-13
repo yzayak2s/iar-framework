@@ -59,3 +59,17 @@ exports.update = async (db, _id, bonus) => {
     throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
 }
 
+/**
+ * delete a bonus by _id in database
+ * @param db source database
+ * @param _id
+ * @return {Promise<*>}
+ */
+exports.delete = async (db, _id) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${_id} doesn't exist!`);
+    }
+    return db.collection('bonus').deleteOne({_id: parseInt(_id)});
+}
