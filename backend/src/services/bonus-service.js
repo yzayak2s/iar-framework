@@ -86,3 +86,18 @@ exports.delete = async (db, _id) => {
     }
     return db.collection('bonus').deleteOne({_id: parseInt(_id)});
 }
+
+/**
+ * delete all bonuses of one salesman
+ * @param db source database
+ * @param salesManID
+ * @return {Promise<void>}
+ */
+exports.deleteBySalesManID = async (db, salesManID) => {
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
+
+    if (!existingSalesMan) {
+        throw new Error(`Salesman wit id ${salesManID} doesn't exist!`);
+    }
+    return db.collection('bonus').deleteMany({salesManID: parseInt(salesManID)});
+}
