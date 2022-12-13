@@ -144,6 +144,7 @@ router.delete('/evaluationRecords/delete/salesmanId/:salesManID', evaRecApi.dele
 const bonusApi = require('../apis/bonus-api');
 router.get('/bonuses/read/all', bonusApi.getBonuses);
 router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
+router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
