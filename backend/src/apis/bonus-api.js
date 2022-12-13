@@ -21,6 +21,17 @@ exports.getBonusById = (req, res) => {
     });
 }
 
+exports.getBonusesOfSalesmanById = (req, res) => {
+    const db =  req.app.get('db');
+
+    bonusService.getBonusBySalesmanID(db, req.params.salesManID)
+        .then((bonusesBySalesManID) => {
+            res.send(bonusesBySalesManID);
+        }).catch(_ => {
+            res.status(500).send();
+    });
+}
+
 exports.addBonus = (req, res) => {
     const db = req.app.get('db');
 
