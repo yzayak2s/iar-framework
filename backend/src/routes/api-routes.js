@@ -157,6 +157,7 @@ router.get('/products/read/all', openCRX.getProducts);
 router.get('/products/read/uid/:uid', openCRX.getProductByUID);
 router.get('/salesOrders/read/all', openCRX.getSalesOrders);
 router.get('/salesOrders/read/uid/:uid', openCRX.getSalesOrderByUID);
+router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
