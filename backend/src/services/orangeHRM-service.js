@@ -1,23 +1,58 @@
 const axios = require('axios');
+const https = require('https');
+const qs = require("querystring");
+const httpsAgent = new https.Agent({rejectUnauthorized: false});
+
+// OrangeHRM HTTP Request Header definition
+const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
+
+const body = qs.stringify({
+    client_id: 'api_oauth_id',
+    client_secret: 'oauth_secret',
+    grant_type: 'password',
+    username: 'zayakh',
+    password: '*Safb02da42Demo$'
+});
+
+const config = {
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+    },
+    httpsAgent: httpsAgent,
+};
+
+async function generateToken() {
+    const response = await axios.post(
+        `${baseUrl}/oauth/issueToken`,
+        body,
+        config
+    );
+
+    const accessToken = response.data['access_token'];
+    return {
+        accessToken: accessToken,
+        expires_at: new Date().getTime() + 3600 * 60
+    }
+}
 
 var issueToken = {}
 
-async function checkToken(issueToken, generateToken) {
+async function checkToken(issueToken) {
     return issueToken && (issueToken.expires_at - new Date().getTime() > 0) ? issueToken : await generateToken()
 }
 
 /**
  * retrieves employees from orangeHRM
  */
-exports.getAllEmployees = async (baseUrl, body, config, generateToken) => {
-    const currentToken = await checkToken(issueToken, generateToken);
+exports.getAllEmployees = async () => {
+    const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
     issueToken.accessToken = accessToken;
     issueToken.expires_at = expires_at;
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
-
     const employees = await axios.get(`${baseUrl}/api/v1/employee/search`, config);
 
     return employees.data.data;
@@ -26,8 +61,8 @@ exports.getAllEmployees = async (baseUrl, body, config, generateToken) => {
 /**
  * retrieves an employee by code from orangeHRM
  */
-exports.getEmployeeByCode = async (baseUrl, body, config, code, generateToken) => {
-    const currentToken = await checkToken(issueToken, generateToken);
+exports.getEmployeeByCode = async (code) => {
+    const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
     issueToken.accessToken = accessToken;
@@ -43,8 +78,8 @@ exports.getEmployeeByCode = async (baseUrl, body, config, code, generateToken) =
 /**
  * retrieves bonusSalary of an employee
  */
-exports.getBonusSalariesByEmployee = async (baseUrl, body, config, code, generateToken) => {
-    const currentToken = await checkToken(issueToken, generateToken);
+exports.getBonusSalariesByEmployee = async (code) => {
+    const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
     issueToken.accessToken = accessToken;
