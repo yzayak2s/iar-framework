@@ -71,7 +71,11 @@ exports.getSalesOrderByUID = (req, res) => {
 }
 
 exports.getPositions = (req, res) => {
-
-    //openCRXService...
+    openCRXService.getAllPositionsByUID(baseUrl, config, req.params.uid)
+        .then((positions) => {
+            res.send(positions);
+        }).catch(_ => {
+            res.status(500).send();
+    });
 
 }

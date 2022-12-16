@@ -59,9 +59,9 @@ exports.getAllEmployees = async () => {
 }
 
 /**
- * retrieves an employee by code from orangeHRM
+ * retrieves an employee by employeeId from orangeHRM
  */
-exports.getEmployeeByCode = async (code) => {
+exports.getEmployeeByID = async (employeeId) => {
     const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -70,15 +70,15 @@ exports.getEmployeeByCode = async (code) => {
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const employeeByCode = await axios.get(`${baseUrl}/api/v1/employee/${code}`, config);
+    const employeeById = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}`, config);
 
-    return employeeByCode.data.data;
+    return employeeById.data.data;
 }
 
 /**
  * retrieves bonusSalary of an employee
  */
-exports.getBonusSalariesByEmployee = async (code) => {
+exports.getBonusSalariesByEmployee = async (employeeId) => {
     const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -87,6 +87,25 @@ exports.getBonusSalariesByEmployee = async (code) => {
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${code}/bonussalary`, config);
+    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}/bonussalary`, config);
     return bonusSalariesByEmployee.data.data;
+}
+
+/**
+ * insert/add a new bonus in orangeHRM
+ */
+exports.add = async (baseUrl, config, bonus, generateToken) => {
+    const currentToken = await checkToken(issueToken, generateToken);
+    const {accessToken, expires_at} = currentToken;
+
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
+
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+
+    await axios.post(
+        `${baseUrl}/api/v1/employee/${bonus.salesManID}/bonussalary`,
+        {year: bonus.year, value: bonus.value},
+        config
+    );
 }

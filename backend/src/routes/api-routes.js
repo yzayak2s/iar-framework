@@ -138,6 +138,15 @@ router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecord
 router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
 router.delete('/evaluationRecords/delete/salesmanId/:salesManID', evaRecApi.deleteAllEvaluationRecordsOfSalesmanById);
 
+const bonusApi = require('../apis/bonus-api');
+router.get('/bonuses/read/all', bonusApi.getBonuses);
+router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
+router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
+router.post('/bonuses/create', bonusApi.addBonus);
+router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
+router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
+router.delete('/bonuses/delete/salesmanId/:salesManID', bonusApi.deleteAllBonusesOfSalesmanById);
+
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
 router.get('/accounts/read/uid/:uid', openCRX.getAccountByUID);
@@ -145,10 +154,12 @@ router.get('/products/read/all', openCRX.getProducts);
 router.get('/products/read/uid/:uid', openCRX.getProductByUID);
 router.get('/salesOrders/read/all', openCRX.getSalesOrders);
 router.get('/salesOrders/read/uid/:uid', openCRX.getSalesOrderByUID);
+router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
-router.get('/employees/code/:code', orangeHRM.getEmployeeByCode);
-router.get('/employees/code/:code/bonussalary', orangeHRM.getBonusSalariesByEmployee)
+router.get('/employees/id/:id', orangeHRM.getEmployeeById);
+router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
+router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 module.exports = router;
