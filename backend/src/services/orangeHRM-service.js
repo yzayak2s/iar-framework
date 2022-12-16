@@ -9,7 +9,7 @@ async function checkToken(issueToken, generateToken) {
 /**
  * retrieves employees from orangeHRM
  */
-exports.getAllEmployees = async (baseUrl, body, config, generateToken) => {
+exports.getAllEmployees = async (baseUrl, config, generateToken) => {
     const currentToken = await checkToken(issueToken, generateToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -24,9 +24,9 @@ exports.getAllEmployees = async (baseUrl, body, config, generateToken) => {
 }
 
 /**
- * retrieves an employee by code from orangeHRM
+ * retrieves an employee by employeeId from orangeHRM
  */
-exports.getEmployeeByCode = async (baseUrl, body, config, code, generateToken) => {
+exports.getEmployeeByID = async (baseUrl, config, employeeId, generateToken) => {
     const currentToken = await checkToken(issueToken, generateToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -35,15 +35,15 @@ exports.getEmployeeByCode = async (baseUrl, body, config, code, generateToken) =
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const employeeByCode = await axios.get(`${baseUrl}/api/v1/employee/${code}`, config);
+    const employeeById = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}`, config);
 
-    return employeeByCode.data.data;
+    return employeeById.data.data;
 }
 
 /**
  * retrieves bonusSalary of an employee
  */
-exports.getBonusSalariesByEmployee = async (baseUrl, body, config, code, generateToken) => {
+exports.getBonusSalariesByEmployee = async (baseUrl, config, employeeId, generateToken) => {
     const currentToken = await checkToken(issueToken, generateToken);
     const {accessToken, expires_at} = currentToken;
 
@@ -52,6 +52,25 @@ exports.getBonusSalariesByEmployee = async (baseUrl, body, config, code, generat
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
-    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${code}/bonussalary`, config);
+    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}/bonussalary`, config);
     return bonusSalariesByEmployee.data.data;
+}
+
+/**
+ * insert/add a new bonus in orangeHRM
+ */
+exports.add = async (baseUrl, config, bonus, generateToken) => {
+    const currentToken = await checkToken(issueToken, generateToken);
+    const {accessToken, expires_at} = currentToken;
+
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
+
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+
+    await axios.post(
+        `${baseUrl}/api/v1/employee/${bonus.salesManID}/bonussalary`,
+        {year: bonus.year, value: bonus.value},
+        config
+    );
 }
