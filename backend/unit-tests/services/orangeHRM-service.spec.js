@@ -158,4 +158,34 @@ describe('orangeHRM-Service unit-tests', function() {
 			});
 		});
     });
-})
+
+	describe("Tests for adding Bonus salary with mocked API", function() {
+		describe("Add a bonus salary to OrangeHRM", function() {
+			let axiosPostStub;
+			let requestBody;
+
+			before(() => {
+				axiosPostStub = sinon.stub(axios, 'post').resolves();
+				requestBody = {
+					"_id": 1,
+					"year": 2040,
+					"value": 500,
+					"verified": "pending",
+					"salesManID": 3
+				};
+			});	
+
+			it("Successfully posts", async function () {
+				await expect(orangeHRMService.add(requestBody)).to.eventually.be.fulfilled;
+			});
+
+			it("Called the correct URL once", function() {
+				expect(axiosPostStub).to.have.been.calledOnceWith(`https://sepp-hrm.inf.h-brs.de/symfony/web/index.php/api/v1/employee/${requestBody.salesManID}/bonussalary`);
+			});
+
+			it("Added the bonus to the request body", function () {
+				expect(axiosPostStub).to.have.been.calledWith(`https://sepp-hrm.inf.h-brs.de/symfony/web/index.php/api/v1/employee/${requestBody.salesManID}/bonussalary`, {'year': requestBody.year, 'value': requestBody.value});
+			});
+		});
+	});
+});
