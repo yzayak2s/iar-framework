@@ -11,7 +11,7 @@ chai.use(require('sinon-chai'));
 
 const orangeHRMService = rewire('../../src/services/orangeHRM-service');
 
-function createMultipleMockResponse() {
+function createMultipleMockUser() {
 	const mockData = {
 		"status": "success",
 		"data": {
@@ -26,11 +26,25 @@ function createMultipleMockResponse() {
 	return mockData;
 }
 
-function createSingleMockResponse() {
+function createSingleMockUser() {
 	const mockData = {
 		"status": "success",
 		"data": {
 			"data": {"firstName": "Chantal","middleName": "","lastName": "Banks","code": "90133","employeeId": "5","fullName": "Chantal Banks","status": null,"dob": null,"driversLicenseNumber": "","licenseExpiryDate": null,"maritalStatus": "","gender": null,"otherId": "","nationality": null,"unit": "HR","jobTitle": "HR Senior Consultant","supervisor": [{"name": "Michael Moore","id": "7"}]},
+		}
+	}
+
+	return mockData;
+}
+
+function createMultipleMockBonus() {
+	const mockData = {
+		"status": "success",
+		"data": {
+			"data": [
+				{"year":"2021","value":"500"},
+				{"year":"2022","value":"20000"}
+			]
 		}
 	}
 
@@ -57,7 +71,7 @@ describe('orangeHRM-Service unit-tests', function() {
 
 			before(() => {
 				// Mock the get Request
-				axiosGetStub = sinon.stub(axios, "get").resolves(createMultipleMockResponse());
+				axiosGetStub = sinon.stub(axios, "get").resolves(createMultipleMockUser());
 				response = orangeHRMService.getAllEmployees();
 			});
 
@@ -86,14 +100,14 @@ describe('orangeHRM-Service unit-tests', function() {
 			});
 		});
 
-		describe.only("Getting an employee by id", function () {
+		describe("Getting an employee by id", function () {
 			let axiosGetStub;
 			let response;
 			
 			before(() => {
 				// Mock the get Request
-				axiosGetStub = sinon.stub(axios, "get").resolves(createSingleMockResponse());
-				response = orangeHRMService.getEmployeeByCode(5);
+				axiosGetStub = sinon.stub(axios, "get").resolves(createSingleMockUser());
+				response = orangeHRMService.getEmployeeByID(5);
 			});
 
 			it("correct employee was returned", async function(){
@@ -114,10 +128,34 @@ describe('orangeHRM-Service unit-tests', function() {
 			});
 		});
 
+		describe("Getting the bonus salary of an employee", function () {
+			let axiosGetStub;
+			let response;
+			
+			before(() => {
+				// Mock the get Request
+				axiosGetStub = sinon.stub(axios, "get").resolves(createMultipleMockBonus());
+				response = orangeHRMService.getBonusSalariesByEmployee(5);
+			});
 
-        it('Got all bonus salaries of an employee', async function(){
-            
-            // orangeHRMService.getEmployeeByCode()
-        });
+			it("called the correct URL once", function() {
+				expect(axiosGetStub).to.have.been.calledOnceWith('https://sepp-hrm.inf.h-brs.de/symfony/web/index.php/api/v1/employee/5/bonussalary');
+			});
+
+			it("Generated a token before calling", function() {
+				expect(axiosGetStub).to.have.been.calledAfter(tokenGenStub);
+			});
+
+			it('Got 2 bonuses', async function(){
+				await expect(response).to.eventually.be.fulfilled;
+				await expect(response).to.eventually.be.an('array').with.lengthOf(2);
+			});
+
+			it("Bonus has correct value", async function() {
+				const res = await response;
+				expect(res).to.be.an('array').that.includes.something.that.all.include.keys('value', 'year');
+				expect(res).to.have.deep.members([{"year":"2021","value":"500"}, {"year":"2022","value":"20000"}]);
+			});
+		});
     });
 })
