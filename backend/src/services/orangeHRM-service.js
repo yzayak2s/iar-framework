@@ -94,8 +94,8 @@ exports.getBonusSalariesByEmployee = async (employeeId) => {
 /**
  * insert/add a new bonus in orangeHRM
  */
-exports.add = async (baseUrl, config, bonus, generateToken) => {
-    const currentToken = await checkToken(issueToken, generateToken);
+exports.add = async (bonus) => {
+    const currentToken = await checkToken(issueToken);
     const {accessToken, expires_at} = currentToken;
 
     issueToken.accessToken = accessToken;
