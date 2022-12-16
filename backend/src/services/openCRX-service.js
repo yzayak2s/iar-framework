@@ -1,4 +1,22 @@
 const axios = require('axios');
+const https = require("https");
+const httpsAgent = new https.Agent({rejectUnauthorized: false});
+
+
+// OpenCRX request data
+const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
+const credentials = {
+    username: 'guest',
+    password: 'guest'
+};
+const config = {
+    headers: {
+        'Accept': 'application/json'
+    },
+    httpsAgent: httpsAgent, 
+    auth: credentials,
+};
+
 
 /**
  * retrieves accounts from openCRX
