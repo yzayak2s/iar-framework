@@ -28,7 +28,7 @@ exports.getBonusSalariesByEmployee = (req, res) => {
 }
 
 exports.addBonusSalary = (req, res) => {
-    orangeHRMService.add(baseUrl, config, req.body, generateToken)
+    orangeHRMService.add(req.body)
         .then((_id) => {
             res.send(_id.toString());
         }).catch((e) => {
