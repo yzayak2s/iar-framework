@@ -2,10 +2,10 @@ const axios = require('axios');
 const https = require("https");
 const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
-const environmentVariables = require('../../environments/apiEnvironment').openCRXConfig;
+const {openCRXConfig} = require('../../environments/apiEnvironment');
 // OpenCRX request data
-const baseUrl = environmentVariables.baseUrl;
-const credentials = environmentVariables.credentials;
+const baseUrl = openCRXConfig.baseUrl;
+const credentials = openCRXConfig.credentials;
 
 const config = {
     headers: {

@@ -4,15 +4,15 @@ const qs = require("querystring");
 const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 // OrangeHRM HTTP Request Header definition
-const environmentVariables = require('../../environments/apiEnvironment').orangeHRMConfig;
-const baseUrl = environmentVariables.baseUrl;
+const {orangeHRMConfig} = require('../../environments/apiEnvironment');
+const baseUrl = orangeHRMConfig.baseUrl;
 
 const body = qs.stringify({
     client_id: 'api_oauth_id',
     client_secret: 'oauth_secret',
     grant_type: 'password',
-    username: environmentVariables.username,
-    password: environmentVariables.password
+    username: orangeHRMConfig.username,
+    password: orangeHRMConfig.password
 });
 
 const config = {
