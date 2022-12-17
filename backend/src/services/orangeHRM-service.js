@@ -4,14 +4,15 @@ const qs = require("querystring");
 const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 // OrangeHRM HTTP Request Header definition
-const baseUrl = 'https://sepp-hrm.inf.h-brs.de/symfony/web/index.php';
+const environmentVariables = require('../../environments/apiEnvironment').orangeHRMConfig;
+const baseUrl = environmentVariables.baseUrl;
 
 const body = qs.stringify({
     client_id: 'api_oauth_id',
     client_secret: 'oauth_secret',
     grant_type: 'password',
-    username: 'zayakh',
-    password: '*Safb02da42Demo$'
+    username: environmentVariables.username,
+    password: environmentVariables.password
 });
 
 const config = {

@@ -2,13 +2,11 @@ const axios = require('axios');
 const https = require("https");
 const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
-
+const environmentVariables = require('../../environments/apiEnvironment').openCRXConfig;
 // OpenCRX request data
-const baseUrl = 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX'
-const credentials = {
-    username: 'guest',
-    password: 'guest'
-};
+const baseUrl = environmentVariables.baseUrl;
+const credentials = environmentVariables.credentials;
+
 const config = {
     headers: {
         'Accept': 'application/json'
