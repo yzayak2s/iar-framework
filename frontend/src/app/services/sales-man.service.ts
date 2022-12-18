@@ -24,18 +24,4 @@ export class SalesManService {
         }) .subscribe((): void =>  console.log('Call delete service'));
     }
 
-    public saveSalesman(salesman: SalesMan): Observable<any> {
-        const url = environment.apiEndpoint +'/api/salesmen/create';
-        return this.http.post<any>(url, salesman,  {
-            withCredentials: true
-        });
-    }
-
-    public updateSalesman(id: string,salesman: SalesMan): Observable<any> {
-        const url = environment.apiEndpoint +'/api/salesmen/update/'+id;
-        return this.http.put<any>(url, salesman,  {
-            withCredentials: true
-        });
-    }
-
 }
