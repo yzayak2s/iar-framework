@@ -60,8 +60,8 @@ exports.update = async (db, _id, salesman) => {
             },
             { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
                 $set: {
-                    firstName: salesman.firstName,
-                    lastName: salesman.lastName
+                    firstname: salesman.firstname,
+                    lastname: salesman.lastname
                 }
             }
         );
