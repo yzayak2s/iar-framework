@@ -6,6 +6,7 @@ import {Component, OnInit} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
 import {Router} from '@angular/router';
 import {SalesMan} from '../../models/SalesMan';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-sales-man',
@@ -13,31 +14,73 @@ import {SalesMan} from '../../models/SalesMan';
     styleUrls: ['./sales-man.component.css']
 })
 export class SalesManComponent implements OnInit {
-
-    displayedColumns = ['_id', 'firstname', 'lastname', 'actions'];
+    closeResult: string = '';
+    displayedColumns = ['_id', 'firstName', 'lastName', 'actions'];
     salesmens: SalesMan[] = [];
-    constructor(private router: Router, private salesManService: SalesManService) { }
+    activeSalesMan: SalesMan= new SalesMan();
+    firstname: string;
+    constructor(private router: Router, private salesManService: SalesManService, private modalService: NgbModal) { }
     ngOnInit(): void {
-        console.log('test');
         this.fetchSalesmans();
     }
     fetchSalesmans(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
-                console.log('inside 200');
                 this.salesmens = response.body;
             }
-            console.log(this.salesmens);
         });
     }
     deleteMethod(row: SalesMan): void {
-        console.log(row);
-        if (confirm('Are you sure to delete ' + row.firstname)) {
-            console.log('Implement delete functionality here');
+        if (confirm('Are you sure to delete ' + row.firstName)) {
             this.salesManService.deleteSalesman(row._id);
         }
     }
     showSalesMan(row: SalesMan): void{
-        console.log(row);
+    }
+
+    open(content:any, row: SalesMan) {
+        if(row)
+        {
+        this.activeSalesMan.firstName=row.firstName;
+            this.activeSalesMan.lastName=row.lastName;
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+                this.salesManService.updateSalesman(row._id,this.activeSalesMan).subscribe((response: any) => {
+                    this.fetchSalesmans();
+                }, () => {
+                    this.fetchSalesmans();
+                });
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
+        }
+        else {
+            this.activeSalesMan=new SalesMan();
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+                this.closeResult = `Closed with: ${result}`;
+                this.salesManService.saveSalesman(this.activeSalesMan).subscribe((response: any) => {
+                    this.fetchSalesmans();
+                }, () => {
+                    this.fetchSalesmans();
+                });
+            }, (reason) => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
+        }
+    }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return  `with: ${reason}`;
+        }
     }
 }
