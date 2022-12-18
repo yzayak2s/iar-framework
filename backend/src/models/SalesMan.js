@@ -26,8 +26,8 @@
 
 class SalesMan {
     constructor(firstname, lastname, _id) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstname;
+        this.lastName = lastname;
         this._id = _id;
     }
 }
