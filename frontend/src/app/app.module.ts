@@ -22,7 +22,6 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatListModule} from '@angular/material/list';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -49,8 +48,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         MatToolbarModule,
         MatIconModule,
         MatTableModule,
-        MatListModule,
-        NgbModule
+        MatListModule
     ],
     providers: [],
     bootstrap: [AppComponent]
