@@ -47,8 +47,8 @@ exports.updateEvaluationRecordById = (req, res) => {
     const db = req.app.get('db');
 
     evaluationService.updateById(db, req.params._id, req.body)
-        .then(_id => {
-            res.send(_id.toString());
+        .then(evaluationRecord => {
+            res.send(evaluationRecord);
         }).catch((e) => {
             res.status(404).send(e.message);
         }).catch(_ => {
