@@ -11,9 +11,9 @@ const salesmanService = require('../../src/services/salesman-service');
 const SalesMan = require('../../src/models/SalesMan');
 const {copyObject} = require('../support/copyObject');
 
-const bonusExample1 = new Bonus(1, 2020, 2000, false, 1);
-const bonusExample2 = new Bonus(2, 2021, 2555, true, 1);
-const bonusExample3 = new Bonus(3, 2021, 1555, false, 2);
+const bonusExample1 = new Bonus(1, 2020, 2000, 'Some remark1', false, 1);
+const bonusExample2 = new Bonus(2, 2021, 2555, 'Some remark2', true, 1);
+const bonusExample3 = new Bonus(3, 2021, 1555, 'Some remark3', false, 2);
 
 const salesmanExample1 = new SalesMan('Max', 'Mustermann', 1);
 const salesmanExample2 = new SalesMan('John', 'Johny', 2);
@@ -49,7 +49,7 @@ describe("bonus-service Unit-tests", function() {
         });
 
         it("Throws if salesman does not exist", async function() {
-            const badBonus = new Bonus(5, 2000, 9999, true, 9);
+            const badBonus = new Bonus(5, 2000, 9999, 'Some remark5', true, 9);
             await expect(bonusService.add(db, copyObject(badBonus))).to.eventually.be.rejectedWith('Salesman with id ' + badBonus.salesManID + ' does not exists!');
         });
 
@@ -67,7 +67,7 @@ describe("bonus-service Unit-tests", function() {
 
         it("Updated correctly", async function() {
             await expect(bonusService.update(db, 1, copyObject(bonusExample2))).to.eventually.be.fulfilled;
-            await expect(bonusService.getBonusById(db, 1)).to.eventually.eql({_id: 1, year:  2021, value: 2555, verified: true, salesManID: 1});
+            await expect(bonusService.getBonusById(db, 1)).to.eventually.eql({_id: 1, year:  2021, value: 2555, remark: 'Some remark1', verified: true, salesManID: 1});
         });
 
         it("Throws if bonus does not exist", async function() {
@@ -94,9 +94,9 @@ describe("bonus-service Unit-tests", function() {
         it("Able to get all bonuses", async function() {
             await expect(bonusService.getAll(db)).to.eventually.be.an('array').lengthOf(3);
             await expect(bonusService.getAll(db)).to.eventually.have.deep.members([
-                { _id: 1, year: 2020, value: 2000, verified: false, salesManID: 1 },
-                { _id: 2, year: 2021, value: 2555, verified: true, salesManID: 1 },
-                { _id: 3, year: 2021, value: 1555, verified: false, salesManID: 2 }
+                { _id: 1, year: 2020, value: 2000, remark: 'Some remark1', verified: false, salesManID: 1 },
+                { _id: 2, year: 2021, value: 2555, remark: 'Some remark2', verified: true, salesManID: 1 },
+                { _id: 3, year: 2021, value: 1555, remark: 'Some remark3', verified: false, salesManID: 2 }
               ]);
         });
 
