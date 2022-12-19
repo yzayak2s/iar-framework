@@ -43,6 +43,7 @@ exports.add = async (db, bonus) => {
     if (existingBonusById) {
         throw new Error('Bonus with id ' + bonus._id + ' already exists!');
     }
+    
     return (await db.collection('bonus').insertOne(bonus)).insertedId;
 }
 
