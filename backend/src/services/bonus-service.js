@@ -55,21 +55,22 @@ exports.add = async (db, bonus) => {
  */
 exports.update = async (db, _id, bonus) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
-    if (existingBonusById) {
-        return await db.collection('bonus').updateOne(
-            {
-                _id: parseInt(_id)
-            },
-            {
-                $set: {
-                    year: bonus.year,
-                    value: bonus.value,
-                    verified: bonus.verified,
-                }
-            }
-        );
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
     }
-    throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+
+    return await db.collection('bonus').updateOne(
+        {
+            _id: parseInt(_id)
+        },
+        {
+            $set: {
+                year: bonus.year,
+                value: bonus.value,
+                verified: bonus.verified,
+            }
+        }
+    );
 }
 
 /**
