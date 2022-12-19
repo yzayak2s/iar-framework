@@ -79,12 +79,6 @@ describe('salesman-service unit-tests', function() {
         it('updating not existing salesman throws', async function() {
             await expect(salesmanService.update(db, 1, copyObject(salesMan))).to.be.rejectedWith("Salesmen with id 1 doesn't exist!");
         });
-
-        it('updating id with different id throws', async function() {
-            await salesmanService.add(db, copyObject(salesMan));
-
-            await expect(salesmanService.update(db, 5, copyObject(salesMan))).to.be.rejectedWith("Trying to update with a different id! Given id: 5. New salesman id: 1");
-        });
     });
 
     describe('salesman delete tests', function() {
