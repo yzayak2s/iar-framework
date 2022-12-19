@@ -10,7 +10,7 @@ exports.getEmployees = (req, res) => {
 }
 
 exports.getEmployeeById = (req, res) => {
-    orangeHRMService.getEmployeeById(req.params.id)
+    orangeHRMService.getEmployeeByID(req.params.id)
         .then((employeeById) => {
             res.send(employeeById);
         }).catch(_ => {
