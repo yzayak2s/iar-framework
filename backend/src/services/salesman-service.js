@@ -4,7 +4,7 @@
  * @return {Promise<SalesMan>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('salesmen').find({}).toArray(); // use of toArray() is important here.
+    return await db.collection('salesmen').find().toArray(); // use of toArray() is important here.
 }
 
 /**
@@ -36,10 +36,9 @@ exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
 
     if (existingSalesmanId) {
-        if (existingSalesmanId._id === salesman._id) {
-            throw new Error('Salesman with id ' + salesman._id + ' already exist!');
-        }
+        throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
+
     return (await db.collection('salesmen').insertOne(salesman)).insertedId;
 }
 
@@ -53,20 +52,25 @@ exports.add = async (db, salesman) => {
 exports.update = async (db, _id, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
-    if (existingSalesmanId) {
-        return await db.collection('salesmen').updateOne(
-            {
-                _id: parseInt(_id)
-            },
-            { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
-                $set: {
-                    firstname: salesman.firstname,
-                    lastname: salesman.lastname
-                }
-            }
-        );
+    if (!(parseInt(salesman._id) === parseInt(_id))) {
+        throw new Error("Trying to update with a different id! Given id: " + _id + ". New salesman id: " + salesman._id);
     }
-    throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
+
+    if (!existingSalesmanId) {
+        throw new Error("Salesmen with id " + _id + " doesn't exist!");
+    }
+
+    return await db.collection('salesmen').updateOne(
+        {
+            _id: parseInt(_id)
+        },
+        { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
+            $set: {
+                firstname: salesman.firstname,
+                lastname: salesman.lastname
+            }
+        }
+    );
 }
 
 /**
@@ -81,5 +85,6 @@ exports.delete = async (db, _id) => {
     if (!existingSalesMan) {
         throw new Error("Salesman with id " + _id + " doesn't exist!")
     }
+
     return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
 }

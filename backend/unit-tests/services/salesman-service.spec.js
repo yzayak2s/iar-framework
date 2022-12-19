@@ -36,24 +36,67 @@ describe('salesman-service unit-tests', function() {
             const sid = await salesmanService.add(db, copyObject(salesMan));
             await expect(db.collection('salesmen').findOne()).to.eventually.have.property('_id', sid);
         });
+
+        it('throws if salesman id is already used', async function() {
+            const sid = await salesmanService.add(db, copyObject(salesMan));
+
+            await expect(salesmanService.add(db, copyObject(salesMan))).to.be.rejectedWith('Salesman with id 1 already exist!')
+        });
     });
 
     describe('salesman lookup tests', function(){
-        it('expect correct salesman to found', async function(){
+        it('expect correct salesman with firstname to be found', async function(){
             await db.collection('salesmen').insert([salesMan, salesMan2]);
             await expect(salesmanService.getSalesManByFirstname(db, salesMan.firstname)).to.eventually.be.eqls(salesMan);
         });
 
         it('expect null when salesman not found', async function() {
             await expect(salesmanService.getSalesManByFirstname(db, 'firstname')).to.eventually.be.null;
-        })
+        });
+
+        it('expect list of salesman', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await salesmanService.add(db, copyObject(salesMan2));
+
+            await expect(salesmanService.getAll(db)).to.eventually.be.eqls([salesMan, salesMan2]);
+        });
+
+        it('expect correct salesman with id to be found', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await salesmanService.add(db, copyObject(salesMan2));
+
+            await expect(salesmanService.getSalesManById(db, 1)).to.eventually.be.eql(salesMan);
+        });
     });
 
-    describe('salesman actualisation tests', function(){
+    describe('salesman update tests', function(){
         it('update salesman in db', async function() {
             await salesmanService.add(db, copyObject(salesMan));
             await salesmanService.update(db, salesMan._id, copyObject(salesMan3));
             await expect(db.collection('salesmen').findOne()).to.eventually.be.eqls(salesMan3);
+        });
+
+        it('updating not existing salesman throws', async function() {
+            await expect(salesmanService.update(db, 1, copyObject(salesMan))).to.be.rejectedWith("Salesmen with id 1 doesn't exist!");
+        });
+
+        it('updating id with different id throws', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+
+            await expect(salesmanService.update(db, 5, copyObject(salesMan))).to.be.rejectedWith("Trying to update with a different id! Given id: 5. New salesman id: 1");
+        });
+    });
+
+    describe('salesman delete tests', function() {
+        it('salesman is deleted', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+
+            await expect(salesmanService.delete(db, salesMan._id)).to.eventually.be.fulfilled;
+            await expect(salesmanService.getSalesManById(db, salesMan._id)).to.eventually.be.null;
+        });
+
+        it('throws if trying to delete not existing salesman', async function() {
+            await expect(salesmanService.delete(db, 1)).to.be.rejectedWith("Salesman with id 1 doesn't exist!");
         });
     });
 })

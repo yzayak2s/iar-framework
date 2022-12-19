@@ -1,9 +1,25 @@
 const axios = require('axios');
+const https = require("https");
+const httpsAgent = new https.Agent({rejectUnauthorized: false});
+
+const {openCRXConfig} = require('../../environments/apiEnvironment');
+// OpenCRX request data
+const baseUrl = openCRXConfig.baseUrl;
+const credentials = openCRXConfig.credentials;
+
+const config = {
+    headers: {
+        'Accept': 'application/json'
+    },
+    httpsAgent: httpsAgent, 
+    auth: credentials,
+};
+
 
 /**
  * retrieves accounts from openCRX
  */
-exports.getAllAccounts = async (baseUrl, config) => {
+exports.getAllAccounts = async () => {
     const contacts = await axios.get(
         `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account`,
         config
@@ -53,7 +69,7 @@ exports.getAllAccounts = async (baseUrl, config) => {
 /**
  * retrieves an account from openCRX by uid
  */
-exports.getAccountByUID = async (baseUrl, config, uid) => {
+exports.getAccountByUID = async (uid) => {
     const contact = await axios.get(
         `${baseUrl}/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/${uid}`,
         config
@@ -74,7 +90,7 @@ exports.getAccountByUID = async (baseUrl, config, uid) => {
 /**
  * retrieves products from openCRX
  */
-exports.getAllProducts = async (baseUrl, config) => {
+exports.getAllProducts = async () => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product`,
         config
@@ -106,7 +122,7 @@ exports.getAllProducts = async (baseUrl, config) => {
 /**
  * retrieves a product by
  */
-exports.getProductByUID = async (baseUrl, config, uid) => {
+exports.getProductByUID = async (uid) => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.product1/provider/CRX/segment/Standard/product/${uid}`,
         config
@@ -133,7 +149,7 @@ exports.getProductByUID = async (baseUrl, config, uid) => {
 /**
  * retrieves salesOrders from OpenCRX
  */
-exports.getAllSalesOrders = async (baseUrl, config) => {
+exports.getAllSalesOrders = async () => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder`,
         config
@@ -171,7 +187,7 @@ exports.getAllSalesOrders = async (baseUrl, config) => {
 /**
  * retrieves a salesOrder from openCRX
  */
-exports.getSalesOrderByUID = async (baseUrl,config, uid) => {
+exports.getSalesOrderByUID = async (uid) => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${uid}`,
         config
@@ -204,7 +220,7 @@ exports.getSalesOrderByUID = async (baseUrl,config, uid) => {
 /**
  * retrieves positions from OpenCRX
  */
-exports.getAllPositionsByUID = async (baseUrl, config, uid) => {
+exports.getAllPositionsByUID = async (uid) => {
     const response = await axios.get(
         `${baseUrl}/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder/${uid}/position`,
         config

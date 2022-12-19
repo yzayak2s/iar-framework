@@ -88,7 +88,7 @@ exports.delete = async (db, _id) => {
     const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: parseInt(_id)});
 
     if (!existingEvaluationRecord) {
-        throw new Error("EvaluationRecord with: " + _id + " doesn't exist!")
+        throw new Error("EvaluationRecord with id " + _id + " doesn't exist!")
     }
     return db.collection('evaluation_record').deleteOne({_id: parseInt(_id)})
 }
@@ -102,7 +102,7 @@ exports.deleteBySalesmanID = async (db, salesManID) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
 
     if (!existingSalesMan){
-        throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
+        throw new Error('Salesman with id ' + salesManID + ' does not exist!');
     }
 
     return db.collection('evaluation_record').deleteMany({salesManID: parseInt(salesManID)});
