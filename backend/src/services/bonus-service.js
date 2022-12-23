@@ -1,3 +1,27 @@
+function calculateBonusOrder() {
+    // request all belonged salesOrders and positions of a salesman (per year)
+    // Client Ranking:
+    //      percentage of total amount earned
+    //      if ranking === excellent
+
+    // excellent = 1 (7.5)
+    // very good = 2 (5)
+    // good = 3 (2.5)
+
+    //
+    // Alternative switch case
+}
+
+function calculateBonusPerformance() {
+    // request all belonged evaluation records to salesman (per year)
+    // if actual value < target value --> 20 $
+    // if actual value = target value --> 50 $
+    // if actual value > target value --> 100 $
+    // sumup the values as amount (total bonus B)
+
+    // Alternative would switch-case
+}
+
 /**
  * retrieves bonussalaries from database
  * @param db source database
