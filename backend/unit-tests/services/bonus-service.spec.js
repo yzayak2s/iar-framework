@@ -57,6 +57,11 @@ describe("bonus-service Unit-tests", function() {
             await bonusService.add(db, copyObject(bonusExample1));
             await expect(bonusService.add(db, copyObject(bonusExample1))).to.eventually.be.rejectedWith('Bonus with id ' + bonusExample1._id + ' already exists!');
         });
+
+        it('throws if given object is incorrect', async function() {
+            // id should be _id
+            await expect(bonusService.add(db, {_id: 5, year: 2012, value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, year, value, remark, verified and salesManID.')
+        });
     });
 
     describe("Able to update bonuses", function() {

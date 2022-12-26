@@ -42,6 +42,11 @@ describe('salesman-service unit-tests', function() {
 
             await expect(salesmanService.add(db, copyObject(salesMan))).to.be.rejectedWith('Salesman with id 1 already exist!')
         });
+
+        it('throws if given object is incorrect', async function() {
+            // id should be _id
+            await expect(salesmanService.add(db, {firstname: 'bob', lastname: 'heh', id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname and lastname.')
+        });
     });
 
     describe('salesman lookup tests', function(){

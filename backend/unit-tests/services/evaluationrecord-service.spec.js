@@ -57,6 +57,12 @@ describe('evaluation-record-service unit-tests', function () {
 
             await expect(evaluationRecordService.add(db, copyObject(evaluationRecord))).to.be.rejectedWith('EvaluationRecord with id ' + _goalID + ' already exists!');
         });
+
+        it('throws if given object is incorrect', async function() {
+            await salesmanService.add(db, copyObject(salesMan))
+            // id should be _id
+            await expect(evaluationRecordService.add(db, {id: 5, goalDescription: 'ttt', targetValue: 5, actualValue: 6, year: 2012, salesManID: 1})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, goalDescription, targetValue, actualValue, year and salesManID.')
+        });
     });
 
     describe('evaluation record lookup tests', function () {
