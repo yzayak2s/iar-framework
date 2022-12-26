@@ -125,6 +125,28 @@ router.get('/salesmen/read/all', salesmenApi.getSalesmen);
  */
 router.get('/salesmen/read/firstname/:firstname', salesmenApi.getSalesManByFirstname);
 router.get('/salesmen/read/id/:_id', salesmenApi.getSalesManById);
+/**
+ * @swagger
+ * /api/salesmen/create:
+ *  post: 
+ *      summary: Create a salesman
+ *      tags:
+ *          - Salesman
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/SalesMan'
+ *      responses:
+ *          200:
+ *              description: The salesman ID
+ *              content:
+ *                  schema:
+ *                      type: number
+ *                      example: 5
+ *          401:
+ *              description: Unauthorized 
+ */
 router.post('/salesmen/create', salesmenApi.addSalesman);
 router.put('/salesmen/update/:_id', salesmenApi.updateSalesManById);
 router.delete('/salesmen/delete/id/:_id', salesmenApi.deleteSalesMan);
@@ -133,6 +155,28 @@ const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', evaRecApi.getAllEvaluationRecords);
 router.get('/evaluationRecords/read/id/:_id', evaRecApi.getEvaluationRecordsById);
 router.get('/evaluationRecords/read/salesmanId/:salesManID', evaRecApi.getEvaluationRecordsOfSalesmanById);
+/**
+ * @swagger
+ * /api/evaluationRecords/create:
+ *  post: 
+ *      summary: Create a Evaluation Record
+ *      tags:
+ *          - Evaluation_Record
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Evaluation_Record'
+ *      responses:
+ *          200:
+ *              description: The Evaluation Record ID
+ *              content:
+ *                  schema:
+ *                      type: number
+ *                      example: 2
+ *          401:
+ *              description: Unauthorized 
+ */
 router.post('/evaluationRecords/create', evaRecApi.addEvaluationRecord);
 router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecordById);
 router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
@@ -142,6 +186,43 @@ const bonusApi = require('../apis/bonus-api');
 router.get('/bonuses/read/all', bonusApi.getBonuses);
 router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
 router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
+/**
+ * @swagger
+ * /api/bonuses/calculateBonus/{salesManID}:
+ *  get: 
+ *      summary: returns bonus of salesman
+ *      tags:
+ *          - Bonus
+ *      parameters:
+ *          - in: path
+ *            name: salesManID
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: ID of salesman
+ *          - in: body
+ *            name: year
+ *            schema:
+ *              type: object
+ *              required:
+ *                  - year
+ *              properties:
+ *                  year:
+ *                      type: string
+ *                      example: 2012
+ *            description: Year to be calculated
+ *      responses:
+ *          200:
+ *              description: The salesman
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SalesMan'       
+ *          401:
+ *              description: Unauthorized 
+ */
+router.get('/bonuses/calculateBonus/:salesManID', bonusApi.calculateBonus);
+router.get('/bonuses/calculateBonus/all', bonusApi.calculateAllBonus);
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
@@ -161,5 +242,6 @@ router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
+
 
 module.exports = router;
