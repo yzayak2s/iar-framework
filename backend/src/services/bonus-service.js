@@ -1,4 +1,42 @@
-function calculateBonusOrder() {
+const evaRecordService = require('./evaluation-record-service')
+const {fitsModel} = require('../middlewares/creation-helper')
+const Bonus = require('../models/Bonus')
+
+/**
+ * @typedef {Object} evalRecords Evaluation Records with Bonus
+ * @property {string} evalRecords.goalDescription - Name of the Evaluation Goal
+ * @property {number} evalRecords.targetValue - Goal Value we want to reach
+ * @property {number} evalRecords.actualValue - Goal Value that was actually reached
+ * @property {number} evalRecords.bonus - Bonus for this Evaluation
+ */
+
+/**
+ * @typedef {Object} salesOrders Sales order with Bonus
+ * @property
+ */
+
+/** 
+ * @typedef {Object} orderBonus
+ * @property {number} total - The total amount of money earned for the orders
+ * @property {Array<salesOrders} orderBonuses - Array of Order Bonuses
+ */
+
+/**
+ * @typedef {Object} perfBonus
+ * @property {number} total - The total amount of money earned for the performance Evaluation
+ * @property {Array<evalRecords>} evalRecords - Array of evaluation Records of the evaluation
+
+ */
+
+
+
+/**
+ * @param {*} db source database
+ * @param {*} salesmanID salesman ID
+ * @param {*} year current year
+ * @returns {Promise<{total: number, orderBonus: orderBonus}>} Total bonus of all sales orders aswell as array of sales orders with corresponding bonuses
+ */
+async function calculateBonusOrder(db, salesManID, year) {
     // request all belonged salesOrders and positions of a salesman (per year)
     // Client Ranking:
     //      percentage of total amount earned
@@ -10,9 +48,19 @@ function calculateBonusOrder() {
 
     //
     // Alternative switch case
+
+    // return {total, []}
+    // return {total, }
 }
 
-function calculateBonusPerformance() {
+/**
+ * 
+ * @param {*} db source database
+ * @param {*} salesmanID salesman ID
+ * @param {*} year current year
+ * @returns { Promise<{total: number, perfBonus: perfBonus}> } Total bonus of all records aswell as array of performance records with corresponding bonuses
+ */
+async function calculateBonusPerformance(db, salesmanID, year) {
     // request all belonged evaluation records to salesman (per year)
     // if actual value < target value --> 20 $
     // if actual value = target value --> 50 $
@@ -20,6 +68,40 @@ function calculateBonusPerformance() {
     // sumup the values as amount (total bonus B)
 
     // Alternative would switch-case
+
+    // Get all records of current year
+    const evalRecords = await evaRecordService.getBySalesmanID(db, salesmanID)
+    evalRecords.filter(evaRecord => evaRecord.year === year);
+
+    console.log(evalRecords);
+    // evalRecords: {goalDescription, ACTUAL, TARGET, BONUS}, ..., Average: [ACTUAL, TARGET]}
+    // {total, [evalRecords 1-...]}
+    // return {total: total, evalRecords: evalRecordsWithBonus}
+}
+
+/**
+ * Calculate Bonus for one salesman by ID
+ * @param {*} db source database
+ * @param {*} salesmanID salesman ID
+ * @param {*} year current year
+ * @returns {Promise<{total: number, orderBonus: orderBonus, perfBonus: perfBonus}>} Total bonus, Sales orders with bonuses and the performance records with bonuses
+ */
+exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
+    const orderBonus = await calculateBonusOrder(db, salesmanID, year);
+    const perfBonus = await calculateBonusPerformance(db, salesmanID, year);
+
+    // const totalBonus = orderBonus.total + perfBonus.total;
+    // Gonna look like {TotalBonus, [ArrayOfOrderBonus], [ArrayOfPerfBonus]} 
+    // return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
+}
+
+/**
+ * Calculate Bonuses for all salesmen
+ * @param {*} db source database
+ * @param {*} year current year
+ */
+exports.calculateAllBonus = async (db, year) => {
+
 }
 
 /**
@@ -60,6 +142,10 @@ exports.add = async (db, bonus) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: bonus._id});
     const existingSalesMan = await db.collection('salesmen').findOne({_id: bonus.salesManID});
 
+    if (!await fitsModel(bonus, Bonus)) {
+        throw new Error('Incorrect body object was provided. Needs _id, year, value, remark, verified and salesManID.')
+    }
+
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + bonus.salesManID + ' does not exists!');
     }
@@ -68,7 +154,7 @@ exports.add = async (db, bonus) => {
         throw new Error('Bonus with id ' + bonus._id + ' already exists!');
     }
     
-    return (await db.collection('bonus').insertOne(bonus)).insertedId;
+    return (await db.collection('bonus').insertOne(new Bonus(bonus._id, bonus.year, bonus.value, bonus.remark, bonus.verified, bonus.salesManID))).insertedId;
 }
 
 /**
