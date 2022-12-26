@@ -1,3 +1,6 @@
+const { fitsModel } = require("../middlewares/creation-helper");
+const EvaluationRecord = require('../models/EvaluationRecord')
+
 /**
  * retrieves salesmen from database
  * @param db source database
@@ -37,6 +40,10 @@ exports.add = async (db, evaluationRecord) => {
     const existingEvaluationRecordId = await db.collection('evaluation_record').findOne({_id: evaluationRecord._id});
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
 
+    if (!await fitsModel(evaluationRecord, EvaluationRecord)) {
+        throw new Error('Incorrect body object was provided. Needs _id, goalDescription, targetValue, actualValue, year and salesManID.');
+    }
+
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
@@ -44,7 +51,8 @@ exports.add = async (db, evaluationRecord) => {
     if (existingEvaluationRecordId) {
         throw new Error('EvaluationRecord with id ' + evaluationRecord._id + ' already exists!');
     }
-    return (await db.collection('evaluation_record').insertOne(evaluationRecord)).insertedId;
+
+    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord._id, evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
 }
 
 /**

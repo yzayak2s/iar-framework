@@ -1,3 +1,6 @@
+const Salesman = require('../models/SalesMan');
+const {fitsModel} = require('../middlewares/creation-helper')
+
 /**
  * retrieves salesmen from database
  * @param db source database
@@ -35,11 +38,15 @@ exports.getSalesManById = async (db, _id) => {
 exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
 
+    if (!await fitsModel(salesman, Salesman)){
+        throw new Error('Incorrect body object was provided. Needs _id, firstname and lastname.')
+    }
+    
     if (existingSalesmanId) {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
-
-    return (await db.collection('salesmen').insertOne(salesman)).insertedId;
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id))).insertedId;
 }
 
 /**
