@@ -60,7 +60,7 @@ describe("bonus-service Unit-tests", function() {
 
         it('throws if given object is incorrect', async function() {
             // id should be _id
-            await expect(bonusService.add(db, {_id: 5, year: 2012, value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, year, value, remark, verified and salesManID.')
+            await expect(bonusService.add(db, {id: 5, year: 2012, value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, year, value, remark, verified and salesManID.')
         });
     });
 
