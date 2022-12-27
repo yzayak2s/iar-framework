@@ -24,6 +24,7 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
 import {MatListModule} from '@angular/material/list';
 import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
 import {BonusesComponent} from './components/bonuses/bonuses.component';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import {BonusesComponent} from './components/bonuses/bonuses.component';
         MatToolbarModule,
         MatIconModule,
         MatTableModule,
-        MatListModule
+        MatListModule,
+        NgxSpinnerModule
     ],
     providers: [],
     bootstrap: [AppComponent]
