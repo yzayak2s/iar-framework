@@ -34,4 +34,10 @@ export class BonusesComponent implements OnInit {
                 this.bonuses.push(bonus);
             });
     }
+
+    delete(bonus: Bonus): void {
+        this.bonuses = this.bonuses.filter(b => b !== bonus);
+        this.bonusService.deleteBonus(bonus.id)
+            .subscribe();
+    }
 }

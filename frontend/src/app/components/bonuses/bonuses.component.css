@@ -72,3 +72,19 @@ input {
     color: white;
     background-color: #42545C;
 }
+
+button.delete {
+    position: absolute;
+    left: 210px;
+    top: 5px;
+    background-color: white;
+    color:  #525252;
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 1px 10px 3px 10px;
+}
+
+button.delete:hover {
+    background-color: #525252;
+    color: white;
+}
