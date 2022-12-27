@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Bonus} from '../models/Bonus';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -42,5 +42,14 @@ export class BonusService {
         const url = `${this.bonusesUrl}/${id}`;
 
         return this.http.delete<Bonus>(url, this.httpOptions);
+    }
+
+    /** SEARCH after bonuses */
+    searchBonus(term: number): Observable<any[]> {
+        if (!term) {
+            // if not search term, return empty bonus array.
+            return of([]);
+        }
+        return this.http.get<Bonus[]>(`${this.bonusesUrl}/?year=${term}`);
     }
 }
