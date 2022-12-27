@@ -188,7 +188,7 @@ router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
 router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
 /**
  * @swagger
- * /api/bonuses/calculateBonus/{salesManID}:
+ * /api/bonuses/calculateBonus/{year}/{salesManID}:
  *  get: 
  *      summary: returns bonus of salesman
  *      tags:
@@ -200,16 +200,12 @@ router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesman
  *              type: number
  *            required: true
  *            description: ID of salesman
- *          - in: body
+ *          - in: path
  *            name: year
  *            schema:
- *              type: object
- *              required:
- *                  - year
- *              properties:
- *                  year:
- *                      type: string
- *                      example: 2012
+ *              type: number
+ *              required: true
+ *              example: 2021
  *            description: Year to be calculated
  *      responses:
  *          200:
@@ -221,8 +217,8 @@ router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesman
  *          401:
  *              description: Unauthorized 
  */
-router.get('/bonuses/calculateBonus/:salesManID', bonusApi.calculateBonus);
-router.get('/bonuses/calculateBonus/all', bonusApi.calculateAllBonus);
+router.get('/bonuses/calculateBonus/:year/:salesManID', bonusApi.calculateBonus);
+router.get('/bonuses/calculateBonus/:year/all', bonusApi.calculateAllBonus);
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
