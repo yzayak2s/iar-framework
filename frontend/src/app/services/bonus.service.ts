@@ -2,14 +2,16 @@ import {Injectable} from '@angular/core';
 import {Bonus} from '../models/Bonus';
 import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BonusService {
-    private bonusesUrl = 'api/bonuses'; // URL to web api
+    private bonusesUrl = `${environment.apiEndpoint}/api/bonuses`; // URL to web api
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        withCredentials: true
     };
 
     constructor(
@@ -18,28 +20,34 @@ export class BonusService {
 
     /** GET bonuses from the server */
     getBonuses(): Observable<Bonus[]> {
-        return this.http.get<Bonus[]>(this.bonusesUrl);
+        return this.http.get<Bonus[]>(this.bonusesUrl + '/read/all', {
+            withCredentials: true
+        });
     }
 
     /** GET single bonus from the backend */
     getBonus(id: string): Observable<Bonus> {
         const url = `${this.bonusesUrl}/read/id/${id}`;
-        return this.http.get<Bonus>(url);
+        return this.http.get<Bonus>(url, {
+            withCredentials: true
+        });
     }
 
     /** UPDATE single bonus */
     updateBonus(bonus: Bonus): Observable<any> {
-        return this.http.put(this.bonusesUrl, bonus, this.httpOptions);
+        const url = `${this.bonusesUrl}/update/id/${bonus.id}`;
+        return this.http.put(url, bonus, this.httpOptions);
     }
 
     /** ADD new bonus */
     addBonus(bonus: Bonus): Observable<Bonus> {
-        return this.http.post<Bonus>(this.bonusesUrl, bonus, this.httpOptions);
+        const url = `${this.bonusesUrl}/create`;
+        return this.http.post<Bonus>(url, bonus, this.httpOptions);
     }
 
     /** DELETE: delete the bonus from the server */
     deleteBonus(id: number): Observable<Bonus> {
-        const url = `${this.bonusesUrl}/${id}`;
+        const url = `${this.bonusesUrl}/delete/id/${id}`;
 
         return this.http.delete<Bonus>(url, this.httpOptions);
     }
@@ -50,6 +58,8 @@ export class BonusService {
             // if not search term, return empty bonus array.
             return of([]);
         }
-        return this.http.get<Bonus[]>(`${this.bonusesUrl}/?year=${term}`);
+        return this.http.get<Bonus[]>(`${this.bonusesUrl}/read/year/${term}`, {
+            withCredentials: true
+        });
     }
 }
