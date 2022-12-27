@@ -8,6 +8,10 @@
         Add Bonus
     </button>
 </div>
+
+<ngx-spinner
+    type="ball-pulse"
+>Loading...</ngx-spinner>
 <ul class="bonuses">
     <li *ngFor="let bonus of bonuses">
         <a routerLink="/bonuses/detail/{{bonus.id}}">

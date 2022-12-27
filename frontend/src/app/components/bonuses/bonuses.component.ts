@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Bonus} from '../../interfaces/Bonus';
 import {BonusService} from '../../services/bonus.service';
 import {MessageService} from '../../services/message.service';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
     selector: 'app-bonuses',
@@ -13,10 +14,12 @@ export class BonusesComponent implements OnInit {
 
     constructor(
         private bonusService: BonusService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private spinnerService: NgxSpinnerService
     ) { }
 
     ngOnInit(): void {
+        void this.spinnerService.show();
         this.getBonuses();
     }
 
@@ -24,6 +27,7 @@ export class BonusesComponent implements OnInit {
         this.bonusService.getBonuses()
             .subscribe(bonuses => {
                 this.bonuses = bonuses;
+                void this.spinnerService.hide();
             });
     }
 
