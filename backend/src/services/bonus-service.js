@@ -58,25 +58,27 @@ async function calculateBonusOrder(db, salesManID, year) {
  * @param {*} db source database
  * @param {*} salesmanID salesman ID
  * @param {*} year current year
- * @returns { Promise<{total: number, perfBonus: perfBonus}> } Total bonus of all records aswell as array of performance records with corresponding bonuses
+ * @returns { Promise<{total: number, evalRecords: perfBonus}> } Total bonus of all records aswell as array of performance records with corresponding bonuses
  */
 async function calculateBonusPerformance(db, salesmanID, year) {
-    // request all belonged evaluation records to salesman (per year)
-    // if actual value < target value --> 20 $
-    // if actual value = target value --> 50 $
-    // if actual value > target value --> 100 $
-    // sumup the values as amount (total bonus B)
-
-    // Alternative would switch-case
-
     // Get all records of current year
-    const evalRecords = await evaRecordService.getBySalesmanID(db, salesmanID)
-    evalRecords.filter(evaRecord => evaRecord.year === year);
+    const evalRecords = await evaRecordService.getBySalesmanID(db, salesmanID);
+    const currentRecords = evalRecords.filter(evaRecord => evaRecord.year == year);
+    let totalBonus = 0;
 
-    console.log(evalRecords);
-    // evalRecords: {goalDescription, ACTUAL, TARGET, BONUS}, ..., Average: [ACTUAL, TARGET]}
-    // {total, [evalRecords 1-...]}
-    // return {total: total, evalRecords: evalRecordsWithBonus}
+    currentRecords.forEach(record => {
+        if (record.actualValue > record.targetValue) {
+            record.bonus = 100;
+        } else if (record.actualValue == record.targetValue) {
+            record.bonus = 50;
+        } else {
+            record.bonus = 20;
+        }
+
+        totalBonus += record.bonus;
+    });
+
+    return {total: totalBonus, evalRecords: currentRecords}
 }
 
 /**
