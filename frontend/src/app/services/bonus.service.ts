@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Bonus} from '../models/Bonus';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BonusService {
     private bonusesUrl = 'api/bonuses'; // URL to web api
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
 
     constructor(
         private http: HttpClient
@@ -22,5 +25,10 @@ export class BonusService {
     getBonus(id: string): Observable<Bonus> {
         const url = `${this.bonusesUrl}/read/id/${id}`;
         return this.http.get<Bonus>(url);
+    }
+
+    /** UPDATE single bonus */
+    updateBonus(bonus: Bonus): Observable<any> {
+        return this.http.put(this.bonusesUrl, bonus, this.httpOptions);
     }
 }
