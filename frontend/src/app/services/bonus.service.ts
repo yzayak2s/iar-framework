@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Bonus} from '../models/Bonus';
 import {Observable, of} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -19,16 +19,18 @@ export class BonusService {
     ) { }
 
     /** GET bonuses from the server */
-    getBonuses(): Observable<Bonus[]> {
+    getBonuses(): Observable<HttpResponse<Bonus[]>> {
         return this.http.get<Bonus[]>(this.bonusesUrl + '/read/all', {
+            observe: 'response',
             withCredentials: true
         });
     }
 
-    /** GET single bonus from the backend */
-    getBonus(id: string): Observable<Bonus> {
+    /** GET single Bonus from the backend */
+    getBonus(id: string): Observable<HttpResponse<Bonus>> {
         const url = `${this.bonusesUrl}/read/id/${id}`;
         return this.http.get<Bonus>(url, {
+            observe: 'response',
             withCredentials: true
         });
     }
