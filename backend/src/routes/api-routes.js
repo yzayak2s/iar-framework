@@ -261,6 +261,8 @@ const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
+router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
+
 /**
  * @swagger
  * /api/employees/updateDB:
@@ -270,12 +272,8 @@ router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee
  *          - OrangeHRM
  *      responses:
  *          200:
- *              description: Updates all salesmen successfully
+ *              description: Updated all salesmen successfully
  *          401:
  *              description: Unauthorized 
  */
-router.get('/employees/updateDB', orangeHRM.createSalesmen);
-router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
-
-
 module.exports = router;

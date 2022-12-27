@@ -112,17 +112,3 @@ exports.add = async (bonus) => {
         config
     );
 }
-
-/**
- * Get Salesman and update MongoDB with missing ones.
- */
-exports.createSalesmen = async (db) => {
-    this.getAllEmployees().then(employeeList => {
-        employeeList.forEach(async employee => {
-            const res = await salesmanService.getSalesManById(db, employee.employeeId);
-            if (res == null) {
-                return salesmanService.add(db, new SalesMan(employee.firstName, employee.lastName, parseInt(employee.employeeId)));
-            }
-        });
-    });
-}

@@ -37,15 +37,3 @@ exports.addBonusSalary = (req, res) => {
         res.status(500).send();
     });
 }
-
-exports.createSalesmen = (req, res) => {
-    const db = req.app.get('db');
-    orangeHRMService.createSalesmen(db)
-        .then(insertedIDs => {
-            res.send(insertedIDs);
-        }).catch((e) => {
-            res.status(500).send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
-}
