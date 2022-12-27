@@ -37,6 +37,7 @@ exports.getSalesManById = async (db, _id) => {
  */
 exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
+    salesman.uid = undefined;
 
     if (!await fitsModel(salesman, Salesman)){
         throw new Error('Incorrect body object was provided. Needs _id, firstname and lastname.')
@@ -46,7 +47,26 @@ exports.add = async (db, salesman) => {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
     
-    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id))).insertedId;
+    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id, undefined))).insertedId;
+}
+
+/**
+ * insert a new salesman with a UID into database
+ * @param db target database
+ * @param {SalesMan} salesman with uid
+ */
+exports.addWithUID = async (db, salesman) => {
+    const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
+
+    if (!await fitsModel(salesman, Salesman)){
+        throw new Error('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
+    }
+    
+    if (existingSalesmanId) {
+        throw new Error('Salesman with id ' + salesman._id + ' already exist!');
+    }
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id, salesman.uid))).insertedId;
 }
 
 /**
