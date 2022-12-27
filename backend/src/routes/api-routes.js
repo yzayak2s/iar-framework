@@ -124,6 +124,30 @@ router.get('/salesmen/read/all', salesmenApi.getSalesmen);
  *              description: Unauthorized 
  */
 router.get('/salesmen/read/firstname/:firstname', salesmenApi.getSalesManByFirstname);
+/**
+ * @swagger
+ * /api/salesmen/read/id/{_id}:
+ *  get: 
+ *      summary: returns salesman by id
+ *      tags:
+ *          - Salesman
+ *      parameters:
+ *          - in: path
+ *            name: _id
+ *            schema:
+ *              type: number
+ *            required: true
+ *            description: id of salesman
+ *      responses:
+ *          200:
+ *              description: The salesman
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/SalesMan'       
+ *          401:
+ *              description: Unauthorized 
+ */
 router.get('/salesmen/read/id/:_id', salesmenApi.getSalesManById);
 /**
  * @swagger
@@ -236,7 +260,21 @@ router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/id/:id', orangeHRM.getEmployeeById);
-router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
+router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
+/**
+ * @swagger
+ * /api/employees/updateDB:
+ *  get: 
+ *      summary: Update local database with OrangeHRM salesman
+ *      tags:
+ *          - OrangeHRM
+ *      responses:
+ *          200:
+ *              description: Updates all salesmen successfully
+ *          401:
+ *              description: Unauthorized 
+ */
+router.get('/employees/updateDB', orangeHRM.createSalesmen);
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 
