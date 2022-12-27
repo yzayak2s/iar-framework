@@ -23,6 +23,11 @@ input {
     left: .1em;
 }
 
+.mat-row:hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
 .bonuses a {
     color: #333;
     text-decoration: none;
@@ -87,4 +92,8 @@ button.delete {
 button.delete:hover {
     background-color: #525252;
     color: white;
+}
+
+table{
+    width: 100%;
 }
