@@ -165,7 +165,7 @@ exports.getAllSalesOrders = async () => {
             contractNumber,
             totalTaxAmount,
             totalBaseAmount,
-            totalAmountIncludingTax,
+            totalAmountIncludingTax
         } = value;
 
         salesOrdersArray.push({
@@ -173,6 +173,7 @@ exports.getAllSalesOrders = async () => {
             salesOrderUID: value['@href'].split('salesOrder/')[1],
             customerUID: value['customer']['@href'].split('account/')[1],
             salesRep: value['salesRep']['@href'].split('account/')[1],
+            createdAt: value['createdAt'].slice(0, 4),
             priority,
             contractNumber,
             totalTaxAmount,
@@ -200,7 +201,7 @@ exports.getSalesOrderByUID = async (uid) => {
         contractNumber,
         totalTaxAmount,
         totalBaseAmount,
-        totalAmountIncludingTax,
+        totalAmountIncludingTax
     } = salesOrder;
 
     return {
@@ -208,11 +209,12 @@ exports.getSalesOrderByUID = async (uid) => {
         salesOrderUID: salesOrder['@href'].split('salesOrder/')[1],
         customerUID: salesOrder['customer']['@href'].split('account/')[1],
         salesRep: salesOrder['salesRep']['@href'].split('account/')[1],
+        createdAt: salesOrder['createdAt'].slice(0, 4),
         priority,
         contractNumber,
         totalTaxAmount,
         totalBaseAmount,
-        totalAmountIncludingTax,
+        totalAmountIncludingTax
     }
 
 }

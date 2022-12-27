@@ -116,7 +116,8 @@ function createSaleOrders(single) {
             totalAmountIncludingTax: '5967.500000000',
             contractNumber: 'Telekom_Sallinger_2019',
             name: 'Telekom_Sallinger_2019',
-            totalAmount: '5500.000000000'
+            totalAmount: '5500.000000000',
+            createdAt: '2020-01-07T10:45:34.872Z'
         });
     } else {
         return createResponse({
@@ -143,7 +144,8 @@ function createSaleOrders(single) {
                     totalAmountIncludingTax: '5967.500000000',
                     contractNumber: 'Telekom_Sallinger_2019',
                     name: 'Telekom_Sallinger_2019',
-                    totalAmount: '5500.000000000'
+                    totalAmount: '5500.000000000',
+                    createdAt: '2020-01-07T10:45:34.872Z'
                 },
                 {
                     '@type': 'org.opencrx.kernel.contract1.SalesOrder',
@@ -163,7 +165,8 @@ function createSaleOrders(single) {
                     totalAmountIncludingTax: '0.000000000',
                     contractNumber: 'Mayer Werft AG-S1613220407',
                     name: 'Testing',
-                    totalAmount: '0.000000000'
+                    totalAmount: '0.000000000',
+                    createdAt: '2020-01-07T10:45:34.872Z'
                 },
                 {
                     '@type': 'org.opencrx.kernel.contract1.SalesOrder',
@@ -183,7 +186,8 @@ function createSaleOrders(single) {
                     totalAmountIncludingTax: '2387.000000000',
                     contractNumber: 'Mayer1',
                     name: 'Mayer1',
-                    totalAmount: '2200.000000000'
+                    totalAmount: '2200.000000000',
+                    createdAt: '2020-01-07T10:45:34.872Z'
                 }
               ]
         })
@@ -414,7 +418,7 @@ describe("openCRX-Service unit-tests", function() {
 
                 it("Has the correct keys", async function() {
                     const res = await response;
-                    expect(res).to.be.an('array').that.includes.something.that.all.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax");
+                    expect(res).to.be.an('array').that.includes.something.that.all.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax", "createdAt");
                 });
             });
 
@@ -441,7 +445,7 @@ describe("openCRX-Service unit-tests", function() {
 
                 it("Has the correct keys", async function() {
                     const res = await response;
-                    expect(res).to.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax");
+                    expect(res).to.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax", "createdAt");
                 });
             });
         });
