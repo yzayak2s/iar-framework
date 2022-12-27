@@ -27,26 +27,58 @@ describe('salesman-service unit-tests', function() {
     });
 
     describe('salesman creation tests', function() {
-        it('insert salesman to db', async function(){
-            await salesmanService.add(db, copyObject(salesMan))
-            await expect(db.collection('salesmen').findOne()).to.eventually.excluding('_id').be.eqls(salesMan)
+        describe('add normal salesman', function() {
+            it('insert salesman to db', async function(){
+                await salesmanService.add(db, copyObject(salesMan))
+                await expect(db.collection('salesmen').findOne()).to.eventually.excluding('_id').be.eqls(salesMan)
+            });
+
+            it('expect correct objectId to be returned', async function() {
+                const sid = await salesmanService.add(db, copyObject(salesMan));
+                await expect(db.collection('salesmen').findOne()).to.eventually.have.property('_id', sid);
+            });
+
+            it('throws if salesman id is already used', async function() {
+                const sid = await salesmanService.add(db, copyObject(salesMan));
+
+                await expect(salesmanService.add(db, copyObject(salesMan))).to.be.rejectedWith('Salesman with id 1 already exist!')
+            });
+
+            it('throws if given object is incorrect', async function() {
+                // id should be _id
+                await expect(salesmanService.add(db, {firstname: 'bob', lastname: 'heh', id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname and lastname.')
+            });
         });
 
-        it('expect correct objectId to be returned', async function() {
-            const sid = await salesmanService.add(db, copyObject(salesMan));
-            await expect(db.collection('salesmen').findOne()).to.eventually.have.property('_id', sid);
-        });
+        describe('add salesman with UID', function() {
+            let salesmanUID;
 
-        it('throws if salesman id is already used', async function() {
-            const sid = await salesmanService.add(db, copyObject(salesMan));
+            before(() => {
+                salesmanUID = copyObject(salesMan);
+                salesmanUID.uid = "EOMGEO7NTI$§J&I$WMAOMFSOIANTIENT"
+            })
 
-            await expect(salesmanService.add(db, copyObject(salesMan))).to.be.rejectedWith('Salesman with id 1 already exist!')
-        });
+            it('insert salesman with UID to db', async function(){
+                await salesmanService.addWithUID(db, salesmanUID)
+                await expect(db.collection('salesmen').findOne()).to.eventually.excluding('_id').be.eqls(salesmanUID)
+            });
 
-        it('throws if given object is incorrect', async function() {
-            // id should be _id
-            await expect(salesmanService.add(db, {firstname: 'bob', lastname: 'heh', id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname and lastname.')
-        });
+            it('expect correct objectId to be returned', async function() {
+                const sid = await salesmanService.addWithUID(db, copyObject(salesmanUID));
+                await expect(db.collection('salesmen').findOne()).to.eventually.have.property('_id', sid);
+            });
+
+            it('throws if salesman id is already used', async function() {
+                await salesmanService.addWithUID(db, copyObject(salesmanUID));
+
+                await expect(salesmanService.addWithUID(db, copyObject(salesmanUID))).to.be.rejectedWith('Salesman with id 1 already exist!')
+            });
+
+            it('throws if given object is incorrect', async function() {
+                // missing uid
+                await expect(salesmanService.addWithUID(db, {firstname: 'bob', lastname: 'heh', _id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
+            });
+        })
     });
 
     describe('salesman lookup tests', function(){
