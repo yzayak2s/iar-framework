@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Bonus} from '../../interfaces/Bonus';
+import {Bonus} from '../../models/Bonus';
 import {BonusService} from '../../services/bonus.service';
-import {MessageService} from '../../services/message.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
@@ -14,7 +13,6 @@ export class BonusesComponent implements OnInit {
 
     constructor(
         private bonusService: BonusService,
-        private messageService: MessageService,
         private spinnerService: NgxSpinnerService
     ) { }
 
@@ -25,22 +23,25 @@ export class BonusesComponent implements OnInit {
 
     getBonuses(): void {
         this.bonusService.getBonuses()
-            .subscribe(bonuses => {
-                this.bonuses = bonuses;
-                void this.spinnerService.hide();
+            .subscribe((bonuses): void => {
+                this.bonuses = bonuses.body;
+                setTimeout((): void => {
+                    /** spinner ends after 500 milliseconds */
+                    void this.spinnerService.hide();
+                }, 500);
             });
     }
 
     add(year: number): void {
         if (!year) { return; }
         this.bonusService.addBonus({year} as Bonus)
-            .subscribe(bonus => {
+            .subscribe((bonus): void => {
                 this.bonuses.push(bonus);
             });
     }
 
     delete(bonus: Bonus): void {
-        this.bonuses = this.bonuses.filter(b => b !== bonus);
+        this.bonuses = this.bonuses.filter((b): boolean => b !== bonus);
         this.bonusService.deleteBonus(bonus.id)
             .subscribe();
     }
