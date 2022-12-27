@@ -31,4 +31,9 @@ export class BonusService {
     updateBonus(bonus: Bonus): Observable<any> {
         return this.http.put(this.bonusesUrl, bonus, this.httpOptions);
     }
+
+    /** ADD new bonus */
+    addBonus(bonus: Bonus): Observable<Bonus> {
+        return this.http.post<Bonus>(this.bonusesUrl, bonus, this.httpOptions);
+    }
 }
