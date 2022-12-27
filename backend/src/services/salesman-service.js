@@ -1,5 +1,5 @@
 const Salesman = require('../models/SalesMan');
-const {fitsModel} = require('../middlewares/creation-helper')
+const {fitsModel} = require('../helper/creation-helper')
 
 /**
  * retrieves salesmen from database

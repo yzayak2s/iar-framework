@@ -1,4 +1,4 @@
-const { fitsModel } = require("../middlewares/creation-helper");
+const { fitsModel } = require("../helper/creation-helper");
 const EvaluationRecord = require('../models/EvaluationRecord')
 
 /**

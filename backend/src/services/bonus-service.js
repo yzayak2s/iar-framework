@@ -1,5 +1,5 @@
 const evaRecordService = require('./evaluation-record-service')
-const {fitsModel} = require('../middlewares/creation-helper')
+const {fitsModel} = require('../helper/creation-helper')
 const Bonus = require('../models/Bonus')
 
 /**
