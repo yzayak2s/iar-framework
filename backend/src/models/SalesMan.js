@@ -25,10 +25,11 @@
  */
 
 class SalesMan {
-    constructor(firstname, lastname, _id) {
+    constructor(firstname, lastname, _id, uid) {
         this.firstname = firstname;
         this.lastname = lastname;
         this._id = _id;
+        this.uid = uid;
     }
 }
 
