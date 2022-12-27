@@ -17,4 +17,10 @@ export class BonusService {
     getBonuses(): Observable<Bonus[]> {
         return this.http.get<Bonus[]>(this.bonusesUrl);
     }
+
+    /** GET single bonus from the backend */
+    getBonus(id: string): Observable<Bonus> {
+        const url = `${this.bonusesUrl}/read/id/${id}`;
+        return this.http.get<Bonus>(url);
+    }
 }
