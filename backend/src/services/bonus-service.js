@@ -1,5 +1,5 @@
 const {getBySalesmanID} = require('./evaluation-record-service')
-const {getSalesManById} = require('./salesman-service')
+const salesmanService = require('./salesman-service')
 const openCRXService = require('./openCRX-service')
 const {fitsModel} = require('../helper/creation-helper')
 const Bonus = require('../models/Bonus')
@@ -44,7 +44,7 @@ const Bonus = require('../models/Bonus')
  * @returns {Promise<{total: number, orderBonus: orderBonus}>} Total bonus of all sales orders aswell as array of sales orders with corresponding bonuses
  */
 async function calculateBonusOrder(db, salesManID, year) {
-    const salesman = await getSalesManById(db, salesManID);
+    const salesman = await salesmanService.getSalesManById(db, salesManID);
     let salesOrders = await openCRXService.getSalesOrdersBySalesRepUID(salesman.uid);
     const orders = [];
     let total = 0; 
@@ -138,6 +138,10 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
 
     const totalBonus = orderBonus.total + perfBonus.total;
 
+    // Save this bonus to the database
+    // ToDo: Does not check yet if database already has bonus for this salesman!
+    this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
+
     return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
 }
 
@@ -147,7 +151,12 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
  * @param {*} year current year
  */
 exports.calculateAllBonus = async (db, year) => {
+    const salesmen = await salesmanService.getAll();
+    const returnArray = [];
 
+    await Promise.all(salesmen.map( async salesman => {
+        returnArray.push(await this.calculateBonusBySalesmanID(salesman._id));
+    }));
 }
 
 /**
