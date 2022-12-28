@@ -9,8 +9,7 @@
  * @param {number} salesManID
  */
 class Bonus {
-    constructor(_bonusId, year, value, remark, verified, salesManID) {
-        this._id = _bonusId;
+    constructor(year, value, remark, verified, salesManID) {
         this.year = year;
         this.value = value;
         this.remark = remark;
