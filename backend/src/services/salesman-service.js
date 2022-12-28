@@ -115,7 +115,7 @@ exports.delete = async (db, _id) => {
 }
 
 exports.getSalesmenFromAPI = async (db) => {
-    // ToDo: What if the Salesman already is in the database? Maybe someone took the ID?  :
+    // ToDo: What if the Salesman already is in the database? Maybe someone took the ID? Delete Salesmen before?
     
     const orangeHRMEmployees = await getAllEmployees();
     // Only get Contacts
