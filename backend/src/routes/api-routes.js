@@ -265,15 +265,17 @@ router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 /**
  * @swagger
- * /api/employees/updateDB:
+ * /api/salesmen/getApiSalesmen:
  *  get: 
- *      summary: Update local database with OrangeHRM salesman
+ *      summary: Get salesman from OrangeHRM and save them with the UID from OpenCRX
  *      tags:
- *          - OrangeHRM
+ *          - Salesman
  *      responses:
  *          200:
- *              description: Updated all salesmen successfully
+ *              description: Success
  *          401:
  *              description: Unauthorized 
  */
+router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
+
 module.exports = router;
