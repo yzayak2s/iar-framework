@@ -220,6 +220,17 @@ exports.getSalesOrderByUID = async (uid) => {
 }
 
 /**
+ * Get all SalesOrders from a specific salesman 
+ * @param {*} uid salesman UID
+ * @returns {Promise<Array<SalesOrder>>} Array of SalesOrders
+ */
+exports.getSalesOrdersBySalesRepUID = async (uid) => {
+    const orders = await this.getAllSalesOrders();
+
+    return orders.filter(order => order.salesRep == uid)
+}
+
+/**
  * retrieves positions from OpenCRX
  */
 exports.getAllPositionsByUID = async (uid) => {
