@@ -1,4 +1,6 @@
-const evaRecordService = require('./evaluation-record-service')
+const {getBySalesmanID} = require('./evaluation-record-service')
+const {getSalesManById} = require('./salesman-service')
+const openCRXService = require('./openCRX-service')
 const {fitsModel} = require('../helper/creation-helper')
 const Bonus = require('../models/Bonus')
 
@@ -12,7 +14,12 @@ const Bonus = require('../models/Bonus')
 
 /**
  * @typedef {Object} salesOrders Sales order with Bonus
- * @property
+ * @property {string} ClientName name of Client
+ * @property {number} ClientRanking ranking of Client
+ * @property {Array} ItemsSold List of Items sold
+ * @property {string} ItemsSold.ProductName name of product
+ * @property {number} ItemsSold.amount amount of product sold
+ * @property {number} ItemsSold.bonus bonus of this sell
  */
 
 /** 
@@ -37,20 +44,57 @@ const Bonus = require('../models/Bonus')
  * @returns {Promise<{total: number, orderBonus: orderBonus}>} Total bonus of all sales orders aswell as array of sales orders with corresponding bonuses
  */
 async function calculateBonusOrder(db, salesManID, year) {
-    // request all belonged salesOrders and positions of a salesman (per year)
-    // Client Ranking:
-    //      percentage of total amount earned
-    //      if ranking === excellent
+    const salesman = await getSalesManById(db, salesManID);
+    let salesOrders = await openCRXService.getSalesOrdersBySalesRepUID(salesman.uid);
+    const orders = [];
+    let total = 0; 
 
-    // excellent = 1 (7.5)
-    // very good = 2 (5)
-    // good = 3 (2.5)
+    // filter to current year and remove empty Sales Orders
+    salesOrders = salesOrders.filter(order => order.createdAt == year && parseFloat(order.totalBaseAmount) !== 0);
 
-    //
-    // Alternative switch case
+    // for each order calculate everything (Promise.all allows this to calculate in parallel)
+    await Promise.all(salesOrders.map(async order => {
+        let finishedOrder = {};
+        const customer = await openCRXService.getAccountByUID(order.customerUID);
 
-    // return {total, []}
-    // return {total, }
+        // Name of Customer
+        finishedOrder.name = customer.fullName;
+
+        // Map Rating to String
+        switch(customer.accountRating) {
+            case 1: finishedOrder.rating = 'excellent'; break;
+            case 2: finishedOrder.rating = 'very good'; break;
+            case 3: finishedOrder.rating = 'good'; break;
+        };
+
+        // Percentage cut the salesman get from total amount sold
+        const bonusPercentage = 10 - (customer.accountRating * 2.5);
+        
+        // Get positions
+        const positions = await openCRXService.getAllPositionsByUID(order.salesOrderUID);
+        const itemsSold = [];
+
+        // Go through all positions
+        await Promise.all(positions.map(async position => {
+            let item = {};
+
+            item.name = (await openCRXService.getProductByUID(position.productUID)).name;
+            item.amount = parseInt(position.quantity);
+            item.bonus = (parseFloat(position.amount) / 100) * bonusPercentage;
+
+            itemsSold.push(item);
+        }));
+
+        finishedOrder.itemsSold = itemsSold;
+
+        // calculate total Bonus
+        total += (parseFloat(order.totalAmountIncludingTax) / 100) * bonusPercentage;
+
+        // push to return array
+        orders.push(finishedOrder);
+    }));
+    
+    return {total: total, salesOrders: orders}
 }
 
 /**
@@ -62,7 +106,7 @@ async function calculateBonusOrder(db, salesManID, year) {
  */
 async function calculateBonusPerformance(db, salesmanID, year) {
     // Get all records of current year
-    const evalRecords = await evaRecordService.getBySalesmanID(db, salesmanID);
+    const evalRecords = await getBySalesmanID(db, salesmanID);
     const currentRecords = evalRecords.filter(evaRecord => evaRecord.year == year);
     let totalBonus = 0;
 
@@ -78,7 +122,7 @@ async function calculateBonusPerformance(db, salesmanID, year) {
         totalBonus += record.bonus;
     });
 
-    return {total: totalBonus, evalRecords: currentRecords}
+    return {total: totalBonus, evalRecords: currentRecords};
 }
 
 /**
@@ -92,9 +136,9 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const orderBonus = await calculateBonusOrder(db, salesmanID, year);
     const perfBonus = await calculateBonusPerformance(db, salesmanID, year);
 
-    // const totalBonus = orderBonus.total + perfBonus.total;
-    // Gonna look like {TotalBonus, [ArrayOfOrderBonus], [ArrayOfPerfBonus]} 
-    // return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
+    const totalBonus = orderBonus.total + perfBonus.total;
+
+    return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
 }
 
 /**
