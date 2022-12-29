@@ -67,3 +67,59 @@ exports.getAgentsStartsWithComputerName = async (baseUrl, config, computerName) 
 
     return agentsArray;
 }
+
+/**
+ * retrieves agents starts with computerName
+ */
+exports.getAgentsStartsWithLastLoggedInUserName = async (baseUrl, config, userName) => {
+    const agentsStartsWithLastLoggedInUserName = await axios.get(
+        `${baseUrl}/agents?lastLoggedInUserName__contains=${userName}`,
+        config
+    );
+    
+    const agents = agentsStartsWithLastLoggedInUserName.data.data;
+
+    var agentsArray = [];
+
+    agents.map((value) => {
+        const {
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,
+        } = value;
+
+        agentsArray.push({
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,   
+        })
+    });
+
+    return agentsArray;
+}
