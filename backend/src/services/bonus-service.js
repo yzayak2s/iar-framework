@@ -151,12 +151,18 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
  * @param {*} year current year
  */
 exports.calculateAllBonus = async (db, year) => {
-    const salesmen = await salesmanService.getAll();
+    let salesmen = await salesmanService.getAll(db);
+    salesmen = salesmen.filter(salesman => salesman.uid !== null)
     const returnArray = [];
 
     await Promise.all(salesmen.map( async salesman => {
-        returnArray.push(await this.calculateBonusBySalesmanID(salesman._id));
+        const bonus = await this.calculateBonusBySalesmanID(db, salesman._id, year);
+        bonus.salesManID = salesman._id;
+
+        returnArray.push(bonus);
     }));
+
+    return returnArray;
 }
 
 /**
@@ -194,22 +200,17 @@ exports.getBonusBySalesmanID = async (db, salesManID) => {
  * @param {Bonus} bonus
  */
 exports.add = async (db, bonus) => {
-    const existingBonusById = await db.collection('bonus').findOne({_id: bonus._id});
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: bonus.salesManID});
+    const existingSalesMan = await salesmanService.getSalesManById(db, bonus.salesManID);
 
     if (!await fitsModel(bonus, Bonus)) {
-        throw new Error('Incorrect body object was provided. Needs _id, year, value, remark, verified and salesManID.')
+        throw new Error('Incorrect body object was provided. Needs year, value, remark, verified and salesManID.')
     }
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + bonus.salesManID + ' does not exists!');
     }
-
-    if (existingBonusById) {
-        throw new Error('Bonus with id ' + bonus._id + ' already exists!');
-    }
     
-    return (await db.collection('bonus').insertOne(new Bonus(bonus._id, bonus.year, bonus.value, bonus.remark, bonus.verified, bonus.salesManID))).insertedId;
+    return (await db.collection('bonus').insertOne(new Bonus(bonus.year, bonus.value, bonus.remark, bonus.verified, bonus.salesManID))).insertedId;
 }
 
 /**
