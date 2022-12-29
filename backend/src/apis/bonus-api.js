@@ -100,11 +100,11 @@ exports.calculateBonus = (req, res) => {
 exports.calculateAllBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.calculateBonus(db, req.params.year)
+    bonusService.calculateAllBonus(db, req.params.year)
         .then((calculatedBonuses) => {
             res.send(calculatedBonuses);
         }).catch((e) => {
-            res.send(e.message);
+            res.status(500).send(e.message);
     }).catch(_ => {
         res.status(500).send();
     });
