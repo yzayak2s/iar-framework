@@ -37,18 +37,17 @@ exports.getBySalesmanID = async (db, salesManID) => {
  * @param {EvaluationRecord} evaluationRecord
  */
 exports.add = async (db, evaluationRecord) => {
-    const existingEvaluationRecordId = await db.collection('evaluation_record').findOne({_id: evaluationRecord._id});
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
 
     if (!await fitsModel(evaluationRecord, EvaluationRecord)) {
-        throw new Error('Incorrect body object was provided. Needs _id, goalDescription, targetValue, actualValue, year and salesManID.');
+        throw new Error('Incorrect body object was provided. Needs goalDescription, targetValue, actualValue, year and salesManID.');
     }
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
 
-    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord._id, evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
+    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
 }
 
 /**
