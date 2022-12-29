@@ -1,4 +1,4 @@
-const environment = {
+/* const environment = {
     production: true,
     port: 8080,
     defaultAdminPassword: 'c3uz#3zd',
@@ -15,4 +15,4 @@ const environment = {
     ]
 };
 
-exports.default = environment;
+exports.default = environment; */
