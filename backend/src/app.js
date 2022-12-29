@@ -29,8 +29,8 @@ const app = express();
 const crypto = require('crypto');
 const cors = require('cors');
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+/* const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient; */
 
 let environment;
 if (process.env.NODE_ENV === 'development') {
@@ -45,15 +45,15 @@ app.use(express.json()); //adds support for json encoded bodies
 app.use(express.urlencoded({extended: true})); //adds support url encoded bodies
 app.use(upload.array()); //adds support multipart/form-data bodies
 
-app.use(cookieSession({
+/* app.use(cookieSession({
     secret: crypto.randomBytes(32).toString('hex'),
     sameSite: false,
     secure: false,
     httpOnly: false
-}));
+})); */
 
 app.use(cors({
-    origin: environment.corsOrigins,
+    /* origin: environment.corsOrigins, */
     credentials: true
 }));
 
@@ -70,7 +70,7 @@ app.use('/api', apiRouter); //mount api-router at path "/api"
 // !!!! attention all middlewares, mounted after the router wont be called for any requests
 
 //preparing database credentials for establishing the connection:
-let db_credentials = '';
+/* let db_credentials = '';
 if (environment.db.username) {
     db_credentials = environment.db.username + ':' + environment.db.password + '@';
 }
@@ -81,9 +81,6 @@ MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + 
     await initDb(db); //run initialization function
     app.set('db', db); //register database in the express app
 
-    app.listen(environment.port, () => { //start webserver, after database-connection was established
-        console.log('Webserver started.');
-    });
 });
 
 async function initDb(db) {
@@ -96,4 +93,9 @@ async function initDb(db) {
 
         console.log('created admin user with password: ' + adminPassword);
     }
-}
+} */
+
+
+app.listen(environment.port, () => { //start webserver, after database-connection was established
+    console.log('Webserver started.');
+});
