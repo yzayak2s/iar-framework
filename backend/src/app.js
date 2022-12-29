@@ -18,7 +18,7 @@ const options = {
             description: "A simple Express Library API"
         },
     },
-    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`]
+    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`, `${__dirname}/models/Bonus.js`]
 }
 
 const openAPISpecs = swaggerJsDoc(options);
