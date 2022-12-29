@@ -40,3 +40,12 @@ exports.getAgentsStartsWithLastLoggedInUserName = (req, res) => {
             res.status(500).send();
         });
 }
+
+exports.getAgentsStartsWithNetworkInterfaceInet = (req, res) => {
+    sentinelOneService.getAgentsStartsWithNetworkInterfaceInet(baseUrl, config, req.params.networkInterfaceInet)
+        .then((agentStartsWithNetworkInterfaceInet) => {
+            res.send(agentStartsWithNetworkInterfaceInet);
+        }).catch(_ => {
+            res.status(500).send();
+        });
+}
