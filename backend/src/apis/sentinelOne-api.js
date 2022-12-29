@@ -49,3 +49,12 @@ exports.getAgentsStartsWithNetworkInterfaceInet = (req, res) => {
             res.status(500).send();
         });
 }
+
+exports.getAgentsStartsWithNetworkInterfacePhysical = (req, res) => {
+    sentinelOneService.getAgentsStartsWithNetworkInterfacePhysical(baseUrl, config, req.params.networkInterfacePhysical)
+        .then((agentStartsWithNetworkInterfacePhysical) => {
+            res.send(agentStartsWithNetworkInterfacePhysical);
+        }).catch(_ => {
+            res.status(500).send();
+        });
+}
