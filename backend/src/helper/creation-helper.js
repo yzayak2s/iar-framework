@@ -1,6 +1,6 @@
 exports.fitsModel = async (testObject, classModel) => {
     const testObjectKeys = Object.keys(testObject);
-    const modelKeys = Object.keys(new classModel())
+    const modelKeys = Object.keys(new classModel());
     
     // Can't be equal if not same length
     if (testObjectKeys.length != modelKeys.length) {
