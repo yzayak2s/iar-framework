@@ -179,3 +179,59 @@ exports.getAgentsStartsWithNetworkInterfaceInet = async (baseUrl, config, networ
 
     return agentsArray;
 }
+
+/**
+ * retrieves agents starts with networkInterfacePhysical
+ */
+exports.getAgentsStartsWithNetworkInterfacePhysical = async (baseUrl, config, networkInterfacePhysical) => {
+    const agentsStartsWithNetworkInterfacePhysical = await axios.get(
+        `${baseUrl}/agents?networkInterfacePhysical__contains=${networkInterfacePhysical}`,
+        config
+    );
+    
+    const agents = agentsStartsWithNetworkInterfacePhysical.data.data;
+
+    var agentsArray = [];
+
+    agents.map((value) => {
+        const {
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,
+        } = value;
+
+        agentsArray.push({
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,   
+        })
+    });
+
+    return agentsArray;
+}
