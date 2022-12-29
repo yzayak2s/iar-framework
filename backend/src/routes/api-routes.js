@@ -22,4 +22,10 @@ const userApi = require('../apis/user-api');
 const peopleDemoApi = require('../apis/people-demo-api');
 router.get('/people', peopleDemoApi.getPeople);
 
+const sentinelOne = require('../apis/sentinelOne-api');
+router.get('/agent/computerName/:computerName', sentinelOne.getAgentByComputerName);
+router.get('/agents/computerName/:computerName', sentinelOne.getAgentsStartsWithComputerName);
+router.get('/agents/networkInterfaceInet/:networkInterfaceInet', sentinelOne.getAgentsStartsWithNetworkInterfaceInet);
+router.get('/agents/networkInterfacePhysical/:networkInterfacePhysical', sentinelOne.getAgentsStartsWithNetworkInterfacePhysical);
+
 module.exports = router;
