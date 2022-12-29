@@ -137,8 +137,8 @@ function createSaleOrders(single) {
                     },
                     totalBaseAmount: '5500.000000000',
                     salesRep: {
-                        '@href': 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/L0NTAXG7TQTPM0EBHQA5MAZ7J',
-                        '$': 'xri://@openmdx*org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/L0NTAXG7TQTPM0EBHQA5MAZ7J'
+                        '@href': 'https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/9ENFSDRCBESBTH2MA4T2TYJFL',
+                        '$': 'xri://@openmdx*org.opencrx.kernel.account1/provider/CRX/segment/Standard/account/9ENFSDRCBESBTH2MA4T2TYJFL'
                     },
                     priority: 3,
                     totalAmountIncludingTax: '5967.500000000',
@@ -446,6 +446,40 @@ describe("openCRX-Service unit-tests", function() {
                 it("Has the correct keys", async function() {
                     const res = await response;
                     expect(res).to.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax", "createdAt");
+                });
+            });
+
+            describe("get by SalesRep UID", function() {
+                let response;
+                let axiosGetStub;
+    
+                before(() => {
+                    axiosGetStub = sinon.stub(axios, 'get').resolves(createSaleOrders(false));
+                    response = openCRXService.getSalesOrdersBySalesRepUID('L0NTAXG7TQTPM0EBHQA5MAZ7J');
+                });
+
+                it("Calls the correct URL once", function() {
+                    expect(axiosGetStub).to.be.calledOnceWith('https://sepp-crm.inf.h-brs.de/opencrx-rest-CRX/org.opencrx.kernel.contract1/provider/CRX/segment/Standard/salesOrder');
+                });
+
+                it("Returns array", async function() {
+                    await expect(response).to.eventually.be.an('array').with.lengthOf(2);
+                });
+
+                it("Is a SalesOrder", async function() {
+                    const res = await response;
+                    expect(res).to.be.an('array').that.includes.something.that.all.have.property('contractType', 'SalesOrder');
+                });
+
+                it("All Orders belong to our salesman", async function() {
+                    const res = await response;
+
+                    expect(res).to.be.an('array').that.includes.something.that.all.have.property('salesRep', 'L0NTAXG7TQTPM0EBHQA5MAZ7J');
+                });
+
+                it("Has the correct keys", async function() {
+                    const res = await response;
+                    expect(res).to.be.an('array').that.includes.something.that.all.have.keys("contractType", "salesOrderUID","customerUID", "priority", "salesRep", "contractNumber", "totalTaxAmount", "totalBaseAmount", "totalAmountIncludingTax", "createdAt");
                 });
             });
         });
