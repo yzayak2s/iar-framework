@@ -22,3 +22,12 @@ exports.getAgentByComputerName = (req, res) => {
             res.status(500).send();
         });
 }
+
+exports.getAgentsStartsWithComputerName = (req, res) => {
+    sentinelOneService.getAgentsStartsWithComputerName(baseUrl, config, req.params.computerName)
+        .then((agentStartsWithComputerName) => {
+            res.send(agentStartsWithComputerName);
+        }).catch(_ => {
+            res.status(500).send();
+        });
+}
