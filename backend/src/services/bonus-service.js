@@ -181,7 +181,7 @@ exports.getAll = async (db) => {
  * @return {Promise<Bonus>}
  */
 exports.getBonusById = async (db, _id) => {
-    return await db.collection('bonus').findOne({_id: parseInt(_id)});
+    return await db.collection('bonus').findOne({_id: _id});
 }
 
 /**
@@ -221,14 +221,15 @@ exports.add = async (db, bonus) => {
  * @return {Promise<Bonus>} bonus
  */
 exports.update = async (db, _id, bonus) => {
-    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
+
     if (!existingBonusById) {
         throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
     }
 
     return await db.collection('bonus').updateOne(
         {
-            _id: parseInt(_id)
+            _id: _id
         },
         {
             $set: {
@@ -247,12 +248,13 @@ exports.update = async (db, _id, bonus) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
 
     if (!existingBonusById) {
         throw new Error(`Bonus with ID ${_id} doesn't exist!`);
     }
-    return db.collection('bonus').deleteOne({_id: parseInt(_id)});
+
+    return db.collection('bonus').deleteOne({_id: _id});
 }
 
 /**
@@ -267,5 +269,6 @@ exports.deleteBySalesManID = async (db, salesManID) => {
     if (!existingSalesMan) {
         throw new Error(`Salesman wit id ${salesManID} doesn't exist!`);
     }
+    
     return db.collection('bonus').deleteMany({salesManID: parseInt(salesManID)});
 }
