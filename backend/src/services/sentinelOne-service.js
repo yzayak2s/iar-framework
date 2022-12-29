@@ -123,3 +123,59 @@ exports.getAgentsStartsWithLastLoggedInUserName = async (baseUrl, config, userNa
 
     return agentsArray;
 }
+
+/**
+ * retrieves agents starts with networkInterfaceInet
+ */
+exports.getAgentsStartsWithNetworkInterfaceInet = async (baseUrl, config, networkInterfaceInet) => {
+    const agentsStartsWithNetworkInterfaceInet = await axios.get(
+        `${baseUrl}/agents?networkInterfaceInet__contains=${networkInterfaceInet}`,
+        config
+    );
+    
+    const agents = agentsStartsWithNetworkInterfaceInet.data.data;
+
+    var agentsArray = [];
+
+    agents.map((value) => {
+        const {
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,
+        } = value;
+
+        agentsArray.push({
+            computerName,
+            lastActiveDate,
+            encryptedApplications,
+            lastLoggedInUserName,
+            agentVersion,
+            createdAt,
+            osStartTime,
+            totalMemory,
+            externalIp,
+            lastIpToMgmt,
+            serialNumber,
+            modelName,
+            siteName,
+            groupName,
+            operationalState,
+            networkInterfaces,   
+        })
+    });
+
+    return agentsArray;
+}
