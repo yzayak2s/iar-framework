@@ -212,37 +212,55 @@ router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
 router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
 /**
  * @swagger
- * /api/bonuses/calculateBonus/{year}/{salesManID}:
+ * /api/bonuses/calculateBonus/sid/{salesManID}/{year}:
  *  get: 
  *      summary: returns bonus of salesman
  *      tags:
  *          - Bonus
  *      parameters:
  *          - in: path
+ *            name: year
+ *            schema:
+ *              type: number
+ *              required: true
+ *              example: 2020
+ *            description: Year to be calculated
+ *          - in: path
  *            name: salesManID
  *            schema:
  *              type: number
+ *              example: 9
  *            required: true
  *            description: ID of salesman
+ *      responses:
+ *          200:
+ *              description: The Bonus
+ *          401:
+ *              description: Unauthorized 
+ */
+router.get('/bonuses/calculateBonus/sid/:salesManID/:year', bonusApi.calculateBonus);
+/**
+ * @swagger
+ * /api/bonuses/calculateBonus/all/{year}:
+ *  get: 
+ *      summary: returns bonuses of all salesman
+ *      tags:
+ *          - Bonus
+ *      parameters:
  *          - in: path
  *            name: year
  *            schema:
  *              type: number
  *              required: true
- *              example: 2021
+ *              example: 2020
  *            description: Year to be calculated
  *      responses:
  *          200:
- *              description: The salesman
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SalesMan'       
+ *              description: Array of Bonuses 
  *          401:
  *              description: Unauthorized 
  */
-router.get('/bonuses/calculateBonus/:year/:salesManID', bonusApi.calculateBonus);
-router.get('/bonuses/calculateBonus/:year/all', bonusApi.calculateAllBonus);
+router.get('/bonuses/calculateBonus/all/:year', bonusApi.calculateAllBonus);
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
