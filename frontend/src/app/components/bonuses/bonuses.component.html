@@ -3,21 +3,6 @@
 <ngx-spinner
     type="ball-pulse"
 >Loading...</ngx-spinner>
-<ul class="bonuses">
-    <li *ngFor="let bonus of bonuses">
-        <a routerLink="/bonuses/detail/{{bonus.id}}">
-            <span class="badge">{{bonus.id}}</span> {{bonus.value}}
-            <!--<span class="year">{{bonus.year}}</span>
-            <span class="value">{{bonus.value}}</span>
-            <span class="remark">{{bonus.remark}}</span>
-            <span class="verified">{{bonus.verified}}</span>
-            <span class="salesManID">{{bonus.salesManID}}</span>-->
-        </a>
-        <button type="button" class="delete" title="delete bonus"
-                (click)="delete(bonus)">x
-        </button>
-    </li>
-</ul>
 
 <div class="mat-elevation-z8">
     <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="bonuses">
