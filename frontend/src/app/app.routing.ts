@@ -6,6 +6,7 @@ import {ExamplePageComponent} from './pages/example-page/example-page.component'
 import {NotFoundPageComponent} from './pages/not-found-page/not-found-page.component';
 import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
+import {BonusComponent} from './components/bonus/bonus.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 /*
@@ -23,6 +24,7 @@ const routes: Routes = [
     {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
     {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService]},
     {path: 'evaluationrecord', component: EvaluationRecordComponent, canActivate: [AuthGuardService]},
+    {path: 'bonus', component: BonusComponent, canActivate: [AuthGuardService]},
     {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];

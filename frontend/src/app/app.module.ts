@@ -21,6 +21,7 @@ import {MatTableModule} from '@angular/material/table';
 import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
+import {BonusComponent} from './components/bonus/bonus.component';
 import {MatListModule} from '@angular/material/list';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,6 +36,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         NotFoundPageComponent,
         SalesManComponent,
         EvaluationRecordComponent,
+        BonusComponent,
         DashboardComponent
     ],
     imports: [
