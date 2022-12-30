@@ -234,6 +234,7 @@ describe('salesman-service unit-tests', function() {
         
         describe('getSalesmenFromAPI Tests', function() {
             beforeEach(async () => {
+                await salesmanService.add(db, new SalesMan('Kevin', 'Failure', 2, null));
                 await salesmanService.getSalesmenFromAPI(db);
             });
 
@@ -249,6 +250,10 @@ describe('salesman-service unit-tests', function() {
 
             it('Expect one salesman to not have a UID', async function() {
                 expect((await salesmanService.getSalesManById(db, 1)).uid).to.be.undefined;
+            });
+
+            it('Expected old salesman with same id to be overwritten', async function() {
+                expect(await salesmanService.getSalesManById(db, 2)).to.not.be.eql(new SalesMan('Kevin', 'Failure', 2, null));
             });
         });
     });

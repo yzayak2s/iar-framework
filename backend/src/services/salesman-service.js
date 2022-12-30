@@ -123,11 +123,16 @@ exports.getSalesmenFromAPI = async (db) => {
 
     await Promise.all(orangeHRMEmployees.map(async employee => {
         let hasUID = false;
+
+        if(((await this.getSalesManById(db, employee.employeeId)) !== null)) {
+            await this.delete(db, employee.employeeId)
+        }
         
         for (let i = 0; i < openCRXAccounts.length; i++) {           
             const account = openCRXAccounts[i];
 
             if (employee.code == account.governmentId) {
+                // ToDo: Does Salesman exist? If yes delete
                 await this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
                 hasUID = true;
                 // remove this account from check list
