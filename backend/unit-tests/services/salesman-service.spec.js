@@ -1,13 +1,18 @@
 const chai = require('chai');
 const expect = chai.expect;
+const sinon = require('sinon');
+
 chai.use(require("chai-exclude"));
 chai.use(require('chai-as-promised'));
+chai.use(require('sinon-chai'));
 
 const {initMockedMongoDB, resetMockedMongoDB, closeMockedMongoDB} = require('../support/mongodb-mocking');
 
 const salesmanService = require('../../src/services/salesman-service');
+const openCRXService = require('../../src/services/openCRX-service');
+const orangeHRMService = require('../../src/services/orangeHRM-service');
 const SalesMan = require('../../src/models/SalesMan');
-const {copyObject} = require('../support/copyObject')
+const {copyObject} = require('../support/copyObject');
 
 const salesMan = new SalesMan('Wilhelm', 'Schwarz', 1)
 const salesMan2 = new SalesMan('Jane', 'Samuel', 2)
@@ -128,6 +133,123 @@ describe('salesman-service unit-tests', function() {
 
         it('throws if trying to delete not existing salesman', async function() {
             await expect(salesmanService.delete(db, 1)).to.be.rejectedWith("Salesman with id 1 doesn't exist!");
+        });
+    });
+
+    describe.only('stubbed tests for getting API salesman', function() {
+        let openCRXstub, orangeHRMstub;
+
+        beforeEach(() => {
+            openCRXstub = sinon.stub(openCRXService, 'getAllAccounts').resolves([
+                [
+                    {  
+                        "accountType": "LegalEntity",
+                        "accountUID": "63AE23091189613200688C92",
+                        "fullName": "Barbie GMBH",
+                        "accountRating": 2,
+                        "accessLevelBrowse": 3,
+                        "accountState": 1
+                    }
+                ], [        
+                    {
+                        "accountType": "Contact",
+                        "accountUID": "63AE22EDEBF659D75714C1F4",
+                        "firstName": "Bob",
+                        "lastName": "Marley",
+                        "governmentId": 98782
+                    },
+                    {
+                        "accountType": "Contact",
+                        "accountUID": "63AE22F2E90BA570217D7C75",
+                        "firstName": "John",
+                        "lastName": "Smith",
+                        "governmentId": 75342
+                    }    
+                ]
+            ]);
+
+            orangeHRMstub = sinon.stub(orangeHRMService, 'getAllEmployees').resolves([
+                {
+                    "firstName": "Bob",
+                    "middleName": "",
+                    "lastName": "Marley",
+                    "code": "98782",
+                    "employeeId": "2",
+                    "fullName": "Bob Marley",
+                },
+                {
+                    "firstName": "Kevin",
+                    "middleName": "",
+                    "lastName": "Klein",
+                    "code": "90732",
+                    "employeeId": "1",
+                    "fullName": "Kevin Klein",
+                }
+            ]);
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        describe('Stub tests', function() {
+            describe('OpenCRXService Stub', function() {
+                let response; 
+
+                beforeEach(async () => {
+                    response = openCRXService.getAllAccounts();
+                })
+
+                it('Got 3 Accounts', async function() {
+                    await expect(response).to.eventually.be.fulfilled;
+                    await expect(response).to.eventually.be.an('array').lengthOf(2);
+
+                    const res = await response;
+                    expect(res[0].length + res[1].length).to.be.eql(3);
+                });
+    
+                it('Got 2 Contacts and 1 Legal Entity', async function() {
+                    const res = await response;
+
+                    expect(res[0]).to.be.an('array').with.lengthOf(1);
+                    expect(res[0]).to.be.an('array').that.includes.something.that.all.have.property('accountType', 'LegalEntity');
+                    expect(res[1]).to.be.an('array').with.lengthOf(2);
+                    expect(res[1]).to.be.an('array').that.includes.something.that.all.have.property('accountType', 'Contact');
+                });
+            });
+
+            describe('OrangeHRMService Stub', function() {
+                let response; 
+
+                beforeEach(async () => {
+                    response = orangeHRMService.getAllEmployees();
+                })
+                
+                it('Got 2 Employees', async function() {
+                    await expect(response).to.eventually.be.fulfilled;
+                    await expect(response).to.eventually.be.an('array').lengthOf(2);
+                });
+            });
+        });
+        
+        describe('getSalesmenFromAPI Tests', function() {
+            beforeEach(async () => {
+                await salesmanService.getSalesmenFromAPI(db);
+            });
+
+            it('Adds two salesman to DB', async function() {
+                await expect(salesmanService.getAll(db)).to.eventually.be.an('array').with.lengthOf(2);
+                await expect(salesmanService.getSalesManById(db, 1)).to.eventually.exist;
+                await expect(salesmanService.getSalesManById(db, 2)).to.eventually.exist;
+            });
+
+            it('Expect one salesman to have UID', async function() {
+                expect(await salesmanService.getSalesManById(db, 2)).to.have.property('uid', '63AE22EDEBF659D75714C1F4');
+            });
+
+            it('Expect one salesman to not have a UID', async function() {
+                expect((await salesmanService.getSalesManById(db, 1)).uid).to.be.undefined;
+            });
         });
     });
 })
