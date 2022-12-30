@@ -56,7 +56,6 @@ async function calculateBonusOrder(db, salesManID, year) {
     await Promise.all(salesOrders.map(async order => {
         let finishedOrder = {};
         const customer = await openCRXService.getAccountByUID(order.customerUID);
-
         // Name of Customer
         finishedOrder.name = customer.fullName;
 
@@ -133,6 +132,13 @@ async function calculateBonusPerformance(db, salesmanID, year) {
  * @returns {Promise<{total: number, orderBonus: orderBonus, perfBonus: perfBonus}>} Total bonus, Sales orders with bonuses and the performance records with bonuses
  */
 exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
+    //ToDo: Delete old Bonus and Overwrite.
+    let existingBonus = (await this.getBonusBySalesmanID(db, salesmanID)).filter(bonus => bonus.year == year);
+
+    if (existingBonus.length !== 0) {
+        await this.delete(db, existingBonus[0]._id);
+    }
+
     const orderBonus = await calculateBonusOrder(db, salesmanID, year);
     const perfBonus = await calculateBonusPerformance(db, salesmanID, year);
 
@@ -201,6 +207,11 @@ exports.getBonusBySalesmanID = async (db, salesManID) => {
  */
 exports.add = async (db, bonus) => {
     const existingSalesMan = await salesmanService.getSalesManById(db, bonus.salesManID);
+    const existingBonus = (await this.getBonusBySalesmanID(db, bonus.salesManID)).filter(exisBonus => exisBonus.year == bonus.year);
+
+    if (existingBonus.length !== 0){
+        throw new Error('Bonus for salesman ' + bonus.salesManID + ' already exists for the year ' + bonus.year + '.');
+    }
 
     if (!await fitsModel(bonus, Bonus)) {
         throw new Error('Incorrect body object was provided. Needs year, value, remark, verified and salesManID.')

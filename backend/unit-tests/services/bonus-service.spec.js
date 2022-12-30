@@ -1,7 +1,9 @@
 const chai = require('chai');
+const sinon = require('sinon');
 const expect = chai.expect;
 chai.use(require("chai-exclude"));
 chai.use(require('chai-as-promised'));
+chai.use(require('sinon-chai'));
 
 const {initMockedMongoDB, resetMockedMongoDB, closeMockedMongoDB} = require('../support/mongodb-mocking');
 
@@ -10,6 +12,7 @@ const Bonus = require('../../src/models/Bonus');
 const salesmanService = require('../../src/services/salesman-service');
 const SalesMan = require('../../src/models/SalesMan');
 const {copyObject} = require('../support/copyObject');
+const openCRXService = require('../../src/services/openCRX-service');
 
 const bonusExample1 = new Bonus(2020, 2000, 'Some remark1', false, 1);
 const bonusExample2 = new Bonus(2021, 2555, 'Some remark2', true, 1);
@@ -34,7 +37,7 @@ describe("bonus-service Unit-tests", function() {
     });
 
 
-    describe("Able to add bonuses", function() {
+    describe.only("Able to add bonuses", function() {
         beforeEach(async () => {
             await salesmanService.add(db, copyObject(salesmanExample1));
             await salesmanService.add(db, copyObject(salesmanExample2));
@@ -56,6 +59,11 @@ describe("bonus-service Unit-tests", function() {
         it('throws if given object is incorrect', async function() {
             // year missing
             await expect(bonusService.add(db, {value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided. Needs year, value, remark, verified and salesManID.')
+        });
+
+        it('throws if bonus for a salesman for the specific year already exists', async function() {
+            await bonusService.add(db, copyObject(bonusExample1));
+            await expect(bonusService.add(db, copyObject(bonusExample1))).to.eventually.be.rejectedWith('Bonus for salesman ' + bonusExample1.salesManID + ' already exists for the year ' + bonusExample1.year + '.');
         });
     });
 
@@ -138,5 +146,86 @@ describe("bonus-service Unit-tests", function() {
         it("Throws if trying to delete bonuses from non existing salesman", async function() {
             await expect(bonusService.deleteBySalesManID(db, 9)).to.eventually.be.rejectedWith("Salesman wit id 9 doesn't exist!")
         });
-    })
+    });
+
+    describe('Able to calculate Bonus', function() {
+        beforeEach(() => {
+            sinon.stub(openCRXService, 'getSalesOrdersBySalesRepUID').resolves(
+                {
+                    contractType: 'SalesOrder',
+                    salesOrderUID: 'RPI8V9YPYA8Z07IGMO3WKDQ7W',
+                    customerUID: '9DXSJ5D62FBHLH2MA4T2TYJFL',
+                    salesRep: '9ENFSDRCBESBTH2MA4T2TYJFL',
+                    createdAt: '2022',
+                    priority: 2,
+                    contractNumber: 1337,
+                    totalTaxAmount: '733.125000000',
+                    totalBaseAmount: '8625.000000000',
+                    totalAmountIncludingTax: '9358.125000000'
+                }
+              );
+
+            sinon.stub(openCRXService, 'getAccountByUID').resolves(
+                {
+                accountType: 'LegalEntity',
+                accountUID: '9DXSJ5D62FBHLH2MA4T2TYJFL',
+                fullName: 'TEST GMBH',
+                accountRating: 1,
+                accountState: 1
+              }
+              );
+
+            sinon.stub(openCRXService, 'getAllPositionsByUID').resolves([
+                {
+                  contractType: 'SalesOrderPosition',      
+                  positionUID: '3CZN0GINLXPT60EBHQA5MAZ7J',
+                  productUID: '9JMBMVTX2CSMHH2MA4T2TYJFL', 
+                  quantity: '10.000000000',
+                  pricePerUnit: '250.000000000',
+                  amount: '2500.500000000000000000000000000'
+                },
+                {
+                  contractType: 'SalesOrderPosition',
+                  positionUID: '3N1IOFZVIDZAI0EBHQA5MAZ7J',
+                  productUID: 'L6K68IE1QROBTH2MA4T2TYJFL',
+                  quantity: '1.000000000',
+                  pricePerUnit: '200.000000000',
+                  amount: '2000.000000000000000000000000000'
+                }
+              ]);
+
+            sinon.stub(openCRXService, 'getProductByUID').onFirstCall().resolves({
+                productType: 'Product',
+                productUID: undefined,
+                productNumber: 1001,
+                name: 'TestProduct1',
+                description: 'Test Product 1'
+              }).onSecondCall().resolves({
+                productType: 'Product',
+                productUID: undefined,
+                productNumber: 1002,
+                name: 'TestProduct2',
+                description: 'Test Product 2'
+              });
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        })
+
+        describe('Calculate Bonus for all Salesman', function() {
+            beforeEach(async () => {
+                await salesmanService.add(db, copyObject(salesmanExample1));
+                await salesmanService.add(db, copyObject(salesmanExample2));
+            });
+        });
+
+        describe('Calculate Bonus for a single Salesman', function() {
+            beforeEach(async () => {
+                await salesmanService.add(db, copyObject(salesmanExample1));
+            });
+
+            it("")
+        });
+    });
 });
