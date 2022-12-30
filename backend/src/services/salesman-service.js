@@ -1,7 +1,7 @@
 const Salesman = require('../models/SalesMan');
 const {fitsModel} = require('../helper/creation-helper')
-const {getAllEmployees} = require('../services/orangeHRM-service')
-const {getAllAccounts} = require('../services/openCRX-service');
+const orangeHRMService = require('../services/orangeHRM-service')
+const openCRXService = require('../services/openCRX-service');
 
 /**
  * retrieves salesmen from database
@@ -117,18 +117,18 @@ exports.delete = async (db, _id) => {
 exports.getSalesmenFromAPI = async (db) => {
     // ToDo: What if the Salesman already is in the database? Maybe someone took the ID? Delete Salesmen before?
     
-    const orangeHRMEmployees = await getAllEmployees();
+    const orangeHRMEmployees = await orangeHRMService.getAllEmployees();
     // Only get Contacts
-    let openCRXAccounts = (await getAllAccounts())[1];
+    let openCRXAccounts = (await openCRXService.getAllAccounts())[1];
 
-    orangeHRMEmployees.forEach(employee => {
+    await Promise.all(orangeHRMEmployees.map(async employee => {
         let hasUID = false;
         
         for (let i = 0; i < openCRXAccounts.length; i++) {           
             const account = openCRXAccounts[i];
 
             if (employee.code == account.governmentId) {
-                this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
+                await this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
                 hasUID = true;
                 // remove this account from check list
                 openCRXAccounts.splice(i, 1);
@@ -136,7 +136,7 @@ exports.getSalesmenFromAPI = async (db) => {
         }
 
         if (!hasUID) {
-            this.add(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId));
+            await this.add(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId));
         }
-    });
+    }));
 }
