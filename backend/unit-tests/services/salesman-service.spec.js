@@ -136,7 +136,7 @@ describe('salesman-service unit-tests', function() {
         });
     });
 
-    describe.only('stubbed tests for getting API salesman', function() {
+    describe('stubbed tests for getting API salesman', function() {
         let openCRXstub, orangeHRMstub;
 
         beforeEach(() => {
