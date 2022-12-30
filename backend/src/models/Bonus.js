@@ -49,7 +49,7 @@ class Bonus {
         this.value = value;
         this.remark = remark;
         this.verified = verified;
-        this.salesManID = salesManID;
+        this.salesManID = parseInt(salesManID);
     }
 }
 
