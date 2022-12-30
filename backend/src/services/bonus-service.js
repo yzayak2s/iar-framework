@@ -1,3 +1,4 @@
+const {ObjectId} = require("mongodb");
 /**
  * retrieves bonussalaries from database
  * @param db source database
@@ -34,7 +35,10 @@ exports.getBonusBySalesmanID = async (db, salesManID) => {
  */
 exports.add = async (db, bonus) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: bonus._id});
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: bonus.salesManID});
+
+    let ObjectId = require('mongodb').ObjectId;
+    let o_id = new ObjectId(bonus.salesManID);
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: o_id});
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + bonus.salesManID + ' does not exist!');
@@ -54,17 +58,21 @@ exports.add = async (db, bonus) => {
  * @return {Promise<Bonus>} bonus
  */
 exports.update = async (db, _id, bonus) => {
-    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+    let ObjectId = require('mongodb').ObjectId;
+    let o_id = new ObjectId(_id);
+    const existingBonusById = await db.collection('bonus').findOne({_id: o_id});
     if (existingBonusById) {
+        let salesman_id = new ObjectId(bonus.salesManID);
         return await db.collection('bonus').updateOne(
             {
-                _id: parseInt(_id)
+                _id: o_id
             },
             {
                 $set: {
                     year: bonus.year,
                     value: bonus.value,
                     verified: bonus.verified,
+                    salesManID: salesman_id
                 }
             }
         );
@@ -79,12 +87,14 @@ exports.update = async (db, _id, bonus) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    const existingBonusById = await db.collection('bonus').findOne({_id: parseInt(_id)});
+    let ObjectId = require('mongodb').ObjectId;
+    let o_id = new ObjectId(_id);
+    const existingBonusById = await db.collection('bonus').findOne({_id: o_id});
 
     if (!existingBonusById) {
         throw new Error(`Bonus with ID ${_id} doesn't exist!`);
     }
-    return db.collection('bonus').deleteOne({_id: parseInt(_id)});
+    return db.collection('bonus').deleteOne({_id: o_id});
 }
 
 /**
