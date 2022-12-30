@@ -114,9 +114,7 @@ exports.delete = async (db, _id) => {
     return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
 }
 
-exports.getSalesmenFromAPI = async (db) => {
-    // ToDo: What if the Salesman already is in the database? Maybe someone took the ID? Delete Salesmen before?
-    
+exports.getSalesmenFromAPI = async (db) => {    
     const orangeHRMEmployees = await orangeHRMService.getAllEmployees();
     // Only get Contacts
     let openCRXAccounts = (await openCRXService.getAllAccounts())[1];
