@@ -31,7 +31,7 @@ export class SalesManService {
         });
     }
 
-    public updateSalesman(id: string,salesman: SalesMan): Observable<any> {
+    public updateSalesman(id: string, salesman: SalesMan): Observable<any> {
         const url = environment.apiEndpoint +'/api/salesmen/update/'+id;
         return this.http.put<any>(url, salesman,  {
             withCredentials: true

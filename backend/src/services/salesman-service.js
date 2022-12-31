@@ -1,3 +1,5 @@
+const {ObjectId} = require("mongodb");
+
 /**
  * retrieves salesmen from database
  * @param db source database
@@ -24,7 +26,7 @@ exports.getSalesManByFirstname = async (db, firstname) => {
  * @return {Promise<SalesMan>}
  */
 exports.getSalesManById = async (db, _id) => {
-    return await db.collection('salesmen').findOne({_id: parseInt(_id)});
+    return await db.collection('salesmen').findOne({_id: _id});
 }
 
 /**
@@ -51,12 +53,14 @@ exports.add = async (db, salesman) => {
  * @return {Promise<SalesMan>} salesman
  */
 exports.update = async (db, _id, salesman) => {
-    const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
+    let ObjectId = require('mongodb').ObjectId;
+    let o_id = new ObjectId(_id);
+    const existingSalesmanId = await db.collection('salesmen').findOne({_id: o_id});
 
     if (existingSalesmanId) {
         return await db.collection('salesmen').updateOne(
             {
-                _id: parseInt(_id)
+                _id: o_id
             },
             { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
                 $set: {
@@ -65,8 +69,9 @@ exports.update = async (db, _id, salesman) => {
                 }
             }
         );
+    } else {
+        throw new Error("Salesmen with ID " + _id + " doesn't exist!");
     }
-    throw new Error("Salesmen with ID ' + salesman._id + ' doesn't exist!");
 }
 
 /**
@@ -76,10 +81,12 @@ exports.update = async (db, _id, salesman) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(_id)});
+    let ObjectId = require('mongodb').ObjectId;
+    let o_id = new ObjectId(_id);
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: o_id});
 
     if (!existingSalesMan) {
         throw new Error("Salesman with id " + _id + " doesn't exist!")
     }
-    return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
+    return db.collection('salesmen').deleteOne({_id: o_id})
 }
