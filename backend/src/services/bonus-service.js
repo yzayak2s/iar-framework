@@ -132,20 +132,18 @@ async function calculateBonusPerformance(db, salesmanID, year) {
  * @returns {Promise<{total: number, orderBonus: orderBonus, perfBonus: perfBonus}>} Total bonus, Sales orders with bonuses and the performance records with bonuses
  */
 exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
-    //ToDo: Delete old Bonus and Overwrite.
-    let existingBonus = (await this.getBonusBySalesmanID(db, salesmanID)).filter(bonus => bonus.year == year);
-
+    const existingBonus = (await this.getBonusBySalesmanID(db, salesmanID)).filter(bonus => bonus.year == year);
+    
     if (existingBonus.length !== 0) {
         await this.delete(db, existingBonus[0]._id);
     }
-
+    
     const orderBonus = await calculateBonusOrder(db, salesmanID, year);
     const perfBonus = await calculateBonusPerformance(db, salesmanID, year);
 
     const totalBonus = orderBonus.total + perfBonus.total;
 
     // Save this bonus to the database
-    // ToDo: Does not check yet if database already has bonus for this salesman!
     this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
 
     return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
@@ -158,7 +156,7 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
  */
 exports.calculateAllBonus = async (db, year) => {
     let salesmen = await salesmanService.getAll(db);
-    salesmen = salesmen.filter(salesman => salesman.uid !== null)
+    salesmen = salesmen.filter(salesman => salesman.uid !== null && salesman.uid !== undefined)
     const returnArray = [];
 
     await Promise.all(salesmen.map( async salesman => {
