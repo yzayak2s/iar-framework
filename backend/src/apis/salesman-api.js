@@ -70,3 +70,16 @@ exports.deleteSalesMan = (req, res) => {
         res.status(500).send();
     })
 }
+
+exports.createApiSalesmen = (req, res) => {
+    const db = req.app.get('db');
+
+    salesmenService.getSalesmenFromAPI(db)
+        .then(_id => {
+            res.send(_id.toString());
+        }).catch((e) => {
+            res.send(e.message);
+    }).catch(_ => {
+        res.status(500).send();
+    });
+}

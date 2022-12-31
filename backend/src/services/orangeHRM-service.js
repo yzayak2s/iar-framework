@@ -1,3 +1,4 @@
+const salesmanService = require('./salesman-service')
 const axios = require('axios');
 const https = require('https');
 const qs = require("querystring");
@@ -5,6 +6,7 @@ const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 // OrangeHRM HTTP Request Header definition
 const {orangeHRMConfig} = require('../../environments/apiEnvironment');
+const SalesMan = require('../models/SalesMan');
 const baseUrl = orangeHRMConfig.baseUrl;
 
 const body = qs.stringify({

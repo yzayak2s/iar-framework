@@ -83,3 +83,29 @@ exports.deleteAllBonusesOfSalesmanById = (req, res) => {
         res.status(500).send();
     });
 }
+
+exports.calculateBonus = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.calculateBonusBySalesmanID(db, req.params.salesManID, req.params.year)
+        .then((calculatedBonus) => {
+            res.send(calculatedBonus);
+        }).catch((e) => {
+            res.send(e.message);
+    }).catch(_ => {
+        res.status(500).send();
+    });
+}
+
+exports.calculateAllBonus = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.calculateAllBonus(db, req.params.year)
+        .then((calculatedBonuses) => {
+            res.send(calculatedBonuses);
+        }).catch((e) => {
+            res.status(500).send(e.message);
+    }).catch(_ => {
+        res.status(500).send();
+    });
+}

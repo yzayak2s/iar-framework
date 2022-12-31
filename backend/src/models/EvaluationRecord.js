@@ -5,16 +5,12 @@
  *      Evaluation_Record:
  *          type: object
  *          required:
- *              - goalID
  *              - goalDescription
  *              - targetValue
  *              - actualValue
  *              - year
  *              - salesManID
  *          properties:
- *              goalID:
- *                  type: int
- *                  description: id of the evaluation Record
  *              goalDescription:
  *                  type: string
  *                  description: Description of our goal
@@ -31,7 +27,6 @@
  *                  type: int
  *                  description: The id of the salesman this record belongs to
  *          example:
- *              goalID: 2
  *              goalDescription: Make 2000€ of sales this year
  *              targetValue: 2000
  *              actualValue: 1520
@@ -41,14 +36,12 @@
 
 class EvaluationRecord {
     constructor(
-        _goalID,
         goalDescription,
         targetValue,
         actualValue,
         year,
         salesManID
     ) {
-        this._id = _goalID;
         this.goalDescription = goalDescription;
         this.targetValue = targetValue;
         this.actualValue = actualValue;

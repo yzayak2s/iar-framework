@@ -18,7 +18,7 @@ const options = {
             description: "A simple Express Library API"
         },
     },
-    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`]
+    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`, `${__dirname}/models/Bonus.js`]
 }
 
 const openAPISpecs = swaggerJsDoc(options);
@@ -92,7 +92,7 @@ async function initDb(db) {
         const User = require("./models/User");
 
         const adminPassword = environment.defaultAdminPassword;
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, '', true));
 
         console.log('created admin user with password: ' + adminPassword);
     }

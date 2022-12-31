@@ -1,3 +1,8 @@
+const Salesman = require('../models/SalesMan');
+const {fitsModel} = require('../helper/creation-helper')
+const orangeHRMService = require('../services/orangeHRM-service')
+const openCRXService = require('../services/openCRX-service');
+
 /**
  * retrieves salesmen from database
  * @param db source database
@@ -34,12 +39,36 @@ exports.getSalesManById = async (db, _id) => {
  */
 exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
+    salesman.uid = undefined;
 
+    if (!await fitsModel(salesman, Salesman)){
+        throw new Error('Incorrect body object was provided. Needs _id, firstname and lastname.')
+    }
+    
     if (existingSalesmanId) {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id))).insertedId;
+}
 
-    return (await db.collection('salesmen').insertOne(salesman)).insertedId;
+/**
+ * insert a new salesman with a UID into database
+ * @param db target database
+ * @param {SalesMan} salesman with uid
+ */
+exports.addWithUID = async (db, salesman) => {
+    const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
+
+    if (!await fitsModel(salesman, Salesman)){
+        throw new Error('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
+    }
+    
+    if (existingSalesmanId) {
+        throw new Error('Salesman with id ' + salesman._id + ' already exist!');
+    }
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id, salesman.uid))).insertedId;
 }
 
 /**
@@ -83,4 +112,34 @@ exports.delete = async (db, _id) => {
     }
 
     return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
+}
+
+exports.getSalesmenFromAPI = async (db) => {    
+    const orangeHRMEmployees = await orangeHRMService.getAllEmployees();
+    // Only get Contacts
+    let openCRXAccounts = (await openCRXService.getAllAccounts())[1];
+
+    await Promise.all(orangeHRMEmployees.map(async employee => {
+        let hasUID = false;
+
+        if(((await this.getSalesManById(db, employee.employeeId)) !== null)) {
+            await this.delete(db, employee.employeeId)
+        }
+        
+        for (let i = 0; i < openCRXAccounts.length; i++) {           
+            const account = openCRXAccounts[i];
+
+            if (employee.code == account.governmentId) {
+                // ToDo: Does Salesman exist? If yes delete
+                await this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
+                hasUID = true;
+                // remove this account from check list
+                openCRXAccounts.splice(i, 1);
+            }
+        }
+
+        if (!hasUID) {
+            await this.add(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId));
+        }
+    }));
 }

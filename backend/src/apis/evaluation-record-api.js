@@ -32,7 +32,7 @@ exports.getEvaluationRecordsOfSalesmanById = (req, res) => {
 
 exports.addEvaluationRecord = (req, res) => {
     const db = req.app.get('db');
-    // console.log(req.body)
+
    evaluationService.add(db, req.body)
     .then(_id => {
         res.send(_id.toString());
