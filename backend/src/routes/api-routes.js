@@ -6,67 +6,8 @@ const {checkAuthorization} = require('../middlewares/auth-middleware');
     In this file is the routing for the REST-endpoints under /api managed
  */
 const authApi = require('../apis/auth-api'); //api-endpoints are loaded from separate files
-/**
- * @swagger
- * /api/login:
- *  post:
- *      summary: Login
- *      tags:
- *          - Authentification
- *      requestBody:
- *          description: Login Details
- *          required: true
- *          content:
- *              application/x-www-form-urlencoded:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          username:
- *                              type: string
- *                          password:
- *                              type: string
- *                      required:
- *                          - username
- *                          - password
- *      responses:
- *          200:
- *              description: You are logged in!
- *          401:
- *              description: Login failed!
- */
 router.post('/login', authApi.login); //the function decides which request type should be accepted
-/**
- * @swagger
- * /api/login:
- *  delete:
- *      summary: Logout
- *      tags:
- *          - Authentification
- *      responses:
- *          200:
- *              description: You successfully logged out!
- *          401:
- *              description: You are not logged in!
- */
 router.delete('/login', checkAuthorization(), authApi.logout); //middlewares can be defined in parameters
-/**
- * @swagger
- * /api/login:
- *  get:
- *      summary: Check if currently logged in
- *      tags:
- *          - Authentification
- *      responses:
- *          200:
- *              description: You are logged in!
- *              content:
- *                  application/json:
- *                      schema:
- *                          properties:
- *                              loggedIn:
- *                                  type: boolean
- *                                  description: true or false
- */
 router.get('/login', authApi.isLoggedIn); //the function, which handles requests is specified as the last parameter
 
 // Add checkAuthorization as middleware
@@ -75,102 +16,10 @@ router.use(checkAuthorization());
 const userApi = require('../apis/user-api');
 router.get('/user', userApi.getSelf);
 
-// TODO: Outsource endpoints in to separate files ( if possible)
 const salesmenApi = require('../apis/salesman-api');
-
-/**
- * @swagger
- * /api/salesmen/read/all:
- *  get:
- *      summary: Returns the list of all salesman
- *      tags:
- *          - Salesman
- *      responses:
- *          200:
- *              description: The list of salesman
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: array
- *                          items:
- *                              $ref: '#/components/schemas/SalesMan'
- *          401:
- *              description: Unauthorized 
- */
 router.get('/salesmen/read/all', salesmenApi.getSalesmen);
-
-/**
- * @swagger
- * /api/salesmen/read/firstname/{firstname}:
- *  get: 
- *      summary: returns salesman with firstname
- *      tags:
- *          - Salesman
- *      parameters:
- *          - in: path
- *            name: firstname
- *            schema:
- *              type: string
- *            required: true
- *            description: First name of salesman
- *      responses:
- *          200:
- *              description: The salesman
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SalesMan'       
- *          401:
- *              description: Unauthorized 
- */
 router.get('/salesmen/read/firstname/:firstname', salesmenApi.getSalesManByFirstname);
-/**
- * @swagger
- * /api/salesmen/read/id/{_id}:
- *  get: 
- *      summary: returns salesman by id
- *      tags:
- *          - Salesman
- *      parameters:
- *          - in: path
- *            name: _id
- *            schema:
- *              type: number
- *            required: true
- *            description: id of salesman
- *      responses:
- *          200:
- *              description: The salesman
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/SalesMan'       
- *          401:
- *              description: Unauthorized 
- */
 router.get('/salesmen/read/id/:_id', salesmenApi.getSalesManById);
-/**
- * @swagger
- * /api/salesmen/create:
- *  post: 
- *      summary: Create a salesman
- *      tags:
- *          - Salesman
- *      requestBody:
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/SalesMan'
- *      responses:
- *          200:
- *              description: The salesman ID
- *              content:
- *                  schema:
- *                      type: number
- *                      example: 5
- *          401:
- *              description: Unauthorized 
- */
 router.post('/salesmen/create', salesmenApi.addSalesman);
 router.put('/salesmen/update/:_id', salesmenApi.updateSalesManById);
 router.delete('/salesmen/delete/id/:_id', salesmenApi.deleteSalesMan);
@@ -179,28 +28,6 @@ const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', evaRecApi.getAllEvaluationRecords);
 router.get('/evaluationRecords/read/id/:_id', evaRecApi.getEvaluationRecordsById);
 router.get('/evaluationRecords/read/salesmanId/:salesManID', evaRecApi.getEvaluationRecordsOfSalesmanById);
-/**
- * @swagger
- * /api/evaluationRecords/create:
- *  post: 
- *      summary: Create a Evaluation Record
- *      tags:
- *          - Evaluation_Record
- *      requestBody:
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Evaluation_Record'
- *      responses:
- *          200:
- *              description: The Evaluation Record ID
- *              content:
- *                  schema:
- *                      type: number
- *                      example: 2
- *          401:
- *              description: Unauthorized 
- */
 router.post('/evaluationRecords/create', evaRecApi.addEvaluationRecord);
 router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecordById);
 router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
@@ -210,56 +37,7 @@ const bonusApi = require('../apis/bonus-api');
 router.get('/bonuses/read/all', bonusApi.getBonuses);
 router.get('/bonuses/read/id/:_id', bonusApi.getBonusById);
 router.get('/bonuses/read/salesmanId/:salesManID', bonusApi.getBonusesOfSalesmanById);
-/**
- * @swagger
- * /api/bonuses/calculateBonus/sid/{salesManID}/{year}:
- *  get: 
- *      summary: returns bonus of salesman
- *      tags:
- *          - Bonus
- *      parameters:
- *          - in: path
- *            name: year
- *            schema:
- *              type: number
- *              required: true
- *              example: 2020
- *            description: Year to be calculated
- *          - in: path
- *            name: salesManID
- *            schema:
- *              type: number
- *              example: 9
- *            required: true
- *            description: ID of salesman
- *      responses:
- *          200:
- *              description: The Bonus
- *          401:
- *              description: Unauthorized 
- */
 router.get('/bonuses/calculateBonus/sid/:salesManID/:year', bonusApi.calculateBonus);
-/**
- * @swagger
- * /api/bonuses/calculateBonus/all/{year}:
- *  get: 
- *      summary: returns bonuses of all salesman
- *      tags:
- *          - Bonus
- *      parameters:
- *          - in: path
- *            name: year
- *            schema:
- *              type: number
- *              required: true
- *              example: 2020
- *            description: Year to be calculated
- *      responses:
- *          200:
- *              description: Array of Bonuses 
- *          401:
- *              description: Unauthorized 
- */
 router.get('/bonuses/calculateBonus/all/:year', bonusApi.calculateAllBonus);
 router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
@@ -281,19 +59,6 @@ router.get('/employees/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
-/**
- * @swagger
- * /api/salesmen/getApiSalesmen:
- *  get: 
- *      summary: Get salesman from OrangeHRM and save them with the UID from OpenCRX
- *      tags:
- *          - Salesman
- *      responses:
- *          200:
- *              description: Success
- *          401:
- *              description: Unauthorized 
- */
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
 
 module.exports = router;
