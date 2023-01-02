@@ -1,15 +1,20 @@
+require('dotenv').config()
+
 const environment = {
     production: false,
     port: 8091,
-    defaultAdminPassword: '5$c3inw%',
-    /* db:{
-        host: '127.0.0.1',
-        port: 27017,
-        username: '',
-        password: '',
-        authSource: 'admin',
-        name: 'intArch'
+    username: process.env.API_USERNAME,
+    password: process.env.API_PASSWORD,
+    sentinelOne: {
+        username: process.env.SENTINELONE_USERNAME,
+        token: process.env.SENTINELONE_TOKEN
     },
+    db:{
+        host: '10.143.9.250',
+        username: process.env.OBSERVIUM_DB_USERNAME,
+        password: process.env.OBSERVIUM_DB_PASSWORD,
+        name: 'observium'
+    }/* ,
     corsOrigins: [
         'http://localhost:4200'
     ] */
