@@ -177,3 +177,12 @@ exports.getSalesmenFromAPI = async (db) => {
         }
     }));
 }
+
+/**
+ * delete all salesman in database
+ * @param db source database
+ * @return {Promise<*>}
+ */
+exports.deleteAll = async (db) => {
+    return await db.collection('salesmen').deleteMany({});
+}
