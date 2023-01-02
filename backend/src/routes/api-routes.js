@@ -19,9 +19,6 @@ const authApi = require('../apis/auth-api'); //api-endpoints are loaded from sep
 const userApi = require('../apis/user-api');
 /* router.get('/user', userApi.getSelf); */
 
-const peopleDemoApi = require('../apis/people-demo-api');
-router.get('/people', peopleDemoApi.getPeople);
-
 const sentinelOne = require('../apis/sentinelOne-api');
 router.get('/agent/computerName/:computerName', sentinelOne.getAgentByComputerName);
 router.get('/agents/computerName/:computerName', sentinelOne.getAgentsStartsWithComputerName);
