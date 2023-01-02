@@ -49,7 +49,16 @@ exports.add = async (db, salesman) => {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
     
-    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id))).insertedId;
+    return (await db.collection('salesmen').insertOne(new Salesman(
+        salesman.firstname,
+        salesman.middleName,
+        salesman.lastname,
+        salesman.fullName,
+        salesman.unit,
+        salesman.jobTitle,
+        salesman._id,
+        salesman.uid
+    ))).insertedId;
 }
 
 /**
@@ -68,7 +77,16 @@ exports.addWithUID = async (db, salesman) => {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
     
-    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id, salesman.uid))).insertedId;
+    return (await db.collection('salesmen').insertOne(new Salesman(
+        salesman.firstname,
+        salesman.middleName,
+        salesman.lastname,
+        salesman.fullName,
+        salesman.unit,
+        salesman.jobTitle,
+        salesman._id,
+        salesman.uid
+    ))).insertedId;
 }
 
 /**
@@ -118,7 +136,6 @@ exports.getSalesmenFromAPI = async (db) => {
     const orangeHRMEmployees = await orangeHRMService.getAllEmployees();
     // Only get Contacts
     let openCRXAccounts = (await openCRXService.getAllAccounts())[1];
-
     await Promise.all(orangeHRMEmployees.map(async employee => {
         let hasUID = false;
 
@@ -126,12 +143,21 @@ exports.getSalesmenFromAPI = async (db) => {
             await this.delete(db, employee.employeeId)
         }
         
-        for (let i = 0; i < openCRXAccounts.length; i++) {           
+        for (let i = 0; i < openCRXAccounts.length; i++) {
             const account = openCRXAccounts[i];
 
-            if (employee.code == account.governmentId) {
+            if (employee.code === account.governmentId) {
                 // ToDo: Does Salesman exist? If yes delete
-                await this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
+                await this.addWithUID(db, new Salesman(
+                    employee.firstName,
+                    employee.middleName,
+                    employee.lastName,
+                    employee.fullName,
+                    employee.unit,
+                    employee.jobTitle,
+                    employee.employeeId,
+                    account.accountUID
+                ));
                 hasUID = true;
                 // remove this account from check list
                 openCRXAccounts.splice(i, 1);
@@ -139,7 +165,15 @@ exports.getSalesmenFromAPI = async (db) => {
         }
 
         if (!hasUID) {
-            await this.add(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId));
+            await this.add(db, new Salesman(
+                employee.firstName,
+                employee.middleName,
+                employee.lastName,
+                employee.fullName,
+                employee.unit,
+                employee.jobTitle,
+                employee.employeeId
+            ));
         }
     }));
 }
