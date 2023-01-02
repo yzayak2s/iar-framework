@@ -289,7 +289,6 @@
             "required": true,
             "schema": {
               "type": "number",
-              "required": true,
               "example": 2020
             },
             "description": "Year to be calculated"
@@ -321,7 +320,8 @@
       "SalesMan": {
         "type": "object",
         "required": [
-          "id",
+          "_id",
+          "uid",
           "firstname",
           "lastname",
           "middleName",
@@ -330,9 +330,13 @@
           "jobTitle"
         ],
         "properties": {
-          "id": {
+          "_id": {
             "type": "integer",
             "description": "id of the salesman"
+          },
+          "uid": {
+            "type": "integer",
+            "description": "uid of the salesman"
           },
           "firstname": {
             "type": "string",
@@ -360,13 +364,14 @@
           }
         },
         "example": {
-          "id": 5,
+          "_id": 5,
           "firstname": "Max",
           "lastname": "Mustermann",
           "middleName": "Muster",
           "fullName": "Max Mustermann",
           "unit": "Sales",
-          "jobTitle": "Senior Salesman"
+          "jobTitle": "Senior Salesman",
+          "uid": "MAXMUSTERMANNUID"
         }
       },
       "EvaluationRecord": {
