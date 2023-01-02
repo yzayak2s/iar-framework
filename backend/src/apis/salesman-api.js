@@ -83,3 +83,16 @@ exports.createApiSalesmen = (req, res) => {
         res.status(500).send();
     });
 }
+
+exports.deleteAllSalesmen = (req, res) => {
+    const db = req.app.get('db');
+
+    salesmenService.deleteAll(db)
+        .then(response => {
+            res.send(response);
+        }).catch((e) => {
+        res.send(e.message);
+    }).catch(_ => {
+        res.status(500).send();
+    })
+}
