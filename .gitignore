@@ -50,4 +50,5 @@
 
 /backend/coverage
 /backend/results
+/backend/.env
 backend/.nyc_output
