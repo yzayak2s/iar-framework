@@ -23,6 +23,7 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatListModule} from '@angular/material/list';
 import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
+import {BonusesComponent} from './components/bonuses/bonuses.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
         SalesManComponent,
         EvaluationRecordComponent,
         DashboardComponent,
-        BonusPageComponent
+        BonusPageComponent,
+        BonusesComponent
     ],
     imports: [
         BrowserModule,
