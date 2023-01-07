@@ -22,6 +22,7 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatListModule} from '@angular/material/list';
+import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import {MatListModule} from '@angular/material/list';
         NotFoundPageComponent,
         SalesManComponent,
         EvaluationRecordComponent,
-        DashboardComponent
+        DashboardComponent,
+        BonusPageComponent
     ],
     imports: [
         BrowserModule,
