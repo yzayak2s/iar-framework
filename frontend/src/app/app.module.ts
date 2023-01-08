@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
 import { AppRouting } from './app.routing';
 import { AppComponent } from './app.component';
@@ -22,6 +22,10 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatListModule} from '@angular/material/list';
+import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
+import {BonusesComponent} from './components/bonuses/bonuses.component';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
     declarations: [
@@ -34,7 +38,9 @@ import {MatListModule} from '@angular/material/list';
         NotFoundPageComponent,
         SalesManComponent,
         EvaluationRecordComponent,
-        DashboardComponent
+        DashboardComponent,
+        BonusPageComponent,
+        BonusesComponent
     ],
     imports: [
         BrowserModule,
@@ -48,8 +54,11 @@ import {MatListModule} from '@angular/material/list';
         MatToolbarModule,
         MatIconModule,
         MatTableModule,
-        MatListModule
+        MatListModule,
+        NgxSpinnerModule,
+        MatMenuModule
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [],
     bootstrap: [AppComponent]
 })
