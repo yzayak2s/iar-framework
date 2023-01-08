@@ -25,6 +25,7 @@ import {MatListModule} from '@angular/material/list';
 import { BonusPageComponent } from './pages/bonus-page/bonus-page.component';
 import {BonusesComponent} from './components/bonuses/bonuses.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import {NgxSpinnerModule} from 'ngx-spinner';
         MatIconModule,
         MatTableModule,
         MatListModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        MatMenuModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     providers: [],
