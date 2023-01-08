@@ -10,7 +10,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 })
 export class BonusesComponent implements OnInit {
     bonuses: Bonus[] = [];
-    displayedColumns = ['_id', 'year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
+    displayedColumns = ['year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
 
     constructor(
         private bonusService: BonusService,
