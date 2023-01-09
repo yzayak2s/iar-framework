@@ -1,0 +1,20 @@
+<div *ngIf="bonus">
+    <h2 id="bonus-verified">{{bonus.verified | uppercase}}</h2>
+    <div id="bonus-id">ID: {{bonus.id}}</div>
+    <div>
+        <label for="bonus-year">Bonus year: </label>
+        <input id="bonus-year" [(ngModel)]="bonus.year" placeholder="year">
+    </div>
+    <div>
+        <label for="bonus-value">Bonus value: </label>
+        <input id="bonus-value" [(ngModel)]="bonus.value" placeholder="value">
+    </div>
+    <div>
+        <label for="bonus-remark">Bonus remark: </label>
+        <input id="bonus-remark" [(ngModel)]="bonus.remark" placeholder="remark">
+    </div>
+    <div id="bonus-salesManID">Bonus salesManID: {{bonus.salesManID}}</div>
+    <button type="button" (click)="goBack()">Go back</button>
+    <button type="button" (click)="save()">Save</button>
+</div>
+
