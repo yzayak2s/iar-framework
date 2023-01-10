@@ -1,4 +1,5 @@
 const {ObjectId} = require("mongodb");
+const orangeHRMService = require('../services/orangeHRM-service');
 
 /**
  * retrieves salesmen from database
@@ -6,7 +7,7 @@ const {ObjectId} = require("mongodb");
  * @return {Promise<SalesMan>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('salesmen').find({}).toArray(); // use of toArray() is important here.
+    return await db.collection('salesmen').find({unit: "Sales"}).toArray(); // use of toArray() is important here.
 }
 
 /**
