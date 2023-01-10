@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import {FormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -24,6 +24,8 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
 import {BonusComponent} from './components/bonus/bonus.component';
 import {MatListModule} from '@angular/material/list';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSelectModule} from "@angular/material/select";
+
 
 @NgModule({
     declarations: [
@@ -43,6 +45,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         BrowserModule,
         AppRouting,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         MatInputModule,
@@ -52,7 +55,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         MatIconModule,
         MatTableModule,
         MatListModule,
-        NgbModule
+        NgbModule,
+        MatSelectModule
     ],
     providers: [],
     bootstrap: [AppComponent]
