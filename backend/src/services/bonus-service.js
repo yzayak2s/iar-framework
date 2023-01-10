@@ -244,6 +244,7 @@ exports.update = async (db, _id, bonus) => {
             $set: {
                 year: bonus.year,
                 value: bonus.value,
+                remark: bonus.remark,
                 verified: bonus.verified,
             }
         }
