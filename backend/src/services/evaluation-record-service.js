@@ -1,11 +1,30 @@
 const {ObjectId} = require("mongodb");
 /**
- * retrieves salesmen from database
+ * retrieves evaluation records from database
  * @param db source database
  * @return {Promise<EvaluationRecord>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('evaluation_record').find({}).toArray(); // use of toArray() is important here.
+    return await db.collection('evaluation_record')
+        .aggregate([
+            { $lookup:
+                {
+                    from: 'salesmen',
+                    localField: 'salesManID',
+                    foreignField: '_id',
+                    as: 'salesMan'
+                }
+            }
+        ]).toArray(); // use of toArray() is important here.
+}
+
+/**
+ * retrieves goals from database
+ * @param db source database
+ * @return {Promise<Goal>}
+ */
+exports.getAllGoals = async (db) => {
+    return await db.collection('goals').find({}).toArray(); // use of toArray() is important here.
 }
 
 /**

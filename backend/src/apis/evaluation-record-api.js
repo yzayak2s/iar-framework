@@ -10,6 +10,16 @@ exports.getAllEvaluationRecords = (req, res) => {
     })
 }
 
+exports.getGoals = (req, res) => {
+    const db = req.app.get('db');
+
+    evaluationService.getAllGoals(db).then(evaRec => {
+        res.send(evaRec);
+    }).catch(_ => {
+        res.status(500).send();
+    })
+}
+
 exports.getEvaluationRecordsById = (req, res) =>  {
     const db = req.app.get('db');
 
