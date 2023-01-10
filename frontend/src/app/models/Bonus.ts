@@ -3,7 +3,7 @@
  */
 export class Bonus {
     constructor(
-        public id: number,
+        public _id: string,
         public year: number,
         public value: number,
         public remark: string,

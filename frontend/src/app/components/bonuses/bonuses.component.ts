@@ -44,7 +44,7 @@ export class BonusesComponent implements OnInit {
     delete(bonus: Bonus): void {
         if (confirm('Are you sure to delete this bonus?')) {
             this.bonuses = this.bonuses.filter((b): boolean => b !== bonus);
-            this.bonusService.deleteBonus(bonus.id)
+            this.bonusService.deleteBonus(bonus._id)
                 .subscribe();
         }
     }
