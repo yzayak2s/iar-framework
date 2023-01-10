@@ -37,7 +37,7 @@ export class BonusService {
 
     /** UPDATE single bonus */
     updateBonus(bonus: Bonus): Observable<any> {
-        const url = `${this.bonusesUrl}/update/id/${bonus.id}`;
+        const url = `${this.bonusesUrl}/update/id/${bonus._id}`;
         return this.http.put(url, bonus, this.httpOptions);
     }
 
@@ -48,7 +48,7 @@ export class BonusService {
     }
 
     /** DELETE: delete the bonus from the server */
-    deleteBonus(id: number): Observable<Bonus> {
+    deleteBonus(id: string): Observable<Bonus> {
         const url = `${this.bonusesUrl}/delete/id/${id}`;
 
         return this.http.delete<Bonus>(url, this.httpOptions);

@@ -1,4 +1,5 @@
 const bonusService = require("../services/bonus-service");
+const {ObjectId} = require("mongodb");
 
 exports.getBonuses = (req, res) => {
     const db = req.app.get('db');
@@ -13,7 +14,7 @@ exports.getBonuses = (req, res) => {
 exports.getBonusById = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.getBonusById(db, req.params._id)
+    bonusService.getBonusById(db, ObjectId(req.params._id))
         .then((bonusById) => {
             res.send(bonusById);
         }).catch(_ => {
@@ -48,7 +49,7 @@ exports.addBonus = (req, res) => {
 exports.updateBonusById = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.update(db, req.params._id, req.body)
+    bonusService.update(db, ObjectId(req.params._id), req.body)
         .then((bonus) => {
             res.send(bonus);
         }).catch((e) => {
@@ -61,7 +62,7 @@ exports.updateBonusById = (req, res) => {
 exports.deleteBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.delete(db, req.params._id)
+    bonusService.delete(db, ObjectId(req.params._id))
         .then(_id => {
             res.send(_id.toString());
         }).catch((e) => {
