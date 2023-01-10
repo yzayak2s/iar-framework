@@ -27,6 +27,7 @@ import {BonusesComponent} from './components/bonuses/bonuses.component';
 import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {MatMenuModule} from '@angular/material/menu';
+import { SalesmanComponent } from './components/salesman/salesman.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import {MatMenuModule} from '@angular/material/menu';
         DashboardComponent,
         BonusPageComponent,
         BonusesComponent,
-        BonusDetailComponent
+        BonusDetailComponent,
+        SalesmanComponent
     ],
     imports: [
         BrowserModule,
