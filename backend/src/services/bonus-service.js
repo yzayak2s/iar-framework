@@ -146,7 +146,7 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     // Save this bonus to the database
     this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
 
-    return {totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
+    return {salesManID: salesmanID, totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
 }
 
 /**
@@ -161,7 +161,6 @@ exports.calculateAllBonus = async (db, year) => {
 
     await Promise.all(salesmen.map( async salesman => {
         const bonus = await this.calculateBonusBySalesmanID(db, salesman._id, year);
-        bonus.salesManID = salesman._id;
 
         returnArray.push(bonus);
     }));
