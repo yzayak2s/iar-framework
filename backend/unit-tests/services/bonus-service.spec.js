@@ -78,7 +78,7 @@ describe("bonus-service Unit-tests", function() {
 
         it("Updated correctly", async function() {
             await expect(bonusService.update(db, bonusID1, copyObject(bonusExample2))).to.eventually.be.fulfilled;
-            await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.eql({_id: bonusID1, year:  2021, value: 2555, remark: 'Some remark1', verified: true, salesManID: 1});
+            await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.eql({_id: bonusID1, year:  2021, value: 2555, remark: 'Some remark2', verified: true, salesManID: 1});
         });
 
         it("Throws if bonus does not exist", async function() {
