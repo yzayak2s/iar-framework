@@ -3,6 +3,12 @@ label, #bonus-id, #bonus-salesManID {
     color: #435960;
     font-weight: bold;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
 input {
     font-size: 1em;
     padding: .5rem;
