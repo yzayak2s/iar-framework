@@ -136,6 +136,7 @@ const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', evaRecApi.getAllEvaluationRecords);
 router.get('/evaluationRecords/read/id/:_id', evaRecApi.getEvaluationRecordsById);
 router.get('/evaluationRecords/read/salesmanId/:salesManID', evaRecApi.getEvaluationRecordsOfSalesmanById);
+router.get('/goals/read/all', evaRecApi.getGoals);
 router.post('/evaluationRecords/create', evaRecApi.addEvaluationRecord);
 router.put('/evaluationRecords/update/id/:_id', evaRecApi.updateEvaluationRecordById);
 router.delete('/evaluationRecords/delete/id/:_id', evaRecApi.deleteEvaluationRecord);
