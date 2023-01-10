@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {EvaluationRecord} from '../models/EvaluationRecord';
+import {EvaluationRecord, Goal} from '../models/EvaluationRecord';
 import {environment} from '../../../environments/environment';
 import {SalesMan} from "../models/SalesMan";
 
@@ -19,6 +19,14 @@ export class EvaluationRecordService {
             withCredentials: true
         });
     }
+
+    getGoals(): Observable<HttpResponse<Goal[]>> {
+        return this.http.get<Goal[]>(environment.apiEndpoint + '/api/goals/read/all', {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
     deleteEvaluationRecord(id: string): void{
         this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
             withCredentials: true
