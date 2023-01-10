@@ -5,5 +5,6 @@ export class SalesMan{
     public _id: string;
     public firstName: string;
     public lastName: string;
+    public fullName: string;
 
 }
