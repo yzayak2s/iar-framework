@@ -48,7 +48,7 @@ export class BonusService {
     }
 
     /** DELETE: delete the bonus from the server */
-    deleteBonus(id: number): Observable<Bonus> {
+    deleteBonus(id: string): Observable<Bonus> {
         const url = `${this.bonusesUrl}/delete/id/${id}`;
 
         return this.http.delete<Bonus>(url, this.httpOptions);
