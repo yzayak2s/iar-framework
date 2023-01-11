@@ -1,41 +1,67 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Injectable} from '@angular/core';
 import {Bonus} from '../models/Bonus';
+import {Observable, of} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BonusService {
+    private bonusesUrl = `${environment.apiEndpoint}/api/bonuses`; // URL to web api
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        withCredentials: true
+    };
 
-    constructor(private http: HttpClient) {
-    }
+    constructor(
+        private http: HttpClient
+    ) { }
 
-    getAllBonus(): Observable<HttpResponse<Bonus[]>> {
-        return this.http.get<Bonus[]>(environment.apiEndpoint + '/api/bonuses/read/all', {
+    /** GET bonuses from the server */
+    getBonuses(): Observable<HttpResponse<Bonus[]>> {
+        return this.http.get<Bonus[]>(this.bonusesUrl + '/read/all', {
             observe: 'response',
             withCredentials: true
         });
     }
-    deleteBonus(id: string): void{
-        this.http.delete(environment.apiEndpoint + '/api/bonuses/delete/id/' + id.toString(), {
-            withCredentials: true
-        }) .subscribe((): void =>  console.log('Call delete service'));
-    }
 
-
-    public updateBonus(id: string,Bonus: Bonus): Observable<any> {
-        const url = environment.apiEndpoint + '/api/bonuses/update/id/' + id;
-        return this.http.put<any>(url, Bonus, {
-            withCredentials: true
-        });
-    }
-    public saveBonus(Bonus: Bonus): Observable<any> {
-        const url = environment.apiEndpoint +'/api/bonuses/create';
-        return this.http.post<any>(url, Bonus,  {
+    /** GET single Bonus from the backend */
+    getBonus(id: string): Observable<HttpResponse<Bonus>> {
+        const url = `${this.bonusesUrl}/read/id/${id}`;
+        return this.http.get<Bonus>(url, {
+            observe: 'response',
             withCredentials: true
         });
     }
 
+    /** UPDATE single bonus */
+    updateBonus(bonus: Bonus): Observable<any> {
+        const url = `${this.bonusesUrl}/update/id/${bonus._id}`;
+        return this.http.put(url, bonus, this.httpOptions);
+    }
+
+    /** ADD new bonus */
+    addBonus(bonus: Bonus): Observable<Bonus> {
+        const url = `${this.bonusesUrl}/create`;
+        return this.http.post<Bonus>(url, bonus, this.httpOptions);
+    }
+
+    /** DELETE: delete the bonus from the server */
+    deleteBonus(id: string): Observable<Bonus> {
+        const url = `${this.bonusesUrl}/delete/id/${id}`;
+
+        return this.http.delete<Bonus>(url, this.httpOptions);
+    }
+
+    /** SEARCH after bonuses */
+    searchBonus(term: number): Observable<any[]> {
+        if (!term) {
+            // if not search term, return empty bonus array.
+            return of([]);
+        }
+        return this.http.get<Bonus[]>(`${this.bonusesUrl}/read/year/${term}`, {
+            withCredentials: true
+        });
+    }
 }

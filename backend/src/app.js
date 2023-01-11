@@ -7,21 +7,8 @@ const cookieSession = require('cookie-session');
 
 // Implements Swagger UI with swagger jsdoc
 const swaggerUi = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc')
 
-const options = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Library API",
-            version: "1.0.0",
-            description: "A simple Express Library API"
-        },
-    },
-    apis: [`${__dirname}/routes/*.js`, `${__dirname}/models/EvaluationRecord.js`, `${__dirname}/models/SalesMan.js`]
-}
-
-const openAPISpecs = swaggerJsDoc(options);
+const options = require('../swagger.json');
 
 const multer = require('multer');
 const upload = multer();
@@ -61,7 +48,7 @@ app.use(cors({
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(openAPISpecs)
+  swaggerUi.setup(options)
 );
 
 
@@ -92,7 +79,7 @@ async function initDb(db) {
         const User = require("./models/User");
 
         const adminPassword = environment.defaultAdminPassword;
-        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, true));
+        await userService.add(db, new User('admin', '', 'admin', '', adminPassword, '', true));
 
         console.log('created admin user with password: ' + adminPassword);
     }

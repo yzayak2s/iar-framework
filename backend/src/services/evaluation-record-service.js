@@ -1,4 +1,7 @@
 const {ObjectId} = require("mongodb");
+const { fitsModel } = require("../helper/creation-helper");
+const EvaluationRecord = require('../models/EvaluationRecord')
+
 /**
  * retrieves evaluation records from database
  * @param db source database
@@ -64,6 +67,10 @@ exports.add = async (db, evaluationRecord) => {
 
     let salesman_id = new ObjectId(evaluationRecord.salesManID);
     const existingSalesMan = await db.collection('salesmen').findOne({_id: salesman_id});
+
+    if (!await fitsModel(evaluationRecord, EvaluationRecord)) {
+        throw new Error('Incorrect body object was provided. Needs goalDescription, targetValue, actualValue, year and salesManID.');
+    }
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');

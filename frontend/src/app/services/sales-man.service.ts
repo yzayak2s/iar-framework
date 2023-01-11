@@ -8,6 +8,7 @@ import {environment} from '../../../environments/environment';
     providedIn: 'root'
 })
 export class SalesManService {
+    private salesManUrl = `${environment.apiEndpoint}/api/salesmen`;
 
     constructor(private http: HttpClient) {
     }
@@ -18,6 +19,15 @@ export class SalesManService {
             withCredentials: true
         });
     }
+
+    getSalesMan(salesManID: number): Observable<HttpResponse<SalesMan>> {
+        const url = `${this.salesManUrl}/read/id/${salesManID}`;
+        return this.http.get<SalesMan>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
     deleteSalesman(salesmanid: string): void {
         this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
             withCredentials: true

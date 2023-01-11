@@ -14,7 +14,7 @@ table{
     text-align: center;
 }
 
-.mat-column-firstName{
+.mat-column-firstname{
     padding-left: 16px;
 }
 
@@ -31,15 +31,4 @@ table{
 .mat-row:hover .mat-cell {
     border-color: currentColor;
 }
-
-.example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-}
-
-.example-full-width {
-    width: 100%;
-}
-
 

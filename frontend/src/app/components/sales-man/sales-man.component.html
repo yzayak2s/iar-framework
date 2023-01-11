@@ -1,53 +1,24 @@
-<button class="btn btn-lg btn-outline-primary" (click)="open(mymodal, null)">Add new SalesMan</button>
-<br>
-<ng-template #mymodal let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Add New SalesMan</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">×</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form class="example-form">
-            <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Firstname</mat-label>
-                <input name="FirstName" matInput placeholder="Firstname" [(ngModel)]="activeSalesMan.firstName"  required>
-            </mat-form-field>
-            <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Lastname</mat-label>
-                <input name="LastName" matInput placeholder="LastName" [(ngModel)]="activeSalesMan.lastName"  required>
-            </mat-form-field>
-
-
-
-        </form>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save')">Save</button>
-    </div>
-</ng-template>
-<br>
+<h2>SalesMans table:</h2>
 <table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="salesmens">
     <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let person">{{person._id}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="firstName">
+    <ng-container matColumnDef="firstname">
         <th mat-header-cell *matHeaderCellDef>Firstname</th>
-        <td mat-cell *matCellDef="let person">{{person.firstName}}</td>
+        <td mat-cell *matCellDef="let person">{{person.firstname}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="lastName">
+    <ng-container matColumnDef="lastname">
         <th mat-header-cell *matHeaderCellDef>Lastname</th>
-        <td mat-cell *matCellDef="let person" >{{person.lastName}}</td>
+        <td mat-cell *matCellDef="let person" >{{person.lastname}}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell   *matHeaderCellDef >Actions</th>
         <td mat-cell *matCellDef="let row" >
-            <button mat-button  (click)="open(mymodal, row)">Update</button>
+            <button mat-button (click)="showSalesMan(row)">Update</button>
             <button mat-button (click)="deleteMethod(row)">Delete</button>
         </td>
     </ng-container>
