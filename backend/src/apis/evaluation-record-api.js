@@ -15,6 +15,11 @@ exports.getEvaluationRecordsById = (req, res) =>  {
     const db = req.app.get('db');
 
     evaluationService.getById(db, ObjectId(req.params._id)).then(evaRec => {
+        // Check if this Object belongs to the asking salesman
+        if (req.checkID && evaRec.salesManID != req.session.user._id) {
+            res.status(401).send("Salesman may only access their own data.");
+        }
+
         res.send(evaRec);
     }).catch(_ => {
         res.status(500).send();
