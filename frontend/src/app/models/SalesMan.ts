@@ -6,8 +6,11 @@ export class SalesMan{
     public firstName: string;
     public lastName: string;
     public fullName: string;
-
-    constructor(
+    public middleName: string;
+    public unit: string;
+    public jobTitle: string;
+    public uid: string
+  /*  constructor(
         public _id: string,
         public firstname: string,
         public lastname: string,
@@ -16,5 +19,5 @@ export class SalesMan{
         public unit: string,
         public jobTitle: string,
         public uid: string,
-    ) {  }
+    ) {  } */
 }
