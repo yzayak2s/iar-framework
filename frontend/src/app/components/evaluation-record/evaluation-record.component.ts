@@ -43,7 +43,6 @@ export class EvaluationRecordComponent implements OnInit {
     selectedValue: string;
     selectedCar: string;
     ngOnInit(): void {
-        console.log('test');
         this.fetchEvaluationRecords();
         this.getGoals();
         this.getSalesMen();
@@ -57,7 +56,6 @@ export class EvaluationRecordComponent implements OnInit {
                 }
                 //this.evaluationrecord.salesMan = this.evaluationrecord.salesMan[0]
             }
-            console.log(this.evaluationrecords);
         });
     }
 
@@ -66,7 +64,6 @@ export class EvaluationRecordComponent implements OnInit {
             if (response.status === 200){
                 this.salesMen = response.body;
             }
-            console.log(this.salesMen);
         });
     }
 
@@ -75,7 +72,6 @@ export class EvaluationRecordComponent implements OnInit {
             if (response.status === 200){
                 this.goals = response.body;
             }
-            console.log(this.goals);
         });
     }
     deleteMethod(row: EvaluationRecord): void {
@@ -87,21 +83,16 @@ export class EvaluationRecordComponent implements OnInit {
         console.log(row);
     }
     open(content:any, row: EvaluationRecord) {
-        console.log("open modal");
         if(row)
         {
-            console.log("update");
             this.evaluationrecord.actualValue=row.actualValue;
             this.evaluationrecord.targetValue=row.targetValue;
             this.evaluationrecord.year=row.year;
             this.evaluationrecord.goalDescription=row.goalDescription;
             this.evaluationrecord.salesManID=row.salesManID;
             this.evaluationrecord.salesMan=row.salesMan;
-            console.log(row);
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
-                console.log("save");
-                console.log(this.evaluationrecord);
                 this.evaluationRecordService.updateEvaluationRecord(row._id,this.evaluationrecord).subscribe((response: any) => {
                     this.fetchEvaluationRecords();
                 }, () => {
@@ -112,11 +103,11 @@ export class EvaluationRecordComponent implements OnInit {
             });
         }
         else {
-            console.log(this.goals);
             this.evaluationrecord=new EvaluationRecord();
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id
+                delete this.evaluationrecord['salesMan'];
                 this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any) => {
                     this.fetchEvaluationRecords();
                 }, () => {
