@@ -6,13 +6,7 @@ import {AppComponent} from './app.component';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
 import {LoginComponent} from './components/login/login.component';
 import {LandingPageComponent} from './pages/landing-page/landing-page.component';
-import {FormsModule} from '@angular/forms';
-import { AppRouting } from './app.routing';
-import { AppComponent } from './app.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { LoginComponent } from './components/login/login.component';
-import { LandingPageComponent } from './pages/landing-page/landing-page.component';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -36,7 +30,7 @@ import {BonusesComponent} from './components/bonuses/bonuses.component';
 import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {MatMenuModule} from '@angular/material/menu';
-import { SalesmanComponent } from './components/salesman/salesman.component';
+import {SalesmanComponent} from './components/salesman/salesman.component';
 
 @NgModule({
     declarations: [
@@ -71,7 +65,7 @@ import { SalesmanComponent } from './components/salesman/salesman.component';
         MatTableModule,
         MatListModule,
         NgbModule,
-        MatSelectModule
+        MatSelectModule,
         NgxSpinnerModule,
         MatMenuModule
     ],
