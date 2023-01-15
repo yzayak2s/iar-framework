@@ -14,7 +14,7 @@ import {SalesMan} from '../../models/SalesMan';
 })
 export class SalesManComponent implements OnInit {
 
-    displayedColumns = ['_id', 'firstname', 'lastname', 'actions'];
+    displayedColumns = ['_id', 'firstName', 'lastName', 'actions'];
     salesmens: SalesMan[] = [];
     constructor(private router: Router, private salesManService: SalesManService) { }
     ngOnInit(): void {
@@ -32,7 +32,7 @@ export class SalesManComponent implements OnInit {
     }
     deleteMethod(row: SalesMan): void {
         console.log(row);
-        if (confirm('Are you sure to delete ' + row.firstname)) {
+        if (confirm('Are you sure to delete ' + row.firstName)) {
             console.log('Implement delete functionality here');
             this.salesManService.deleteSalesman(row._id);
         }
