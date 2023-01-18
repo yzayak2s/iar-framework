@@ -74,13 +74,25 @@ MongoClient.connect('mongodb://' + db_credentials + environment.db.host + ':' + 
 });
 
 async function initDb(db) {
-    if (await db.collection('users').count() < 1) { //if no user exists create admin user
+    if (await db.collection('users').count() < 5) { // If test users don't exist create new ones
+        if (await db.collection('users').count() > 0) { // If users are missing
+            await db.collection('users').drop();
+        }
+        
         const userService = require('./services/user-service');
         const User = require("./models/User");
 
         const adminPassword = environment.defaultAdminPassword;
         await userService.add(db, new User(1, 'admin', '', 'admin', '', adminPassword, '', true));
+        await userService.add(db, new User(7, 'CEO', 'Michael', 'Moore', 'Micheal@CEO.com', "CEO123", 'CEO', false));
+        await userService.add(db, new User(5, 'HR', 'Chantal', 'Banks', 'chantal@hr.com', "HR123", 'HR', false));
+        await userService.add(db, new User(31, 'salesman1', 'Paul', 'Kaye', 'dave@dave.com', "salesman123", 'SALESMAN', false));
+        await userService.add(db, new User(9, 'salesman2', 'Mary-Ann', 'Sallinger', 'Mary@example.com', "salesman123", 'SALESMAN', false));
 
         console.log('created admin user with password: ' + adminPassword);
+        console.log('created CEO user with password: ' + "CEO123");
+        console.log('created HR user with password: ' + "HR123");
+        console.log('created salesman1 user with password: ' + "salesman123");
+        console.log('created salesman2 user with password: ' + "salesman123");
     }
 }
