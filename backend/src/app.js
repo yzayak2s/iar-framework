@@ -95,4 +95,15 @@ async function initDb(db) {
         console.log('created salesman1 user with password: ' + "salesman123");
         console.log('created salesman2 user with password: ' + "salesman123");
     }
+
+    const salesmanService = require('../src/services/salesman-service')
+    if (await db.collection('salesmen').count() < 1) {    // Get Salesman from OrangeHRM if local mongoDB is empty
+        try {
+            console.log("Attempting to fetch Salesman data from OrangeHRM and OpenCRX...");
+            await salesmanService.getSalesmenFromAPI(db);
+            console.log("Successfully fetched salesman data!")
+        } catch (error) {
+            console.log("Currently unable to get Salesman from OrangeHRM. Reason: " + error);
+        }
+    }
 }
