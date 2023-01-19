@@ -16,8 +16,8 @@ const evaluationRecord3 = new EvaluationRecord('Some description 3', 4, 3, 2021,
 const salesmanService = require('../../src/services/salesman-service');
 const SalesMan = require('../../src/models/SalesMan');
 
-const salesMan = new SalesMan('Wilhelm', 'Schwarz', 1)
-const salesMan2 = new SalesMan('Hans', 'Peter', 2)
+const salesMan = new SalesMan('Wilhelm', '', 'Schwarz', 'Wilhelm Schwarz', 'Sales', 'Senior Salesman', 1)
+const salesMan2 = new SalesMan('Jane', '', 'Samuel', 'Jane Samuel', 'Sales', 'Senior Salesman', 2)
 
 let db;
 
