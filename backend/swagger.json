@@ -37,6 +37,9 @@
   "servers": [
     {
       "url": "/api"
+    },
+    {
+      "url": "/you_touch_you_die/api"
     }
   ],
   "paths": {
