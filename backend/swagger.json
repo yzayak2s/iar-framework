@@ -37,6 +37,9 @@
   "servers": [
     {
       "url": "http://localhost:8091/api"
+    },
+    {
+      "url": "http://iar-backend.inf.h-brs.de/you_touch_you_die/api"
     }
   ],
   "paths": {
