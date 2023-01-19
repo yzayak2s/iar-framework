@@ -126,7 +126,7 @@ describe('orangeHRM-Service unit-tests', function() {
 				});
 
 				it("called the correct URL once", function() {
-					expect(axiosGetStub).to.have.been.calledOnceWith('https://sepp-hrm.inf.h-brs.de/symfony/web/index.php/api/v1/employee/search');
+					expect(axiosGetStub).to.have.been.calledOnceWith('https://sepp-hrm.inf.h-brs.de/symfony/web/index.php/api/v1/employee/search?unit=2');
 				});
 
 				it("Generated a token before calling", function() {
