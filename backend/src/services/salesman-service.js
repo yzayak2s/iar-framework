@@ -152,8 +152,7 @@ exports.getSalesmenFromAPI = async (db) => {
         for (let i = 0; i < openCRXAccounts.length; i++) {
             const account = openCRXAccounts[i];
 
-            if (employee.code === account.governmentId) {
-                // ToDo: Does Salesman exist? If yes delete
+            if (employee.code == account.governmentId) {
                 await this.addWithUID(db, new Salesman(
                     employee.firstName,
                     employee.middleName,
