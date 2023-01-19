@@ -24,6 +24,7 @@ router.get('/salesmen/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles
 router.post('/salesmen/create', roleAuthentification([Roles.CEO, Roles.HR]), salesmenApi.addSalesman);
 router.put('/salesmen/update/:_id', roleAuthentification([Roles.CEO, Roles.HR]), salesmenApi.updateSalesManById);
 router.delete('/salesmen/delete/id/:_id', roleAuthentification([Roles.CEO, Roles.HR]), salesmenApi.deleteSalesMan);
+router.delete('/salesmen/delete/all',roleAuthentification([Roles.CEO, Roles.HR]),  salesmenApi.deleteAllSalesmen);
 
 const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', roleAuthentification([Roles.CEO, Roles.HR]), evaRecApi.getAllEvaluationRecords);
@@ -60,8 +61,8 @@ router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
-router.get('/employees/id/:id', orangeHRM.getEmployeeById);
-router.get('/employees/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
+router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
+router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
