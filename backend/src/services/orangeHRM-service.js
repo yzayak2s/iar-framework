@@ -46,7 +46,7 @@ async function checkToken(issueToken) {
 }
 
 /**
- * retrieves employees from orangeHRM
+ * retrieves employees from orangeHRM of sales department (unit --> 2 for Sales)
  */
 exports.getAllEmployees = async () => {
     const currentToken = await checkToken(issueToken);
@@ -56,7 +56,7 @@ exports.getAllEmployees = async () => {
     issueToken.expires_at = expires_at;
 
     config.headers['Authorization'] = `Bearer ${accessToken}`;
-    const employees = await axios.get(`${baseUrl}/api/v1/employee/search`, config);
+    const employees = await axios.get(`${baseUrl}/api/v1/employee/search?unit=2`, config);
 
     return employees.data.data;
 }

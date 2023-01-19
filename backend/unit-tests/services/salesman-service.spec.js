@@ -14,9 +14,9 @@ const orangeHRMService = require('../../src/services/orangeHRM-service');
 const SalesMan = require('../../src/models/SalesMan');
 const {copyObject} = require('../support/copyObject');
 
-const salesMan = new SalesMan('Wilhelm', 'Schwarz', 1)
-const salesMan2 = new SalesMan('Jane', 'Samuel', 2)
-const salesMan3 = new SalesMan('Karl', 'Lauterbach', 1)
+const salesMan = new SalesMan('Wilhelm', '', 'Schwarz', 'Wilhelm Schwarz', 'Sales', 'Senior Salesman', 1)
+const salesMan2 = new SalesMan('Jane', '', 'Samuel', 'Jane Samuel', 'Sales', 'Senior Salesman', 2)
+const salesMan3 = new SalesMan('Karl', '', 'Lauterbach', 'Karl Lauterbach', 'Sales', 'Senior Salesman', 1)
 
 let db;
 
@@ -234,7 +234,7 @@ describe('salesman-service unit-tests', function() {
         
         describe('getSalesmenFromAPI Tests', function() {
             beforeEach(async () => {
-                await salesmanService.add(db, new SalesMan('Kevin', 'Failure', 2, null));
+                await salesmanService.add(db, new SalesMan('Kevin', 'big', 'Failure', 'Kevin big Failure', 'Sales', 'Senior Salesman', 2, null));
                 await salesmanService.getSalesmenFromAPI(db);
             });
 

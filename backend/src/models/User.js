@@ -9,8 +9,8 @@
  * @param {boolean} isAdmin
  */
 class User{
-    constructor(username, firstname, lastname, email, password, role, isAdmin) {
-        this._id = undefined;
+    constructor(_id, username, firstname, lastname, email, password, role, isAdmin) {
+        this._id = _id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;

@@ -243,6 +243,19 @@
         }
       }
     },
+    "/salesmen/getApiSalesmen": {
+      "get": {
+        "tags":[
+          "salesmen"
+        ],
+        "summary": "Get Salesman from OrangeHRM and add OpenCRx UID",
+        "responses": {
+          "200": {
+            "description": "successfully updated"
+          }
+        }
+      }
+    },
     "/evaluationRecords/create": {
       "post": {
         "tags": [
@@ -266,6 +279,111 @@
                 "schema": {
                   "type": "number",
                   "example": 2
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/evaluationRecords/read/id/{_id}": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "returns evaluation Record by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of evaluationRecord"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The evaluation Record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluationRecord"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/evaluationRecords/read/salesmanId/{salesManID}": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "returns evaluation Records by salesmanID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "salesManID",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "ID of salesman" 
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Evaluation Records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "$ref": "#/components/schemas/EvaluationRecord"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bonuses/read/id/{_id}": {
+      "get": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "returns bonus by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of bonus"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Bonus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bonus"
                 }
               }
             }
@@ -315,6 +433,8 @@
       }
     }
   },
+
+
   "components": {
     "schemas": {
       "SalesMan": {
