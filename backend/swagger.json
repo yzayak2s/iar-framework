@@ -434,6 +434,29 @@
           }
         }
       }
+    },
+    "/employees/read/all": {
+      "get": {
+        "tags": [
+          "orangeHRM"
+        ],
+        "summary": "Returns the list of all employees",
+        "responses": {
+          "200": {
+            "description": "The list of employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
 
