@@ -5,8 +5,8 @@ exports.getEmployees = (req, res) => {
         .then((employees) => {
             res.send(employees);
         }).catch(_ => {
-            console.log(_)
-            res.status(500).send();
+            res.send(_);
+            // res.status(500).send();
     });
 }
 
