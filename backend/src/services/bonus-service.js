@@ -168,7 +168,6 @@ exports.calculateAllBonus = async (db, year) => {
     return returnArray;
 }
 
-const {ObjectId} = require("mongodb");
 /**
  * retrieves bonussalaries from database
  * @param db source database
