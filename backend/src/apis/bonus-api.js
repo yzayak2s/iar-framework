@@ -16,6 +16,11 @@ exports.getBonusById = (req, res) => {
 
     bonusService.getBonusById(db, ObjectId(req.params._id))
         .then((bonusById) => {
+            // Check if this Object belongs to the asking salesman
+            if (req.checkID && bonusById.salesManID != req.session.user._id) {
+                res.status(401).send("Salesman may only access their own data.");
+            }
+
             res.send(bonusById);
         }).catch(_ => {
         res.status(500).send();

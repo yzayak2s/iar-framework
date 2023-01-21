@@ -20,9 +20,9 @@ const bonusExample1 = new Bonus(2020, 2000, 'Some remark1', false, 1);
 const bonusExample2 = new Bonus(2021, 2555, 'Some remark2', true, 1);
 const bonusExample3 = new Bonus(2021, 1555, 'Some remark3', false, 2);
 
-const salesmanExample1 = new SalesMan('Max', 'Mustermann', 1, '9ENFSDRCBESBTH2MA4T2TYJFL');
-const salesmanExample2 = new SalesMan('John', 'Johny', 2);
-const salesmanExample3 = new SalesMan('Guy', 'Guyer', 3, '8DEIFGESH2MA4T2TYJSSFL');
+const salesmanExample1 = new SalesMan('Max', '', 'Mustermann', 'Max Mustermann', 'Sales', 'Senior Salesman', 1, '9ENFSDRCBESBTH2MA4T2TYJFL');
+const salesmanExample2 = new SalesMan('John', '', 'Johny', 'John Johny', 'Sales', 'Senior Salesman', 2);
+const salesmanExample3 = new SalesMan('Guy', '', 'Guyer', 'Guy Guyer', 'Sales', 'Senior Salesman', 3, '8DEIFGESH2MA4T2TYJSSFL');
 
 let db;
 

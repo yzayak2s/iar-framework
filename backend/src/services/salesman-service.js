@@ -1,6 +1,3 @@
-const {ObjectId} = require("mongodb");
-const orangeHRMService = require('../services/orangeHRM-service');
-
 const Salesman = require('../models/SalesMan');
 const {fitsModel} = require('../helper/creation-helper')
 const orangeHRMService = require('../services/orangeHRM-service')
@@ -12,7 +9,7 @@ const openCRXService = require('../services/openCRX-service');
  * @return {Promise<SalesMan>}
  */
 exports.getAll = async (db) => {
-    return await db.collection('salesmen').find({unit: "Sales"}).toArray(); // use of toArray() is important here.
+    return await db.collection('salesmen').find().toArray(); // use of toArray() is important here.
 }
 
 /**
@@ -32,7 +29,7 @@ exports.getSalesManByFirstname = async (db, firstname) => {
  * @return {Promise<SalesMan>}
  */
 exports.getSalesManById = async (db, _id) => {
-    return await db.collection('salesmen').findOne({_id: _id});
+    return await db.collection('salesmen').findOne({_id: parseInt(_id)});
 }
 
 /**
@@ -47,14 +44,23 @@ exports.add = async (db, salesman) => {
     if (!await fitsModel(salesman, Salesman)){
         throw new Error('Incorrect body object was provided. Needs _id, firstname and lastname.')
     }
-
+    
     if (existingSalesmanId) {
         if (existingSalesmanId._id === salesman._id) {
             throw new Error('Salesman with id ' + salesman._id + ' already exist!');
         }
     }
-
-    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id))).insertedId;
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(
+        salesman.firstname,
+        salesman.middleName,
+        salesman.lastname,
+        salesman.fullName,
+        salesman.unit,
+        salesman.jobTitle,
+        salesman._id,
+        salesman.uid
+    ))).insertedId;
 }
 
 /**
@@ -68,12 +74,21 @@ exports.addWithUID = async (db, salesman) => {
     if (!await fitsModel(salesman, Salesman)){
         throw new Error('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
     }
-
+    
     if (existingSalesmanId) {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
-
-    return (await db.collection('salesmen').insertOne(new Salesman(salesman.firstname, salesman.lastname, salesman._id, salesman.uid))).insertedId;
+    
+    return (await db.collection('salesmen').insertOne(new Salesman(
+        salesman.firstname,
+        salesman.middleName,
+        salesman.lastname,
+        salesman.fullName,
+        salesman.unit,
+        salesman.jobTitle,
+        salesman._id,
+        salesman.uid
+    ))).insertedId;
 }
 
 /**
@@ -84,25 +99,29 @@ exports.addWithUID = async (db, salesman) => {
  * @return {Promise<SalesMan>} salesman
  */
 exports.update = async (db, _id, salesman) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let o_id = new ObjectId(_id);
-    const existingSalesmanId = await db.collection('salesmen').findOne({_id: o_id});
-
-    if (existingSalesmanId) {
-        return await db.collection('salesmen').updateOne(
-            {
-                _id: o_id
-            },
-            { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
-                $set: {
-                    firstName: salesman.firstName,
-                    lastName: salesman.lastName
-                }
-            }
-        );
-    } else {
-        throw new Error("Salesmen with ID " + _id + " doesn't exist!");
+    const existingSalesmanId = await db.collection('salesmen').findOne({_id: parseInt(_id)});
+    
+    if (!existingSalesmanId) {
+        throw new Error("Salesmen with id " + _id + " doesn't exist!");
     }
+
+    return await db.collection('salesmen').updateOne(
+        {
+            _id: parseInt(_id)
+        },
+        { // TODO: provide 3 updates because when updating only firstname here we setting lastname to null!
+            $set: {
+                firstname: salesman.firstname,
+                middleName: salesman.middleName,
+                lastname: salesman.lastname,
+                fullName: salesman.fullName,
+                unit: salesman.unit,
+                jobTitle: salesman.jobTitle,
+                _id: salesman._id,
+                uid: salesman.uid,
+            }
+        }
+    );
 }
 
 /**
@@ -112,34 +131,40 @@ exports.update = async (db, _id, salesman) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let o_id = new ObjectId(_id);
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: o_id});
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
     if (!existingSalesMan) {
         throw new Error("Salesman with id " + _id + " doesn't exist!")
     }
-    return db.collection('salesmen').deleteOne({_id: o_id})
+
+    return db.collection('salesmen').deleteOne({_id: parseInt(_id)})
 }
 
-exports.getSalesmenFromAPI = async (db) => {
+exports.getSalesmenFromAPI = async (db) => {    
     const orangeHRMEmployees = await orangeHRMService.getAllEmployees();
     // Only get Contacts
     let openCRXAccounts = (await openCRXService.getAllAccounts())[1];
-
     await Promise.all(orangeHRMEmployees.map(async employee => {
         let hasUID = false;
 
         if(((await this.getSalesManById(db, employee.employeeId)) !== null)) {
             await this.delete(db, employee.employeeId)
         }
-
+        
         for (let i = 0; i < openCRXAccounts.length; i++) {
             const account = openCRXAccounts[i];
 
             if (employee.code == account.governmentId) {
-                // ToDo: Does Salesman exist? If yes delete
-                await this.addWithUID(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId, account.accountUID));
+                await this.addWithUID(db, new Salesman(
+                    employee.firstName,
+                    employee.middleName,
+                    employee.lastName,
+                    employee.fullName,
+                    employee.unit,
+                    employee.jobTitle,
+                    employee.employeeId,
+                    account.accountUID
+                ));
                 hasUID = true;
                 // remove this account from check list
                 openCRXAccounts.splice(i, 1);
@@ -147,7 +172,24 @@ exports.getSalesmenFromAPI = async (db) => {
         }
 
         if (!hasUID) {
-            await this.add(db, new Salesman(employee.firstName, employee.lastName, employee.employeeId));
+            await this.add(db, new Salesman(
+                employee.firstName,
+                employee.middleName,
+                employee.lastName,
+                employee.fullName,
+                employee.unit,
+                employee.jobTitle,
+                employee.employeeId
+            ));
         }
     }));
+}
+
+/**
+ * delete all salesman in database
+ * @param db source database
+ * @return {Promise<*>}
+ */
+exports.deleteAll = async (db) => {
+    return await db.collection('salesmen').deleteMany({});
 }

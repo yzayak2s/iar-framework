@@ -5,7 +5,7 @@
         <mat-card-subtitle *ngIf="currentUser.isAdmin">Admin</mat-card-subtitle>
         <mat-card-subtitle *ngIf="!currentUser.isAdmin">Employee</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="../../../assets/images/user.png" alt="User Photo">
+    <img mat-card-image src="assets/images/user.png" alt="User Photo">
     <mat-card-content>
         <mat-list role="list">
             <mat-list-item role="listitem">User ID:   {{currentUser._id}}</mat-list-item>
