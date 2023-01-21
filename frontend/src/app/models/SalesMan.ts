@@ -3,8 +3,8 @@
  */
 export class SalesMan{
     public _id: string;
-    public firstName: string;
-    public lastName: string;
+    public firstname: string;
+    public lastname: string;
     public fullName: string;
     public middleName: string;
     public unit: string;
