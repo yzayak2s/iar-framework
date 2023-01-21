@@ -1,9 +1,15 @@
-const {ObjectId} = require("mongodb");
+
 const { fitsModel } = require("../helper/creation-helper");
 const EvaluationRecord = require('../models/EvaluationRecord')
 
+exports.getAllGoals = async (db) => {
+    return await db.collection('goals').find({}).toArray(); // use of toArray() is important here.
+}
+
+
+
 /**
- * retrieves evaluation records from database
+ * retrieves salesmen from database
  * @param db source database
  * @return {Promise<EvaluationRecord>}
  */
@@ -11,24 +17,16 @@ exports.getAll = async (db) => {
     return await db.collection('evaluation_record')
         .aggregate([
             { $lookup:
-                {
-                    from: 'salesmen',
-                    localField: 'salesManID',
-                    foreignField: '_id',
-                    as: 'salesMan'
-                }
+                    {
+                        from: 'salesmen',
+                        localField: 'salesManID',
+                        foreignField: '_id',
+                        as: 'salesMan'
+                    }
             }
         ]).toArray(); // use of toArray() is important here.
 }
 
-/**
- * retrieves goals from database
- * @param db source database
- * @return {Promise<Goal>}
- */
-exports.getAllGoals = async (db) => {
-    return await db.collection('goals').find({}).toArray(); // use of toArray() is important here.
-}
 
 /**
  * Retrieve one evaluation record by its id
@@ -37,9 +35,7 @@ exports.getAllGoals = async (db) => {
  * @returns {EvaluationRecord} evaluationRecord
  */
 exports.getById = async (db, _id) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let o_id = new ObjectId(_id);
-    return await db.collection('evaluation_record').findOne({_id: o_id});
+    return await db.collection('evaluation_record').findOne({_id: _id});
 }
 
 /**
@@ -49,9 +45,7 @@ exports.getById = async (db, _id) => {
  * @returns {EvaluationRecord} evaluationRecord
  */
 exports.getBySalesmanID = async (db, salesManID) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let salesman_ID = new ObjectId(salesManID);
-    return await db.collection('evaluation_record').find({salesManID: salesman_ID}).toArray();
+    return await db.collection('evaluation_record').find({salesManID: parseInt(salesManID)}).toArray();
 }
 
 
@@ -61,12 +55,7 @@ exports.getBySalesmanID = async (db, salesManID) => {
  * @param {EvaluationRecord} evaluationRecord
  */
 exports.add = async (db, evaluationRecord) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let eval_id = new ObjectId(evaluationRecord._id);
-    const existingEvaluationRecordId = await db.collection('evaluation_record').findOne({_id: eval_id});
-
-    let salesman_id = new ObjectId(evaluationRecord.salesManID);
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: salesman_id});
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
 
     if (!await fitsModel(evaluationRecord, EvaluationRecord)) {
         throw new Error('Incorrect body object was provided. Needs goalDescription, targetValue, actualValue, year and salesManID.');
@@ -76,11 +65,7 @@ exports.add = async (db, evaluationRecord) => {
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
 
-    if (existingEvaluationRecordId) {
-        throw new Error('EvaluationRecord with id ' + evaluationRecord._id + ' already exists!');
-    }
-    evaluationRecord.salesManID = salesman_id;
-    return (await db.collection('evaluation_record').insertOne(evaluationRecord)).insertedId;
+    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
 }
 
 /**
@@ -90,11 +75,7 @@ exports.add = async (db, evaluationRecord) => {
  * @param {*} evaluationRecord The new evaluationRecord
  */
 exports.updateById = async (db, _id, evaluationRecord) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let eval_id = new ObjectId(_id);
-    let salesman_id = new ObjectId(evaluationRecord.salesManID);
-
-    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: eval_id});
+    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: _id});
 
     if (!existingEvaluationRecord){
         throw new Error("No EvaluationRecord with id " + _id + " exists!");
@@ -102,7 +83,7 @@ exports.updateById = async (db, _id, evaluationRecord) => {
 
     return await db.collection('evaluation_record').updateOne(
         {
-            _id: eval_id
+            _id: _id
         },
         {
             $set: {
@@ -110,10 +91,6 @@ exports.updateById = async (db, _id, evaluationRecord) => {
                 targetValue: evaluationRecord.targetValue,
                 actualValue: evaluationRecord.actualValue,
                 year: evaluationRecord.year,
-                salesManID: salesman_id,
-                // TODO: Remove this part because it shouldn't be able to assign a already existing
-                //  evaluation-record to an another salesman...
-
             }
         }
     );
@@ -126,14 +103,13 @@ exports.updateById = async (db, _id, evaluationRecord) => {
  * @return {Promise<*>}
  */
 exports.delete = async (db, _id) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let eval_id = new ObjectId(_id);
-    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: eval_id});
+    const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: _id});
 
     if (!existingEvaluationRecord) {
-        throw new Error("EvaluationRecord with: " + _id + " doesn't exist!")
+        throw new Error("EvaluationRecord with id " + _id + " doesn't exist!")
     }
-    return db.collection('evaluation_record').deleteOne({_id: eval_id})
+
+    return db.collection('evaluation_record').deleteOne({_id: _id})
 }
 
 /**
@@ -142,13 +118,11 @@ exports.delete = async (db, _id) => {
  * @param {*} salesManID salesmanID
  */
 exports.deleteBySalesmanID = async (db, salesManID) => {
-    let ObjectId = require('mongodb').ObjectId;
-    let salesman_ID = new ObjectId(salesManID);
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: salesman_ID});
+    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
 
     if (!existingSalesMan){
-        throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
+        throw new Error('Salesman with id ' + salesManID + ' does not exist!');
     }
 
-    return db.collection('evaluation_record').deleteMany({salesManID: salesman_ID});
+    return db.collection('evaluation_record').deleteMany({salesManID: parseInt(salesManID)});
 }
