@@ -76,7 +76,12 @@ export class EvaluationRecordComponent implements OnInit {
     }
     deleteMethod(row: EvaluationRecord): void {
         if (confirm('Are you sure to delete evaluation record ' + String(row._id))) {
-            this.evaluationRecordService.deleteEvaluationRecord(row._id);
+            this.evaluationRecordService.deleteEvaluationRecord(row._id).subscribe((response: any) => {
+                this.fetchEvaluationRecords();
+            }, () => {
+                this.fetchEvaluationRecords();
+            });
+            this.fetchEvaluationRecords();
         }
     }
     showEvaluationRecord(row: EvaluationRecord): void{
@@ -106,7 +111,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord=new EvaluationRecord();
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
-                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id
+                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 delete this.evaluationrecord['salesMan'];
                 this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any) => {
                     this.fetchEvaluationRecords();

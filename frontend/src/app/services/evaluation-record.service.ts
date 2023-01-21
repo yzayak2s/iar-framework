@@ -3,7 +3,6 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {EvaluationRecord, Goal} from '../models/EvaluationRecord';
 import {environment} from '../../../environments/environment';
-import {SalesMan} from "../models/SalesMan";
 
 @Injectable({
     providedIn: 'root'
@@ -27,10 +26,10 @@ export class EvaluationRecordService {
         });
     }
 
-    deleteEvaluationRecord(id: string): void{
-        this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
+    deleteEvaluationRecord(id: string): Observable<any> {
+       return this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
             withCredentials: true
-        }) .subscribe((): void =>  console.log('Call delete service'));
+        }) ;
     }
 
 
