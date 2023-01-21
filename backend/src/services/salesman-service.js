@@ -46,9 +46,7 @@ exports.add = async (db, salesman) => {
     }
     
     if (existingSalesmanId) {
-        if (existingSalesmanId._id === salesman._id) {
-            throw new Error('Salesman with id ' + salesman._id + ' already exist!');
-        }
+        throw new Error('Salesman with id ' + salesman._id + ' already exist!');
     }
     
     return (await db.collection('salesmen').insertOne(new Salesman(
