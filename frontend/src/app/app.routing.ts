@@ -10,6 +10,8 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {BonusPageComponent} from './pages/bonus-page/bonus-page.component';
 import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.component';
 
+const ROLES = {CEO: 'CEO', HR: 'HR', SALESMAN: 'SALESMAN'};
+
 /*
   This array holds the relation of paths and components which angular router should resolve.
 
@@ -22,12 +24,12 @@ import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.compo
 const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', component: LoginPageComponent},
-    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
-    {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService]},
-    {path: 'evaluationrecord', component: EvaluationRecordComponent, canActivate: [AuthGuardService]},
-    {path: 'bonus', component: BonusPageComponent, canActivate: [AuthGuardService]},
-    {path: 'bonuses/detail/:id', component: BonusDetailComponent, canActivate: [AuthGuardService]},
-    {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService]},
+    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
+    {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
+    {path: 'evaluationrecord', component: EvaluationRecordComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
+    {path: 'bonus', component: BonusPageComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
+    {path: 'bonuses/detail/:id', component: BonusDetailComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
+    {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];
 
