@@ -4,6 +4,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable, Observer} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 import {environment} from '../../../environments/environment';
+import {UserService} from '../services/user.service'
 
 /**
  * Services specify logic, which is instantiated singularly -> it is shared between components
@@ -16,9 +17,10 @@ export class AuthService {
 
     loggedIn = false;
     authPreCheck = false;
+    role: string;
     listeners: ((param: boolean) => void)[] = [];
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private userService: UserService) {
     }
 
     /**
@@ -84,6 +86,15 @@ export class AuthService {
             .pipe(
                 tap((response): void => {
                     if (response.status === 200) { // if request was successful
+                        this.userService.getOwnUser().subscribe(user => {
+                            if (user.isAdmin) {
+                                this.role = 'ADMIN';
+                            }
+                            else {
+                                this.role = user.role;
+                            }
+                        });
+
                         this.loggedIn = true; // set new stat
                         this.emitLoginChange(true); // notify listeners
                     }
@@ -101,9 +112,14 @@ export class AuthService {
             tap((response): void => {
                 if (response.status === 200) {
                     this.loggedIn = false;
+                    this.role = '';
                     this.emitLoginChange(false);
                 }
             })
         );
+    }
+
+    getRole() {
+        return this.role;
     }
 }
