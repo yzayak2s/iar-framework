@@ -32,10 +32,10 @@ export class AuthGuardService implements CanActivate{
                         return state;
                     }
 
-                    const allowedRoles: Array<string> = route.data.roles;
+                    const allowedRoles: Array<string> = route.data.roles as Array<string>;
 
-                    if(!allowedRoles.includes(userRole)){
-                        console.log("Not allowed")
+                    if (!allowedRoles.includes(userRole)){
+                        console.log('Not allowed');
                         void this.router.navigate(['login']);   // If not allowed back to login. Dashboard would create infinite loop here
                     }
 

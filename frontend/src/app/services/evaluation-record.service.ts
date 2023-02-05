@@ -27,20 +27,20 @@ export class EvaluationRecordService {
     }
 
     deleteEvaluationRecord(id: string): Observable<any> {
-       return this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
+        return this.http.delete(environment.apiEndpoint + '/api/evaluationRecords/delete/id/' + id.toString(), {
             withCredentials: true
         }) ;
     }
 
 
-    public updateEvaluationRecord(id: string,evaluationrecord: EvaluationRecord): Observable<any> {
+    public updateEvaluationRecord(id: string, evaluationrecord: EvaluationRecord): Observable<any> {
         const url = environment.apiEndpoint + '/api/evaluationRecords/update/id/' + id;
         return this.http.put<any>(url, evaluationrecord, {
             withCredentials: true
         });
     }
     public saveEvaluationRecord(evaluationRecord: EvaluationRecord): Observable<any> {
-        const url = environment.apiEndpoint +'/api/evaluationRecords/create';
+        const url = environment.apiEndpoint + '/api/evaluationRecords/create';
         return this.http.post<any>(url, evaluationRecord,  {
             withCredentials: true
         });

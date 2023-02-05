@@ -1,7 +1,7 @@
 /**
  * this model specifies the format to exchange an evaluation record
  */
-import {SalesMan} from "./SalesMan";
+import {SalesMan} from './SalesMan';
 
 export class EvaluationRecord{
     public _id: string;
@@ -11,17 +11,14 @@ export class EvaluationRecord{
     public year: string;
     public salesManID: string;
     public salesMan: SalesMan;
-    /*constructor(
-
-    ) {  }*/
 }
 
 export class Goal {
-    public goal_id: number
-    public goal_description : string
+    public goal_id: number;
+    public goal_description: string;
 
-    constructor(goal_id, goal_description) {
-        this.goal_id = goal_id
-        this.goal_description = goal_description
+    constructor(goal_id: number, goal_description: string) {
+        this.goal_id = goal_id;
+        this.goal_description = goal_description;
     }
 }

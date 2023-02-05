@@ -35,14 +35,14 @@ export class SalesManService {
     }
 
     public saveSalesman(salesman: SalesMan): Observable<any> {
-        const url = environment.apiEndpoint +'/api/salesmen/create';
+        const url = environment.apiEndpoint + '/api/salesmen/create';
         return this.http.post<any>(url, salesman,  {
             withCredentials: true
         });
     }
 
     public updateSalesman(id: string, salesman: SalesMan): Observable<any> {
-        const url = environment.apiEndpoint +'/api/salesmen/update/'+id;
+        const url = environment.apiEndpoint + '/api/salesmen/update/' + id;
         return this.http.put<any>(url, salesman,  {
             withCredentials: true
         });

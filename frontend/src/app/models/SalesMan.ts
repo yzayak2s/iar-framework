@@ -9,8 +9,9 @@ export class SalesMan{
     public middleName: string;
     public unit: string;
     public jobTitle: string;
-    public uid: string
-  /*  constructor(
+    public uid: string;
+
+    /*  constructor(
         public _id: string,
         public firstname: string,
         public lastname: string,

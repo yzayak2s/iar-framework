@@ -14,7 +14,7 @@ import {SalesMan} from '../../models/SalesMan';
 })
 export class SalesManComponent implements OnInit {
 
-    displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit','actions'];
+    displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
     salesmens: SalesMan[] = [];
     constructor(private router: Router, private salesManService: SalesManService) { }
     ngOnInit(): void {
