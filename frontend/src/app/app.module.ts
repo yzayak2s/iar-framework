@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {LoginPageComponent} from './pages/login-page/login-page.component';
 import {LoginComponent} from './components/login/login.component';
 import {LandingPageComponent} from './pages/landing-page/landing-page.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
@@ -22,15 +22,12 @@ import {SalesManComponent} from './components/sales-man/sales-man.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {EvaluationRecordComponent} from './components/evaluation-record/evaluation-record.component';
 import {MatListModule} from '@angular/material/list';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {MatSelectModule} from "@angular/material/select";
-
 import {BonusPageComponent} from './pages/bonus-page/bonus-page.component';
 import {BonusesComponent} from './components/bonuses/bonuses.component';
 import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {MatMenuModule} from '@angular/material/menu';
-import {SalesmanComponent} from './components/salesman/salesman.component';
+import { SalesmanComponent } from './components/salesman/salesman.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +41,6 @@ import {SalesmanComponent} from './components/salesman/salesman.component';
         SalesManComponent,
         EvaluationRecordComponent,
         DashboardComponent,
-        DashboardComponent,
         BonusPageComponent,
         BonusesComponent,
         BonusDetailComponent,
@@ -54,7 +50,6 @@ import {SalesmanComponent} from './components/salesman/salesman.component';
         BrowserModule,
         AppRouting,
         FormsModule,
-        ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         MatInputModule,
@@ -64,8 +59,6 @@ import {SalesmanComponent} from './components/salesman/salesman.component';
         MatIconModule,
         MatTableModule,
         MatListModule,
-        NgbModule,
-        MatSelectModule,
         NgxSpinnerModule,
         MatMenuModule
     ],
