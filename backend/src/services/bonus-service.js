@@ -210,9 +210,7 @@ exports.add = async (db, bonus) => {
         throw new Error('Bonus for salesman ' + bonus.salesManID + ' already exists for the year ' + bonus.year + '.');
     }
 
-    if (!await fitsModel(bonus, Bonus)) {
-        throw new Error('Incorrect body object was provided. Needs year, value, remark, verified and salesManID.')
-    }
+    await fitsModel(bonus, Bonus)   // Check given Object
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + bonus.salesManID + ' does not exists!');

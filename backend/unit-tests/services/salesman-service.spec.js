@@ -51,7 +51,7 @@ describe('salesman-service unit-tests', function() {
 
             it('throws if given object is incorrect', async function() {
                 // id should be _id
-                await expect(salesmanService.add(db, {firstname: 'bob', lastname: 'heh', id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname and lastname.')
+                await expect(salesmanService.add(db, {firstname: 'bob', lastname: 'heh', id: 5})).to.be.rejectedWith('Incorrect body object was provided.')
             });
         });
 
@@ -81,7 +81,7 @@ describe('salesman-service unit-tests', function() {
 
             it('throws if given object is incorrect', async function() {
                 // missing uid
-                await expect(salesmanService.addWithUID(db, {firstname: 'bob', lastname: 'heh', _id: 5})).to.be.rejectedWith('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
+                await expect(salesmanService.addWithUID(db, {firstname: 'bob', lastname: 'heh', _id: 5})).to.be.rejectedWith('Incorrect body object was provided.')
             });
         })
     });

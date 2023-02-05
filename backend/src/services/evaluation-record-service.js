@@ -57,9 +57,7 @@ exports.getBySalesmanID = async (db, salesManID) => {
 exports.add = async (db, evaluationRecord) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
 
-    if (!await fitsModel(evaluationRecord, EvaluationRecord)) {
-        throw new Error('Incorrect body object was provided. Needs goalDescription, targetValue, actualValue, year and salesManID.');
-    }
+    await fitsModel(evaluationRecord, EvaluationRecord) // Check given Object
 
     if (!existingSalesMan){
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');

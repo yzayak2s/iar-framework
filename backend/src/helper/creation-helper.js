@@ -10,13 +10,11 @@ exports.fitsModel = async (testObject, classModel) => {
     
     // Can't be equal if not same length
     if (testObjectKeys.length != modelKeys.length) {
-        return false;
+        throw new Error('Incorrect body object was provided.');
     }
 
     // Sort and then convert to String to compare
     if (testObjectKeys.sort().toString() != modelKeys.sort().toString()) {
-        return false;
+        throw new Error('Incorrect body object was provided.');
     }
-
-    return true;
 }

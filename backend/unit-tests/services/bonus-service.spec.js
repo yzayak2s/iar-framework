@@ -61,7 +61,7 @@ describe("bonus-service Unit-tests", function() {
 
         it('throws if given object is incorrect', async function() {
             // year missing
-            await expect(bonusService.add(db, {value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided. Needs year, value, remark, verified and salesManID.')
+            await expect(bonusService.add(db, {value: 500, remark: 'yes', verified: 'yes', salesManID:1})).to.be.rejectedWith('Incorrect body object was provided.')
         });
 
         it('throws if bonus for a salesman for the specific year already exists', async function() {

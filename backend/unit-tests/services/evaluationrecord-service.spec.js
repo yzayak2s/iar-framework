@@ -54,7 +54,7 @@ describe('evaluation-record-service unit-tests', function () {
         it('throws if given object is incorrect', async function() {
             await salesmanService.add(db, copyObject(salesMan))
             // targetValue missing
-            await expect(evaluationRecordService.add(db, {goalDescription: 'ttt', actualValue: 6, year: 2012, salesManID: 1})).to.be.rejectedWith('Incorrect body object was provided. Needs goalDescription, targetValue, actualValue, year and salesManID.')
+            await expect(evaluationRecordService.add(db, {goalDescription: 'ttt', actualValue: 6, year: 2012, salesManID: 1})).to.be.rejectedWith('Incorrect body object was provided.')
         });
     });
 

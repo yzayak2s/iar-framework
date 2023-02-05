@@ -41,9 +41,7 @@ exports.add = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
     salesman.uid = undefined;
 
-    if (!await fitsModel(salesman, Salesman)){
-        throw new Error('Incorrect body object was provided. Needs _id, firstname and lastname.')
-    }
+    await fitsModel(salesman, Salesman) // Check given Object
     
     if (existingSalesmanId) {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
@@ -69,9 +67,7 @@ exports.add = async (db, salesman) => {
 exports.addWithUID = async (db, salesman) => {
     const existingSalesmanId = await db.collection('salesmen').findOne({_id: salesman._id});
 
-    if (!await fitsModel(salesman, Salesman)){
-        throw new Error('Incorrect body object was provided. Needs _id, firstname, lastname and uid.')
-    }
+    await fitsModel(salesman, Salesman)
     
     if (existingSalesmanId) {
         throw new Error('Salesman with id ' + salesman._id + ' already exist!');
