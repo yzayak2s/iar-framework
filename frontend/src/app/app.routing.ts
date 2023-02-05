@@ -24,12 +24,18 @@ const ROLES = {CEO: 'CEO', HR: 'HR', SALESMAN: 'SALESMAN'};
 const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', component: LoginPageComponent},
-    {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
-    {path: 'salesman', component: SalesManComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
-    {path: 'evaluationrecord', component: EvaluationRecordComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
-    {path: 'bonus', component: BonusPageComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR]}},
-    {path: 'bonuses/detail/:id', component: BonusDetailComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
-    {path: 'example', component: ExamplePageComponent, canActivate: [AuthGuardService], data: {roles:[ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
+    {path: 'dashboard', component: DashboardComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
+    {path: 'salesman', component: SalesManComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
+    {path: 'evaluationrecord', component: EvaluationRecordComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
+    {path: 'bonus', component: BonusPageComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
+    {path: 'bonuses/detail/:id', component: BonusDetailComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
+    {path: 'example', component: ExamplePageComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
     {path: '**', component: NotFoundPageComponent} // these entries are matched from top to bottom => not found should be the last entry
 ];
 
