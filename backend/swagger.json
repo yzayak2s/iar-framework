@@ -363,6 +363,32 @@
         }
       }
     },
+    "/evaluationRecords/read/all": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "returns all EvaluationRecords",
+        "responses": {
+          "200": {
+            "description": "Array of Evaluation Records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "$ref": "#/components/schemas/EvaluationRecord"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/bonuses/read/id/{_id}": {
       "get": {
         "tags": [
