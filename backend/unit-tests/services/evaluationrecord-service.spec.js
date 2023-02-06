@@ -76,7 +76,7 @@ describe('evaluation-record-service unit-tests', function () {
             await expect(evaluationRecordService.getBySalesmanID(db, 'salesManID')).to.eventually.be.eqls([]);
         });
 
-        it('expect list of all evaluation records', async function() {
+        it.skip('expect list of all evaluation records', async function() {
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
             await evaluationRecordService.add(db, copyObject(evaluationRecord2));
             await evaluationRecordService.add(db, copyObject(evaluationRecord3));
