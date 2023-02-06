@@ -4,8 +4,7 @@ import {EvaluationRecordService} from '../../services/evaluation-record.service'
 import {SalesManService} from '../../services/sales-man.service';
 import {Router} from '@angular/router';
 import {EvaluationRecord, Goal} from '../../models/EvaluationRecord';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {SalesMan} from "../../models/SalesMan";
+import {SalesMan} from '../../models/SalesMan';
 
 @Component({
     selector: 'app-evaluation-record',
@@ -16,29 +15,28 @@ import {SalesMan} from "../../models/SalesMan";
 
 
 export class EvaluationRecordComponent implements OnInit {
-    closeResult: string = '';
+    closeResult = '';
     displayedColumns = ['salesMan', 'year', 'goal', 'targetValue', 'actualValue', 'actions'];
     evaluationrecords: EvaluationRecord[] = [];
     goals: Goal[] = [];
     salesMen: SalesMan[] = [];
-    evaluationrecord: EvaluationRecord= new EvaluationRecord();
-    //goal: Goal = new Goal(1, "Leadership Competence");
+    evaluationrecord: EvaluationRecord = new EvaluationRecord();
+    //  goal: Goal = new Goal(1, "Leadership Competence");
 
-    //constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
+    //  constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
        goalDescription: string;
        targetValue: string;
        actualValue: string;
        year: string;
        salesManID: string);*/
-    activeEvaluationRecord: EvaluationRecord= new EvaluationRecord();
+    activeEvaluationRecord: EvaluationRecord = new EvaluationRecord();
 
     targetValue: string;
     actualValue: string;
     constructor(private router: Router,
                 private evaluationRecordService: EvaluationRecordService,
-                private salesManService : SalesManService,
-                private modalService: NgbModal) { }
+                private salesManService: SalesManService) { }
 
     selectedValue: string;
     selectedCar: string;
@@ -51,10 +49,10 @@ export class EvaluationRecordComponent implements OnInit {
         this.evaluationRecordService.getAllEvaluationRecord().subscribe((response): void => {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
-                for (let evaluation of this.evaluationrecords) {
-                    evaluation.salesMan = evaluation.salesMan[0];
-                }
-                //this.evaluationrecord.salesMan = this.evaluationrecord.salesMan[0]
+                // for (let evaluation of this.evaluationrecords) {
+                //     evaluation.salesMan = evaluation.salesMan[0];
+                // }
+                //  this.evaluationrecord.salesMan = this.evaluationrecord.salesMan[0]
             }
         });
     }
@@ -76,51 +74,52 @@ export class EvaluationRecordComponent implements OnInit {
     }
     deleteMethod(row: EvaluationRecord): void {
         if (confirm('Are you sure to delete evaluation record ' + String(row._id))) {
-            this.evaluationRecordService.deleteEvaluationRecord(row._id).subscribe((response: any) => {
+            this.evaluationRecordService.deleteEvaluationRecord(row._id).subscribe((): void => {
                 this.fetchEvaluationRecords();
-            }, () => {
+            }, (): void => {
                 this.fetchEvaluationRecords();
             });
             this.fetchEvaluationRecords();
         }
     }
-    showEvaluationRecord(row: EvaluationRecord): void{
+    showEvaluationRecord(row: EvaluationRecord): void {
         console.log(row);
     }
-    open(content:any, row: EvaluationRecord) {
-        if(row)
+
+    open(content: any, row: EvaluationRecord): void {
+        if (row)
         {
-            this.evaluationrecord.actualValue=row.actualValue;
-            this.evaluationrecord.targetValue=row.targetValue;
-            this.evaluationrecord.year=row.year;
-            this.evaluationrecord.goalDescription=row.goalDescription;
-            this.evaluationrecord.salesManID=row.salesManID;
-            this.evaluationrecord.salesMan=row.salesMan;
-            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-                this.closeResult = `Closed with: ${result}`;
-                this.evaluationRecordService.updateEvaluationRecord(row._id,this.evaluationrecord).subscribe((response: any) => {
-                    this.fetchEvaluationRecords();
-                }, () => {
-                    this.fetchEvaluationRecords();
-                });
-            }, (reason) => {
-                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            });
+            this.evaluationrecord.actualValue = row.actualValue;
+            this.evaluationrecord.targetValue = row.targetValue;
+            this.evaluationrecord.year = row.year;
+            this.evaluationrecord.goalDescription = row.goalDescription;
+            this.evaluationrecord.salesManID = row.salesManID;
+            this.evaluationrecord.salesMan = row.salesMan;
+            // this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
+            //     this.closeResult = `Closed with: ${result}`;
+            //     this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((response: any): void => {
+            //         this.fetchEvaluationRecords();
+            //     }, (): void => {
+            //         this.fetchEvaluationRecords();
+            //     });
+            // }, (reason): void => {
+            //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            // });
         }
         else {
-            this.evaluationrecord=new EvaluationRecord();
-            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-                this.closeResult = `Closed with: ${result}`;
-                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
-                delete this.evaluationrecord['salesMan'];
-                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any) => {
-                    this.fetchEvaluationRecords();
-                }, () => {
-                    this.fetchEvaluationRecords();
-                });
-            }, (reason) => {
-                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-            });
+            this.evaluationrecord = new EvaluationRecord();
+            // this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
+            //     this.closeResult = `Closed with: ${result}`;
+            //     this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
+            //     delete this.evaluationrecord.salesMan;
+            //     this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any): void => {
+            //         this.fetchEvaluationRecords();
+            //     }, (): void => {
+            //         this.fetchEvaluationRecords();
+            //     });
+            // }, (reason): void => {
+            //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            // });
         }
     }
 
@@ -129,24 +128,24 @@ export class EvaluationRecordComponent implements OnInit {
      *
      * @return response()
      */
-    private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return  `with: ${reason}`;
-        }
-    }
+    // private getDismissReason(reason: any): string {
+    //     if (reason === ModalDismissReasons.ESC) {
+    //         return 'by pressing ESC';
+    //     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+    //         return 'by clicking on a backdrop';
+    //     } else {
+    //         return  `with: ${reason}`;
+    //     }
+    // }
 
-    sortBy(list?, attribute?) {
-        if (list) {
-            return list.sort((a,b) => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0)
-        }
-    }
+    // sortBy(list?, attribute?) {
+    //     if (list) {
+    //         return list.sort((a,b) => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
+    //     }
+    // }
 
-    compareSalesMen(o1: any, o2: any): boolean {
-        return o1.fullName === o2.fullName;
-    }
+    // compareSalesMen(o1: any, o2: any): boolean {
+    //     return o1.fullName === o2.fullName;
+    // }
 
 }
