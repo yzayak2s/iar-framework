@@ -9,6 +9,7 @@ import {EvaluationRecordComponent} from './components/evaluation-record/evaluati
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {BonusPageComponent} from './pages/bonus-page/bonus-page.component';
 import {BonusDetailComponent} from './components/bonus-detail/bonus-detail.component';
+import {SalesOrderComponent} from './components/sales-order/sales-order.component';
 
 const ROLES = {CEO: 'CEO', HR: 'HR', SALESMAN: 'SALESMAN'};
 
@@ -29,6 +30,8 @@ const routes: Routes = [
     {path: 'salesman', component: SalesManComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'evaluationrecord', component: EvaluationRecordComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
+    {path: 'salesorder', component: SalesOrderComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'bonus', component: BonusPageComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
