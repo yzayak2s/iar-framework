@@ -52,9 +52,9 @@ export class EvaluationRecordComponent implements OnInit {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
                 for (const evaluation of this.evaluationrecords) {
-                    evaluation.salesMan = evaluation.salesMan[0];
+                    evaluation.salesManID = evaluation.salesManID[0];
                 }
-                this.evaluationrecord.salesMan = this.evaluationrecord.salesMan[0];
+                this.evaluationrecord.salesManID = this.evaluationrecord.salesManID[0];
             }
         });
     }
@@ -98,7 +98,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.salesManID = row.salesManID;
             this.evaluationrecord.salesMan = row.salesMan;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
-                this.closeResult = `Closed with: ${result}`;
+                this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((response: any): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
@@ -111,7 +111,7 @@ export class EvaluationRecordComponent implements OnInit {
         else {
             this.evaluationrecord = new EvaluationRecord();
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
-                this.closeResult = `Closed with: ${result}`;
+                this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 delete this.evaluationrecord.salesMan;
                 this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any): void => {
@@ -136,17 +136,17 @@ export class EvaluationRecordComponent implements OnInit {
         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
             return 'by clicking on a backdrop';
         } else {
-            return  `with: ${reason}`;
+            return  `with: ${String(reason)}`;
         }
     }
 
-    sortBy(list?, attribute?) {
+    sortBy(list?: SalesMan[], attribute?: string): SalesMan[] {
         if (list) {
-            return list.sort((a,b) => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
+            return list.sort((a, b): any => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
         }
     }
 
-    compareSalesMen(o1: any, o2: any): boolean {
+    compareSalesMen(o1: SalesMan, o2: SalesMan): boolean {
         return o1.fullName === o2.fullName;
     }
 
