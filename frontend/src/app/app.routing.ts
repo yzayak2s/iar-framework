@@ -31,8 +31,8 @@ const routes: Routes = [
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'evaluationrecord', component: EvaluationRecordComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
-    {path: 'salesorder', component: SalesOrderComponent, canActivate: [AuthGuardService]},
-
+    {path: 'salesorder', component: SalesOrderComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'bonus', component: BonusPageComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'bonuses/detail/:id', component: BonusDetailComponent,
