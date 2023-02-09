@@ -12,15 +12,6 @@
         <td mat-cell *matCellDef="let salesorder">{{salesorder.salesOrderUID}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="customerUID">
-        <th mat-header-cell *matHeaderCellDef>Customer ID</th>
-        <td mat-cell *matCellDef="let salesorder" >{{salesorder.customerUID}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="salesRep">
-        <th mat-header-cell *matHeaderCellDef>Sales Rep</th>
-        <td mat-cell *matCellDef="let salesorder" >{{salesorder.salesRep}}</td>
-    </ng-container>
 
     <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef>Created at</th>

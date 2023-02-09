@@ -14,7 +14,7 @@ import {SalesOrder} from '../../models/SalesOrder';
 })
 export class SalesOrderComponent implements OnInit {
 
-    displayedColumns = ['contractType', 'salesOrderUID', 'customerUID', 'salesRep', 'createdAt','priority', 'totalAmountIncludingTax', 'totalBaseAmount', 'totalTaxAmount'];
+    displayedColumns = ['contractType', 'salesOrderUID', 'createdAt','priority', 'totalAmountIncludingTax', 'totalBaseAmount', 'totalTaxAmount'];
     salesoders: SalesOrder[] = [];
     constructor(private router: Router, private salesOrderService: SalesOrderService) { }
     ngOnInit(): void {

@@ -8,7 +8,7 @@ const environment = {
         username: '',
         password: '',
         authSource: 'admin',
-        name: 'intArch'
+        name: 'intArch_2'
     },
     corsOrigins: [
         'http://localhost:4200'

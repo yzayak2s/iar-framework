@@ -6,6 +6,9 @@ import {Component, OnInit} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
 import {Router} from '@angular/router';
 import {SalesMan} from '../../models/SalesMan';
+import {EvaluationRecordService} from '../../services/evaluation-record.service';
+import {EvaluationRecord} from "../../models/EvaluationRecord";
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-sales-man',
@@ -15,8 +18,13 @@ import {SalesMan} from '../../models/SalesMan';
 export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
+    displayedColumnsEvaluatinRecord = [ 'year_2', 'goal_2', 'targetValue_2', 'actualValue_2'];
     salesmens: SalesMan[] = [];
-    constructor(private router: Router, private salesManService: SalesManService) { }
+    evaluationrecords: EvaluationRecord[] = [];
+    show: boolean=false;
+    closeResult: string = '';
+
+    constructor(private router: Router, private salesManService: SalesManService, private evaluationRecordService: EvaluationRecordService, private modalService: NgbModal) { }
     ngOnInit(): void {
         console.log('test');
         this.fetchSalesmans();
@@ -37,7 +45,25 @@ export class SalesManComponent implements OnInit {
             this.salesManService.deleteSalesman(row._id);
         }
     }
-    showSalesMan(row: SalesMan): void{
+
+    showSalesMan(content:any, row: SalesMan): void{
+console.log("row",row);
+        this.evaluationRecordService.getEvaluationRecordBySalesManID(row._id).subscribe((response): void => {
+            if (response.status === 200){
+                this.evaluationrecords = response.body;
+
+                console.log("this.evaluationrecords");
+                console.log(this.evaluationrecords);
+                this.show=true;
+                this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+                    this.closeResult = `Closed with: ${result}`;
+
+                }, (reason) => {
+                    //  this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+                });
+            }
+        });
+
         console.log(row);
     }
 }
