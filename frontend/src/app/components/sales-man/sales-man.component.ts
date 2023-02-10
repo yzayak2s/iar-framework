@@ -2,43 +2,41 @@
  * * Created by ${USER} on ${DATE}
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
-import {Router} from '@angular/router';
 import {SalesMan} from '../../models/SalesMan';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-sales-man',
     templateUrl: './sales-man.component.html',
     styleUrls: ['./sales-man.component.css']
 })
-export class SalesManComponent implements OnInit {
+export class SalesManComponent {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
-    salesmens: SalesMan[] = [];
+    dataSource = new MatTableDataSource<SalesMan>();
+    @ViewChild(MatTable) table: MatTable<SalesMan>;
 
-    constructor(private router: Router, private salesManService: SalesManService) { }
-
-    ngOnInit(): void {
-        console.log('test');
+    constructor(private salesManService: SalesManService) {
         this.fetchSalesmans();
     }
 
     fetchSalesmans(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
-                console.log('inside 200');
-                this.salesmens = response.body;
+                this.dataSource.data = response.body;
+                this.table.renderRows();
             }
-            console.log(this.salesmens);
         });
     }
 
     deleteMethod(row: SalesMan): void {
         console.log(row);
         if (confirm('Are you sure to delete ' + row.firstname)) {
-            console.log('Implement delete functionality here');
-            this.salesManService.deleteSalesman(row._id);
+            this.salesManService.deleteSalesman(row._id).subscribe((): void => {
+                this.fetchSalesmans();
+            });
         }
     }
 
@@ -47,7 +45,8 @@ export class SalesManComponent implements OnInit {
     }
 
     syncButton_click(): void {
-        this.salesManService.syncSalesman();
-        this.fetchSalesmans();
+        this.salesManService.syncSalesman().subscribe((): void => {
+            this.fetchSalesmans();
+        });
     }
 }

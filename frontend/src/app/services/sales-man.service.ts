@@ -28,10 +28,10 @@ export class SalesManService {
         });
     }
 
-    deleteSalesman(salesmanid: string): void {
-        this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
+    deleteSalesman(salesmanid: string): Observable<any> {
+        return this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
             withCredentials: true
-        }) .subscribe((): void =>  console.log('Call delete service'));
+        });
     }
 
     public saveSalesman(salesman: SalesMan): Observable<any> {
@@ -48,9 +48,9 @@ export class SalesManService {
         });
     }
 
-    syncSalesman(): void {
+    syncSalesman(): Observable<any> {
         const url = environment.apiEndpoint + '/api/salesmen/getApiSalesmen';
-        this.http.get<any>(url, {withCredentials: true}).subscribe((): void => console.log('Synchronized with OrangeHRM'));
+        return this.http.get<any>(url, {withCredentials: true});
     }
 
 }

@@ -3,7 +3,7 @@
     <button mat-raised-button id="sync_button" (click)="syncButton_click()">Sync Salesman</button>
 </header>
 
-<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="salesmens">
+<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="dataSource">
     <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let person">{{person._id}}</td>
