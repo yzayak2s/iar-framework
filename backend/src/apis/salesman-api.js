@@ -63,7 +63,7 @@ exports.deleteSalesMan = (req, res) => {
 
     salesmenService.delete(db, req.params._id)
         .then(_id => {
-            res.send(_id.toString());
+            res.send(_id);
         }).catch((e) => {
             res.send(e.message);
     }).catch(_ => {
