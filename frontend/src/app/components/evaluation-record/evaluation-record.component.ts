@@ -96,7 +96,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.salesMan = row.salesMan;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
-                this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((response: any): void => {
+                this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
                     this.fetchEvaluationRecords();
@@ -111,7 +111,7 @@ export class EvaluationRecordComponent implements OnInit {
                 this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 delete this.evaluationrecord.salesMan;
-                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any): void => {
+                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
                     this.fetchEvaluationRecords();
