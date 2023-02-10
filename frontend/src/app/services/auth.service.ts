@@ -89,9 +89,11 @@ export class AuthService {
                         this.userService.getOwnUser().subscribe((user): void => {
                             if (user.isAdmin) {
                                 this.role = 'ADMIN';
+                                localStorage.setItem('role', this.role);
                             }
                             else {
                                 this.role = user.role;
+                                localStorage.setItem('role', this.role);
                             }
                         });
 
@@ -113,6 +115,7 @@ export class AuthService {
                 if (response.status === 200) {
                     this.loggedIn = false;
                     this.role = '';
+                    localStorage.removeItem('role');
                     this.emitLoginChange(false);
                 }
             })
@@ -120,6 +123,7 @@ export class AuthService {
     }
 
     getRole(): string {
+        this.role = localStorage.getItem('role');
         return this.role;
     }
 }

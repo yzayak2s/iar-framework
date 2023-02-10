@@ -28,10 +28,10 @@ export class SalesManService {
         });
     }
 
-    deleteSalesman(salesmanid: string): void {
-        this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
+    deleteSalesman(salesmanid: string): Observable<any> {
+        return this.http.delete(environment.apiEndpoint + '/api/salesmen/delete/id/' + salesmanid, {
             withCredentials: true
-        }) .subscribe((): void =>  console.log('Call delete service'));
+        });
     }
 
     public saveSalesman(salesman: SalesMan): Observable<any> {
@@ -46,6 +46,11 @@ export class SalesManService {
         return this.http.put<any>(url, salesman,  {
             withCredentials: true
         });
+    }
+
+    syncSalesman(): Observable<any> {
+        const url = environment.apiEndpoint + '/api/salesmen/getApiSalesmen';
+        return this.http.get<any>(url, {withCredentials: true});
     }
 
 }

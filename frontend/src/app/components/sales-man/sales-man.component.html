@@ -1,11 +1,13 @@
-<h2>SalesMans table:</h2>
-<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="salesmens">
+<header>
+    <h2>SalesMans table:</h2>
+    <button mat-raised-button id="sync_button" (click)="syncButton_click()" *ngIf="allowedSync">Sync Salesman</button>
+</header>
+
+<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="dataSource">
     <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let person">{{person._id}}</td>
     </ng-container>
-
-
 
     <ng-container matColumnDef="firstname">
         <th mat-header-cell *matHeaderCellDef>Firstname</th>

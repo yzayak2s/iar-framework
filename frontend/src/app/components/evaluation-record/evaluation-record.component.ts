@@ -22,9 +22,7 @@ export class EvaluationRecordComponent implements OnInit {
     goals: Goal[] = [];
     salesMen: SalesMan[] = [];
     evaluationrecord: EvaluationRecord = new EvaluationRecord();
-    //  goal: Goal = new Goal(1, "Leadership Competence");
 
-    //  constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
        goalDescription: string;
        targetValue: string;
@@ -42,11 +40,13 @@ export class EvaluationRecordComponent implements OnInit {
 
     selectedValue: string;
     selectedCar: string;
+
     ngOnInit(): void {
         this.fetchEvaluationRecords();
         this.getGoals();
         this.getSalesMen();
     }
+
     fetchEvaluationRecords(): void{
         this.evaluationRecordService.getAllEvaluationRecord().subscribe((response): void => {
             if (response.status === 200){
@@ -84,9 +84,6 @@ export class EvaluationRecordComponent implements OnInit {
             this.fetchEvaluationRecords();
         }
     }
-    showEvaluationRecord(row: EvaluationRecord): void {
-        console.log(row);
-    }
 
     open(content: any, row: EvaluationRecord): void {
         if (row)
@@ -99,7 +96,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.salesMan = row.salesMan;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
-                this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((response: any): void => {
+                this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
                     this.fetchEvaluationRecords();
@@ -114,7 +111,7 @@ export class EvaluationRecordComponent implements OnInit {
                 this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 delete this.evaluationrecord.salesMan;
-                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any): void => {
+                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
                     this.fetchEvaluationRecords();
