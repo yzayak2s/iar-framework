@@ -16,6 +16,7 @@ import {UserService} from '../../services/user.service';
 })
 export class DashboardComponent implements OnInit {
     currentUser: User;
+
     ngOnInit(): void {
 
 
@@ -23,5 +24,6 @@ export class DashboardComponent implements OnInit {
             this.currentUser = user;
         });
     }
+
     constructor(private userService: UserService) { }
 }
