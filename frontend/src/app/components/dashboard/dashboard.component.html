@@ -1,20 +1,20 @@
 <mat-card class="example-card">
     <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{currentUser.username}}</mat-card-title>
-        <mat-card-subtitle *ngIf="currentUser.isAdmin">Admin</mat-card-subtitle>
-        <mat-card-subtitle *ngIf="!currentUser.isAdmin">Employee</mat-card-subtitle>
+        <mat-card-title>{{currentUser?.username}}</mat-card-title>
+        <mat-card-subtitle *ngIf="currentUser?.isAdmin">Admin</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!currentUser?.isAdmin">Employee</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image src="assets/images/user.png" alt="User Photo">
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item role="listitem">User ID:   {{currentUser._id}}</mat-list-item>
-            <mat-list-item role="listitem">User Name:     {{currentUser.username}}</mat-list-item>
-            <mat-list-item role="listitem">Firstname:   {{currentUser.firstname}} </mat-list-item>
-            <mat-list-item role="listitem">Lastname:    {{currentUser.lastname}}</mat-list-item>
-            <mat-list-item role="listitem">Email:       {{currentUser.email}}</mat-list-item>
-            <mat-list-item role="listitem" *ngIf="currentUser.isAdmin">You are logged as Admin</mat-list-item>
-            <mat-list-item role="listitem" *ngIf="!currentUser.isAdmin">You are logged as Employee</mat-list-item>
+            <mat-list-item role="listitem">User ID:   {{currentUser?._id}}</mat-list-item>
+            <mat-list-item role="listitem">User Name:     {{currentUser?.username}}</mat-list-item>
+            <mat-list-item role="listitem">Firstname:   {{currentUser?.firstname}} </mat-list-item>
+            <mat-list-item role="listitem">Lastname:    {{currentUser?.lastname}}</mat-list-item>
+            <mat-list-item role="listitem">Email:       {{currentUser?.email}}</mat-list-item>
+            <mat-list-item role="listitem" *ngIf="currentUser?.isAdmin">You are logged as Admin</mat-list-item>
+            <mat-list-item role="listitem" *ngIf="!currentUser?.isAdmin">You are logged as Employee</mat-list-item>
         </mat-list>
     </mat-card-content>
 </mat-card>
