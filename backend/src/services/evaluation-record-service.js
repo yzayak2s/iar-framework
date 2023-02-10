@@ -2,8 +2,26 @@
 const { fitsModel } = require("../helper/creation-helper");
 const EvaluationRecord = require('../models/EvaluationRecord')
 
+/**
+ * Get all goals
+ * @param {*} db source database 
+ * @returns {Array<{goal_description: string}>}
+ */
 exports.getAllGoals = async (db) => {
     return await db.collection('goals').find({}).toArray(); // use of toArray() is important here.
+}
+
+/**
+ * Create a new goal
+ * @param {*} db source database
+ * @param {string} goalDescription Description of new Goal
+ */
+exports.addGoal = async (db, goalDescription) => {
+    if (await db.collection('goals').findOne({goal_description: goalDescription})) {
+        throw new Error('Goal with same description already exists!');
+    }
+
+    await db.collection('goals').insertOne({goalDescription});
 }
 
 
