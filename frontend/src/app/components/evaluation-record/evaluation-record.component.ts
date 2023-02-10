@@ -40,11 +40,13 @@ export class EvaluationRecordComponent implements OnInit {
 
     selectedValue: string;
     selectedCar: string;
+
     ngOnInit(): void {
         this.fetchEvaluationRecords();
         this.getGoals();
         this.getSalesMen();
     }
+
     fetchEvaluationRecords(): void{
         this.evaluationRecordService.getAllEvaluationRecord().subscribe((response): void => {
             if (response.status === 200){
@@ -81,9 +83,6 @@ export class EvaluationRecordComponent implements OnInit {
             });
             this.fetchEvaluationRecords();
         }
-    }
-    showEvaluationRecord(row: EvaluationRecord): void {
-        console.log(row);
     }
 
     open(content: any, row: EvaluationRecord): void {
