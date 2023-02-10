@@ -2,10 +2,9 @@
  * * Created by ${USER} on ${DATE}
  */
 
-import {Component, ViewChild, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
 import {SalesMan} from '../../models/SalesMan';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,8 +15,7 @@ import { UserService } from 'src/app/services/user.service';
 export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
-    dataSource = new MatTableDataSource<SalesMan>();
-    @ViewChild(MatTable) table: MatTable<SalesMan>;
+    dataSource: SalesMan[] = [];
     allowedSync = false;
 
     constructor(private salesManService: SalesManService, private userService: UserService) {}
@@ -34,8 +32,7 @@ export class SalesManComponent implements OnInit {
     fetchSalesmans(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
-                this.dataSource.data = response.body;
-                this.table.renderRows();
+                this.dataSource = response.body;
             }
         });
     }
