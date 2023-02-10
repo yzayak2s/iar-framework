@@ -2,7 +2,7 @@
  * * Created by ${USER} on ${DATE}
  */
 
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
 import {SalesMan} from '../../models/SalesMan';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -13,14 +13,16 @@ import { UserService } from 'src/app/services/user.service';
     templateUrl: './sales-man.component.html',
     styleUrls: ['./sales-man.component.css']
 })
-export class SalesManComponent {
+export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
     dataSource = new MatTableDataSource<SalesMan>();
     @ViewChild(MatTable) table: MatTable<SalesMan>;
     allowedSync = false;
 
-    constructor(private salesManService: SalesManService, private userService: UserService) {
+    constructor(private salesManService: SalesManService, private userService: UserService) {}
+
+    ngOnInit(): void {
         this.fetchSalesmans();
         this.userService.getOwnUser().subscribe((user): void => {
             if (user.role === 'HR' || user.isAdmin) {
