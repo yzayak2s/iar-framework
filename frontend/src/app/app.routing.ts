@@ -23,7 +23,7 @@ const ROLES = {CEO: 'CEO', HR: 'HR', SALESMAN: 'SALESMAN'};
   Look at: frontend/src/app/components/menu-bar/menu-bar.component.ts
  */
 const routes: Routes = [
-    {path: '', redirectTo: '/login', pathMatch: 'full'},
+    {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     {path: 'login', component: LoginPageComponent},
     {path: 'dashboard', component: DashboardComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
