@@ -6,6 +6,7 @@ import {Component, ViewChild} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
 import {SalesMan} from '../../models/SalesMan';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-sales-man',
@@ -17,9 +18,15 @@ export class SalesManComponent {
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
     dataSource = new MatTableDataSource<SalesMan>();
     @ViewChild(MatTable) table: MatTable<SalesMan>;
+    allowedSync = false;
 
-    constructor(private salesManService: SalesManService) {
+    constructor(private salesManService: SalesManService, private userService: UserService) {
         this.fetchSalesmans();
+        this.userService.getOwnUser().subscribe((user): void => {
+            if (user.role === 'HR' || user.isAdmin) {
+                this.allowedSync = true;
+            }
+        });
     }
 
     fetchSalesmans(): void{

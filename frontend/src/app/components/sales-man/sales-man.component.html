@@ -1,6 +1,6 @@
 <header>
     <h2>SalesMans table:</h2>
-    <button mat-raised-button id="sync_button" (click)="syncButton_click()">Sync Salesman</button>
+    <button mat-raised-button id="sync_button" (click)="syncButton_click()" *ngIf="allowedSync">Sync Salesman</button>
 </header>
 
 <table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="dataSource">
