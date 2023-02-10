@@ -96,7 +96,7 @@ async function initDb(db) {
         console.log('created salesman2 user with password: ' + "salesman123");
     }
 
-    const salesmanService = require('../src/services/salesman-service')
+    const salesmanService = require('../src/services/salesman-service');
     if (await db.collection('salesmen').count() < 1) {    // Get Salesman from OrangeHRM if local mongoDB is empty
         try {
             console.log("Attempting to fetch Salesman data from OrangeHRM and OpenCRX...");
@@ -105,5 +105,15 @@ async function initDb(db) {
         } catch (error) {
             console.log("Currently unable to get Salesman from OrangeHRM. Reason: " + error);
         }
+    }
+
+    const evalRecordService = require('../src/services/evaluation-record-service');
+    if (await db.collection('goals').count() < 1) {
+        evalRecordService.addGoal(db, 'Leadership Competence');
+        evalRecordService.addGoal(db, 'Openness to Employee');
+        evalRecordService.addGoal(db, 'Social Behaviour to Employee');
+        evalRecordService.addGoal(db, 'Attitude towards Client');
+        evalRecordService.addGoal(db, 'Communication Skills');
+        evalRecordService.addGoal(db, 'Integrity to Company');
     }
 }
