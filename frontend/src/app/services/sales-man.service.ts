@@ -48,4 +48,9 @@ export class SalesManService {
         });
     }
 
+    syncSalesman(): void {
+        const url = environment.apiEndpoint + '/api/salesmen/getApiSalesmen';
+        this.http.get<any>(url, {withCredentials: true}).subscribe((): void => console.log('Synchronized with OrangeHRM'));
+    }
+
 }

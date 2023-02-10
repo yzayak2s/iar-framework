@@ -32,3 +32,13 @@ table{
     border-color: currentColor;
 }
 
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#sync_button {
+    margin-bottom: 5px;
+}

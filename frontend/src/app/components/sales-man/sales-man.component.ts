@@ -16,11 +16,14 @@ export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
     salesmens: SalesMan[] = [];
+
     constructor(private router: Router, private salesManService: SalesManService) { }
+
     ngOnInit(): void {
         console.log('test');
         this.fetchSalesmans();
     }
+
     fetchSalesmans(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
@@ -30,6 +33,7 @@ export class SalesManComponent implements OnInit {
             console.log(this.salesmens);
         });
     }
+
     deleteMethod(row: SalesMan): void {
         console.log(row);
         if (confirm('Are you sure to delete ' + row.firstname)) {
@@ -37,7 +41,13 @@ export class SalesManComponent implements OnInit {
             this.salesManService.deleteSalesman(row._id);
         }
     }
+
     showSalesMan(row: SalesMan): void{
         console.log(row);
+    }
+
+    syncButton_click(): void {
+        this.salesManService.syncSalesman();
+        this.fetchSalesmans();
     }
 }
