@@ -109,11 +109,11 @@ async function initDb(db) {
 
     const evalRecordService = require('../src/services/evaluation-record-service');
     if (await db.collection('goals').count() < 1) {
-        evalRecordService.addGoal(db, 'Leadership Competence');
-        evalRecordService.addGoal(db, 'Openness to Employee');
-        evalRecordService.addGoal(db, 'Social Behaviour to Employee');
-        evalRecordService.addGoal(db, 'Attitude towards Client');
-        evalRecordService.addGoal(db, 'Communication Skills');
-        evalRecordService.addGoal(db, 'Integrity to Company');
+        await evalRecordService.addGoal(db, 'Leadership Competence');
+        await evalRecordService.addGoal(db, 'Openness to Employee');
+        await evalRecordService.addGoal(db, 'Social Behaviour to Employee');
+        await evalRecordService.addGoal(db, 'Attitude towards Client');
+        await evalRecordService.addGoal(db, 'Communication Skills');
+        await evalRecordService.addGoal(db, 'Integrity to Company');
     }
 }
