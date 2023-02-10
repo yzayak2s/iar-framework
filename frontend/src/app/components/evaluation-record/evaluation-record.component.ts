@@ -22,9 +22,7 @@ export class EvaluationRecordComponent implements OnInit {
     goals: Goal[] = [];
     salesMen: SalesMan[] = [];
     evaluationrecord: EvaluationRecord = new EvaluationRecord();
-    //  goal: Goal = new Goal(1, "Leadership Competence");
 
-    //  constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
        goalDescription: string;
        targetValue: string;
