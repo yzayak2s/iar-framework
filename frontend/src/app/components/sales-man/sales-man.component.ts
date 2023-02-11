@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {SalesMan} from '../../models/SalesMan';
 import {EvaluationRecordService} from '../../services/evaluation-record.service';
 import {EvaluationRecord} from "../../models/EvaluationRecord";
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -43,7 +43,6 @@ export class SalesManComponent implements OnInit {
         });
     }
     deleteMethod(row: SalesMan): void {
-        console.log(row);
         if (confirm('Are you sure to delete ' + row.firstname)) {
             this.salesManService.deleteSalesman(row._id).subscribe((): void => {
                 this.fetchSalesmans();
@@ -51,26 +50,20 @@ export class SalesManComponent implements OnInit {
         }
     }
 
-    showSalesMan(row: SalesMan): void{
 
     showSalesMan(content:any, row: SalesMan): void{
         this.evaluationRecordService.getEvaluationRecordBySalesManID(row._id).subscribe((response): void => {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
-
-                console.log("this.evaluationrecords");
-                console.log(this.evaluationrecords);
                 this.show=true;
                 this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
                     this.closeResult = `Closed with: ${result}`;
 
                 }, (reason) => {
-                    //  this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
                 });
             }
         });
 
-        console.log(row);
     }
 
     syncButton_click(): void {
