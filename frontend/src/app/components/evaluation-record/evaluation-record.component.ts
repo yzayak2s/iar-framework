@@ -20,7 +20,7 @@ export class EvaluationRecordComponent implements OnInit {
     displayedColumns = ['salesMan', 'year', 'goal', 'targetValue', 'actualValue', 'actions'];
     evaluationrecords: EvaluationRecord[] = [];
     goals: Goal[] = [];
-    salesMen: SalesMan[] = [];
+    salesMenArray: SalesMan[] = [];
     evaluationrecord: EvaluationRecord = new EvaluationRecord();
 
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
@@ -52,7 +52,7 @@ export class EvaluationRecordComponent implements OnInit {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
                 for (const evaluation of this.evaluationrecords) {
-                    evaluation.salesManID = evaluation.salesManID[0];
+                    evaluation.salesMan = evaluation.salesMan[0];
                 }
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesManID[0];
             }
@@ -62,7 +62,7 @@ export class EvaluationRecordComponent implements OnInit {
     getSalesMen(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
-                this.salesMen = response.body;
+                this.salesMenArray = response.body;
             }
         });
     }
@@ -96,6 +96,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.salesMan = row.salesMan;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
+                this.evaluationrecord.salesManID=this.evaluationrecord.salesMan._id;
                 this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
