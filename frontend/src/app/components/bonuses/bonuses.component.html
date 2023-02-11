@@ -48,6 +48,15 @@
                             <mat-icon>view_list</mat-icon>
                             <span>Details</span>
                         </button>
+                        <!--(click)="calculate(row)"-->
+                        <button
+                            mat-menu-item
+                            type="button"
+                            title="Update Computation"
+                        >
+                            <mat-icon>autorenew</mat-icon>
+                            <span>Compute</span>
+                        </button>
                         <button
                             mat-menu-item
                             (click)="delete(row)"
@@ -56,10 +65,6 @@
                         >
                             <mat-icon>delete</mat-icon>
                             <span>Delete</span>
-                        </button>
-                        <button mat-menu-item disabled>
-                            <mat-icon>notifications_off</mat-icon>
-                            <span>Disable alerts</span>
                         </button>
                     </mat-menu>
             </td>
