@@ -4,7 +4,11 @@
 
 import {Component, OnInit} from '@angular/core';
 import {SalesManService} from '../../services/sales-man.service';
+import {Router} from '@angular/router';
 import {SalesMan} from '../../models/SalesMan';
+import {EvaluationRecordService} from '../../services/evaluation-record.service';
+import {EvaluationRecord} from "../../models/EvaluationRecord";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -15,11 +19,13 @@ import { UserService } from 'src/app/services/user.service';
 export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
+    displayedColumnsEvaluatinRecord = [ 'year_2', 'goal_2', 'targetValue_2', 'actualValue_2'];
     dataSource: SalesMan[] = [];
+    evaluationrecords: EvaluationRecord[] = [];
+    show: boolean=false;
+    closeResult: string = '';
     allowedSync = false;
-
-    constructor(private salesManService: SalesManService, private userService: UserService) {}
-
+    constructor(private router: Router, private salesManService: SalesManService, private evaluationRecordService: EvaluationRecordService, private modalService: NgbModal, private userService: UserService) { }
     ngOnInit(): void {
         this.fetchSalesmans();
         this.userService.getOwnUser().subscribe((user): void => {
@@ -36,9 +42,7 @@ export class SalesManComponent implements OnInit {
             }
         });
     }
-
     deleteMethod(row: SalesMan): void {
-        console.log(row);
         if (confirm('Are you sure to delete ' + row.firstname)) {
             this.salesManService.deleteSalesman(row._id).subscribe((): void => {
                 this.fetchSalesmans();
@@ -46,8 +50,20 @@ export class SalesManComponent implements OnInit {
         }
     }
 
-    showSalesMan(row: SalesMan): void{
-        console.log(row);
+
+    showSalesMan(content:any, row: SalesMan): void{
+        this.evaluationRecordService.getEvaluationRecordBySalesManID(row._id).subscribe((response): void => {
+            if (response.status === 200){
+                this.evaluationrecords = response.body;
+                this.show=true;
+                this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+                    this.closeResult = `Closed with: ${result}`;
+
+                }, (reason) => {
+                });
+            }
+        });
+
     }
 
     syncButton_click(): void {

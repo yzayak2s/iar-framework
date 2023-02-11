@@ -14,7 +14,7 @@
                 <mat-label>SalesMan</mat-label>
                 <mat-select     [compareWith]="compareSalesMen"
                                 [(ngModel)]="evaluationrecord.salesMan" required>
-                    <mat-option *ngFor="let salesMan of salesMen" [value]="salesMan" >{{salesMan.fullName}}</mat-option>
+                    <mat-option *ngFor="let salesMan of salesMenArray" [value]="salesMan" >{{salesMan.fullName}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="example-full-width" appearance="outline">
@@ -80,7 +80,6 @@
 
     <tr
         mat-row
-        (click)="showEvaluationRecord(row)"
         *matRowDef="let row; columns: displayedColumns;"
     ></tr>
 </table>

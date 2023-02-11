@@ -3,6 +3,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {EvaluationRecord, Goal} from '../models/EvaluationRecord';
 import {environment} from '../../../environments/environment';
+import {SalesMan} from "../models/SalesMan";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,14 @@ export class EvaluationRecordService {
 
     getAllEvaluationRecord(): Observable<HttpResponse<EvaluationRecord[]>> {
         return this.http.get<EvaluationRecord[]>(environment.apiEndpoint + '/api/evaluationRecords/read/all', {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
+    getEvaluationRecordBySalesManID(salesManID: string): Observable<HttpResponse<EvaluationRecord[]>> {
+        const url = environment.apiEndpoint + '/api/evaluationRecords/read/salesmanId/'+salesManID;
+        return this.http.get<EvaluationRecord[]>(url, {
             observe: 'response',
             withCredentials: true
         });
