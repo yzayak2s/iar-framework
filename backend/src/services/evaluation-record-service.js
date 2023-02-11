@@ -107,6 +107,7 @@ exports.updateById = async (db, _id, evaluationRecord) => {
                 targetValue: evaluationRecord.targetValue,
                 actualValue: evaluationRecord.actualValue,
                 year: evaluationRecord.year,
+                salesManID: evaluationRecord.salesManID,
             }
         }
     );
