@@ -52,9 +52,8 @@ export class EvaluationRecordComponent implements OnInit {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
                 for (const evaluation of this.evaluationrecords) {
-                    evaluation.salesMan = evaluation.salesMan[0];
+                    evaluation.salesMan = evaluation.salesMan[0] as SalesMan;
                 }
-                this.evaluationrecord.salesManID = this.evaluationrecord.salesManID[0];
             }
         });
     }
@@ -96,7 +95,7 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.salesMan = row.salesMan;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
-                this.evaluationrecord.salesManID=this.evaluationrecord.salesMan._id;
+                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
