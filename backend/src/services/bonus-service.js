@@ -144,7 +144,7 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const totalBonus = orderBonus.total + perfBonus.total;
 
     // Save this bonus to the database
-    this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
+    this.add(db, new Bonus(year, totalBonus, "", "calculated", salesmanID));
 
     return {salesManID: salesmanID, totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
 }
