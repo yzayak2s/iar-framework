@@ -17,8 +17,6 @@ export class SalesOrderComponent implements OnInit {
     displayedColumns = [
         'contractType',
         'salesOrderUID',
-        'customerUID',
-        'salesRep',
         'createdAt',
         'priority',
         'totalAmountIncludingTax',
