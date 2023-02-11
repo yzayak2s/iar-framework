@@ -5,7 +5,7 @@
 >Loading...</ngx-spinner>
 
 <mat-card>
-    <button mat-raised-button color="primary" type="button">Calculate bonuses</button>
+    <button mat-raised-button color="primary" type="button" (click)="calculateAll()" title="Calculate all bonuses for the year 2022">Calculate bonuses</button>
 </mat-card>
 <div class="mat-elevation-z8">
     <table mat-table class="full-width-table" aria-label="Elements" [dataSource]="bonuses">
@@ -54,7 +54,7 @@
                         <button
                             mat-menu-item
                             type="button"
-                            (click)="calculate()"
+                            (click)="calculate(row)"
                             title="Update Computation"
                         >
                             <mat-icon>autorenew</mat-icon>

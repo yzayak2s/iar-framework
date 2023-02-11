@@ -41,8 +41,21 @@ export class BonusesComponent implements OnInit {
             });
     }
 
-    calculate(): void {
-        console.log('Is calculating!')
+    calculate(bonus: Bonus): void {
+        if (confirm('Are you sure to recalculate this bonus? Your remark will be lost!')) {
+            this.bonusService.calculateBonus(bonus)
+                .subscribe((): void => {
+                    window.location.reload()
+                });
+
+        }
+    }
+
+    calculateAll(): void {
+        this.bonusService.calculateAllBonuses()
+            .subscribe((): void => {
+                window.location.reload();
+            });
     }
 
     delete(bonus: Bonus): void {
