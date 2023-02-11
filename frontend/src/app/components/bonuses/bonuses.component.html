@@ -4,8 +4,11 @@
     type="ball-pulse"
 >Loading...</ngx-spinner>
 
+<mat-card>
+    <button mat-raised-button color="primary" type="button">Calculate bonuses</button>
+</mat-card>
 <div class="mat-elevation-z8">
-    <table mat-table class="full-width-table" matSort aria-label="Elements" [dataSource]="bonuses">
+    <table mat-table class="full-width-table" aria-label="Elements" [dataSource]="bonuses">
         <!-- Year Column -->
         <ng-container matColumnDef="year">
             <th mat-header-cell *matHeaderCellDef>Year</th>
