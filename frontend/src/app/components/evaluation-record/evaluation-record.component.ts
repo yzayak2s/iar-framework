@@ -22,9 +22,7 @@ export class EvaluationRecordComponent implements OnInit {
     goals: Goal[] = [];
     salesMen: SalesMan[] = [];
     evaluationrecord: EvaluationRecord = new EvaluationRecord();
-    //  goal: Goal = new Goal(1, "Leadership Competence");
 
-    //  constructor(private router: Router, private evaluationRecordService: EvaluationRecordService) { }
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
        goalDescription: string;
        targetValue: string;
@@ -42,19 +40,21 @@ export class EvaluationRecordComponent implements OnInit {
 
     selectedValue: string;
     selectedCar: string;
+
     ngOnInit(): void {
         this.fetchEvaluationRecords();
         this.getGoals();
         this.getSalesMen();
     }
+
     fetchEvaluationRecords(): void{
         this.evaluationRecordService.getAllEvaluationRecord().subscribe((response): void => {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
-                 for (let evaluation of this.evaluationrecords) {
-                     evaluation.salesMan = evaluation.salesMan[0];
-                 }
-                  this.evaluationrecord.salesMan = this.evaluationrecord.salesMan[0]
+                for (const evaluation of this.evaluationrecords) {
+                    evaluation.salesManID = evaluation.salesManID[0];
+                }
+                this.evaluationrecord.salesManID = this.evaluationrecord.salesManID[0];
             }
         });
     }
@@ -84,9 +84,6 @@ export class EvaluationRecordComponent implements OnInit {
             this.fetchEvaluationRecords();
         }
     }
-    showEvaluationRecord(row: EvaluationRecord): void {
-        console.log(row);
-    }
 
     open(content: any, row: EvaluationRecord): void {
         if (row)
@@ -97,31 +94,31 @@ export class EvaluationRecordComponent implements OnInit {
             this.evaluationrecord.goalDescription = row.goalDescription;
             this.evaluationrecord.salesManID = row.salesManID;
             this.evaluationrecord.salesMan = row.salesMan;
-             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
-                 this.closeResult = `Closed with: ${result}`;
-                 this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((response: any): void => {
-                     this.fetchEvaluationRecords();
-                 }, (): void => {
-                     this.fetchEvaluationRecords();
-                 });
-             }, (reason): void => {
-                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-             });
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
+                this.closeResult = `Closed with: ${String(result)}`;
+                this.evaluationRecordService.updateEvaluationRecord(row._id, this.evaluationrecord).subscribe((): void => {
+                    this.fetchEvaluationRecords();
+                }, (): void => {
+                    this.fetchEvaluationRecords();
+                });
+            }, (reason): void => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
         }
         else {
             this.evaluationrecord = new EvaluationRecord();
-             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
-                 this.closeResult = `Closed with: ${result}`;
-                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
-                 delete this.evaluationrecord.salesMan;
-                 this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((response: any): void => {
-                     this.fetchEvaluationRecords();
-                 }, (): void => {
-                     this.fetchEvaluationRecords();
-                 });
-             }, (reason): void => {
-                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-             });
+            this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
+                this.closeResult = `Closed with: ${String(result)}`;
+                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
+                delete this.evaluationrecord.salesMan;
+                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
+                    this.fetchEvaluationRecords();
+                }, (): void => {
+                    this.fetchEvaluationRecords();
+                });
+            }, (reason): void => {
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            });
         }
     }
 
@@ -130,24 +127,24 @@ export class EvaluationRecordComponent implements OnInit {
      *
      * @return response()
      */
-     private getDismissReason(reason: any): string {
-         if (reason === ModalDismissReasons.ESC) {
-             return 'by pressing ESC';
-         } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-             return 'by clicking on a backdrop';
-         } else {
-             return  `with: ${reason}`;
-         }
-     }
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return  `with: ${String(reason)}`;
+        }
+    }
 
-     sortBy(list?, attribute?) {
-         if (list) {
-             return list.sort((a,b) => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
-         }
-     }
+    sortBy(list?: SalesMan[], attribute?: string): SalesMan[] {
+        if (list) {
+            return list.sort((a, b): any => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
+        }
+    }
 
-     compareSalesMen(o1: any, o2: any): boolean {
-         return o1.fullName === o2.fullName;
-     }
+    compareSalesMen(o1: SalesMan, o2: SalesMan): boolean {
+        return o1.fullName === o2.fullName;
+    }
 
 }

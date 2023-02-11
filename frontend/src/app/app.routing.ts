@@ -23,7 +23,7 @@ const ROLES = {CEO: 'CEO', HR: 'HR', SALESMAN: 'SALESMAN'};
   Look at: frontend/src/app/components/menu-bar/menu-bar.component.ts
  */
 const routes: Routes = [
-    {path: '', redirectTo: '/login', pathMatch: 'full'},
+    {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     {path: 'login', component: LoginPageComponent},
     {path: 'dashboard', component: DashboardComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR, ROLES.SALESMAN]}},
@@ -31,8 +31,8 @@ const routes: Routes = [
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'evaluationrecord', component: EvaluationRecordComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
-    {path: 'salesorder', component: SalesOrderComponent, canActivate: [AuthGuardService]},
-
+    {path: 'salesorder', component: SalesOrderComponent,
+        canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'bonus', component: BonusPageComponent,
         canActivate: [AuthGuardService], data: {roles: [ROLES.CEO, ROLES.HR]}},
     {path: 'bonuses/detail/:id', component: BonusDetailComponent,

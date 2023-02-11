@@ -9,6 +9,7 @@ import {SalesMan} from '../../models/SalesMan';
 import {EvaluationRecordService} from '../../services/evaluation-record.service';
 import {EvaluationRecord} from "../../models/EvaluationRecord";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-sales-man',
@@ -19,35 +20,40 @@ export class SalesManComponent implements OnInit {
 
     displayedColumns = ['_id', 'firstname', 'lastname', 'jobTitle', 'unit', 'actions'];
     displayedColumnsEvaluatinRecord = [ 'year_2', 'goal_2', 'targetValue_2', 'actualValue_2'];
-    salesmens: SalesMan[] = [];
+    dataSource: SalesMan[] = [];
     evaluationrecords: EvaluationRecord[] = [];
     show: boolean=false;
     closeResult: string = '';
-
-    constructor(private router: Router, private salesManService: SalesManService, private evaluationRecordService: EvaluationRecordService, private modalService: NgbModal) { }
+    allowedSync = false;
+    constructor(private router: Router, private salesManService: SalesManService, private evaluationRecordService: EvaluationRecordService, private modalService: NgbModal, private userService: UserService) { }
     ngOnInit(): void {
-        console.log('test');
         this.fetchSalesmans();
+        this.userService.getOwnUser().subscribe((user): void => {
+            if (user.role === 'HR' || user.isAdmin) {
+                this.allowedSync = true;
+            }
+        });
     }
+
     fetchSalesmans(): void{
         this.salesManService.getAllSalesMan().subscribe((response): void => {
             if (response.status === 200){
-                console.log('inside 200');
-                this.salesmens = response.body;
+                this.dataSource = response.body;
             }
-            console.log(this.salesmens);
         });
     }
     deleteMethod(row: SalesMan): void {
         console.log(row);
         if (confirm('Are you sure to delete ' + row.firstname)) {
-            console.log('Implement delete functionality here');
-            this.salesManService.deleteSalesman(row._id);
+            this.salesManService.deleteSalesman(row._id).subscribe((): void => {
+                this.fetchSalesmans();
+            });
         }
     }
 
+    showSalesMan(row: SalesMan): void{
+
     showSalesMan(content:any, row: SalesMan): void{
-console.log("row",row);
         this.evaluationRecordService.getEvaluationRecordBySalesManID(row._id).subscribe((response): void => {
             if (response.status === 200){
                 this.evaluationrecords = response.body;
@@ -65,5 +71,11 @@ console.log("row",row);
         });
 
         console.log(row);
+    }
+
+    syncButton_click(): void {
+        this.salesManService.syncSalesman().subscribe((): void => {
+            this.fetchSalesmans();
+        });
     }
 }

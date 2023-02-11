@@ -16,12 +16,12 @@ import {UserService} from '../../services/user.service';
 })
 export class DashboardComponent implements OnInit {
     currentUser: User;
+
+    constructor(private userService: UserService) { }
+
     ngOnInit(): void {
-
-
         this.userService.getOwnUser().subscribe((user): void => {
             this.currentUser = user;
         });
     }
-    constructor(private userService: UserService) { }
 }
