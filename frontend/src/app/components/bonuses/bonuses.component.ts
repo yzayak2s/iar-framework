@@ -41,6 +41,10 @@ export class BonusesComponent implements OnInit {
             });
     }
 
+    calculate(): void {
+        console.log('Is calculating!')
+    }
+
     delete(bonus: Bonus): void {
         if (confirm('Are you sure to delete this bonus?')) {
             this.bonuses = this.bonuses.filter((b): boolean => b !== bonus);
