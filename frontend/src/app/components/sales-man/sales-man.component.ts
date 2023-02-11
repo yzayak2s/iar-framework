@@ -59,7 +59,6 @@ export class SalesManComponent implements OnInit {
     showSalesMan(content: any, row: SalesMan): void{
         (this.evaluationRecordService.getEvaluationRecordBySalesManID(row._id)).subscribe((response): void => {
             if (response.status === 200){
-                console.log(response.body);
                 this.evaluationrecords = response.body;
                 this.show = true;
                 this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
