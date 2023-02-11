@@ -64,4 +64,20 @@ export class BonusService {
             withCredentials: true
         });
     }
+
+    calculateBonus(bonus: Bonus) {
+        const url = `${this.bonusesUrl}/calculateBonus/sid/${bonus.salesManID}/${bonus.year}`;
+        return this.http.get<Bonus>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
+    calculateAllBonuses() {
+        const url = `${this.bonusesUrl}/calculateBonus/all/2022`;
+        return this.http.get<Bonus>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
 }
