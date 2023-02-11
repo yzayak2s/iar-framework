@@ -52,10 +52,12 @@ export class BonusesComponent implements OnInit {
     }
 
     calculateAll(): void {
-        this.bonusService.calculateAllBonuses()
-            .subscribe((): void => {
-                window.location.reload();
-            });
+        if (confirm('Are you sure to calculate all bonuses? Your remarks may will be lost!')) {
+            this.bonusService.calculateAllBonuses()
+                .subscribe((): void => {
+                    window.location.reload();
+                });
+        }
     }
 
     delete(bonus: Bonus): void {
