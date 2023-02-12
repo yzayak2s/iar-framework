@@ -32,6 +32,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { SalesmanComponent } from './components/salesman/salesman.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EvaluationrecordComponent } from './components/evaluationrecord/evaluationrecord.component';
+import { SalesorderComponent } from './components/salesorder/salesorder.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { EvaluationrecordComponent } from './components/evaluationrecord/evaluat
         BonusDetailComponent,
         SalesmanComponent,
         SalesOrderComponent,
-        EvaluationrecordComponent
+        EvaluationrecordComponent,
+        SalesorderComponent
     ],
     imports: [
         BrowserModule,
