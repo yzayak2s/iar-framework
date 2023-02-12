@@ -21,7 +21,7 @@ exports.addGoal = async (db, goalDescription) => {
         throw new Error('Goal with same description already exists!');
     }
 
-    await db.collection('goals').insertOne({goalDescription});
+    await db.collection('goals').insertOne({goal_description: goalDescription});
 }
 
 
