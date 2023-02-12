@@ -1,1 +1,29 @@
-<p>evaluationrecord works!</p>
+<h2>B.) Social Performance Evaluation</h2>
+<table mat-table class="full-width-table" *ngIf="evaluationRecords" [dataSource]="evaluationRecords" >
+    <!-- Goal Description Column -->
+    <ng-container matColumnDef="goalDescription">
+        <th mat-header-cell *matHeaderCellDef>Goal Description</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.goalDescription}}</td>
+    </ng-container>
+
+    <!-- Target Value Column -->
+    <ng-container matColumnDef="targetValue">
+        <th mat-header-cell *matHeaderCellDef>Target Value</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.targetValue}}</td>
+    </ng-container>
+
+    <!-- Actual Value Column -->
+    <ng-container matColumnDef="actualValue">
+        <th mat-header-cell *matHeaderCellDef>Actual Value</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.actualValue}}</td>
+    </ng-container>
+
+    <!-- Bonus Column -->
+    <ng-container matColumnDef="bonus" *ngIf="bonusComputation">
+        <th mat-header-cell *matHeaderCellDef>Bonus</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{filterBonus(evaluationRecord, bonusComputation)}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
