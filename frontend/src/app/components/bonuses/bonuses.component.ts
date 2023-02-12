@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Bonus} from '../../models/Bonus';
 import {BonusService} from '../../services/bonus.service';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {BonusComputationService} from '../../services/bonus-computation.service';
 
 @Component({
     selector: 'app-bonuses',
@@ -16,6 +17,7 @@ export class BonusesComponent implements OnInit {
 
     constructor(
         private bonusService: BonusService,
+        private bonusComputationService: BonusComputationService,
         private spinnerService: NgxSpinnerService
     ) { }
 
@@ -45,7 +47,7 @@ export class BonusesComponent implements OnInit {
 
     calculate(bonus: Bonus): void {
         if (confirm('Are you sure to recalculate this bonus? Your remark will be lost!')) {
-            this.bonusService.calculateBonus(bonus)
+            this.bonusComputationService.calculateBonus(bonus)
                 .subscribe((): void => {
                     window.location.reload()
                 });
@@ -55,7 +57,7 @@ export class BonusesComponent implements OnInit {
 
     calculateAll(year: number): void {
         if (confirm('Are you sure to calculate all bonuses? Your remarks may will be lost!')) {
-            this.bonusService.calculateAllBonuses(year)
+            this.bonusComputationService.calculateAllBonuses(year)
                 .subscribe((): void => {
                     window.location.reload();
                 });
