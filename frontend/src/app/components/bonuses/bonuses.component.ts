@@ -10,6 +10,8 @@ import {NgxSpinnerService} from 'ngx-spinner';
 })
 export class BonusesComponent implements OnInit {
     bonuses: Bonus[] = [];
+    currentYear: number = new Date().getFullYear();
+    years: number[] = Array.from(Array(8).keys()).map(x => this.currentYear - x);
     displayedColumns = ['year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
 
     constructor(
@@ -51,9 +53,9 @@ export class BonusesComponent implements OnInit {
         }
     }
 
-    calculateAll(): void {
+    calculateAll(year: number): void {
         if (confirm('Are you sure to calculate all bonuses? Your remarks may will be lost!')) {
-            this.bonusService.calculateAllBonuses()
+            this.bonusService.calculateAllBonuses(year)
                 .subscribe((): void => {
                     window.location.reload();
                 });

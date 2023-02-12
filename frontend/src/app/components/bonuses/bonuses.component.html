@@ -2,10 +2,21 @@
 
 <ngx-spinner
     type="ball-pulse"
->Loading...</ngx-spinner>
+>Loading...
+</ngx-spinner>
 
-<mat-card>
-    <button mat-raised-button color="primary" type="button" (click)="calculateAll()" title="Calculate all bonuses for the year 2022">Calculate bonuses</button>
+<mat-card class="mat-card-calculation">
+    <mat-form-field appearance="fill">
+        <mat-label>Select a year</mat-label>
+        <mat-select [(value)]="currentYear">
+            <mat-option *ngFor="let year of years" [value]="year">
+                {{year}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="button" (click)="calculateAll(currentYear)"
+            title="Calculate all bonuses for the year {{currentYear}}">Calculate bonuses
+    </button>
 </mat-card>
 <div class="mat-elevation-z8">
     <table mat-table class="full-width-table" aria-label="Elements" [dataSource]="bonuses">
@@ -46,30 +57,30 @@
                 <button mat-icon-button [matMenuTriggerFor]="menu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item [routerLink]="['/bonuses/detail/', row._id]">
-                            <mat-icon>view_list</mat-icon>
-                            <span>Details</span>
-                        </button>
-                        <button
-                            mat-menu-item
-                            type="button"
-                            (click)="calculate(row)"
-                            title="Update Computation"
-                        >
-                            <mat-icon>autorenew</mat-icon>
-                            <span>Compute</span>
-                        </button>
-                        <button
-                            mat-menu-item
-                            (click)="delete(row)"
-                            type="button"
-                            title="delete bonus"
-                        >
-                            <mat-icon>delete</mat-icon>
-                            <span>Delete</span>
-                        </button>
-                    </mat-menu>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item [routerLink]="['/bonuses/detail/', row._id]">
+                        <mat-icon>view_list</mat-icon>
+                        <span>Details</span>
+                    </button>
+                    <button
+                        mat-menu-item
+                        type="button"
+                        (click)="calculate(row)"
+                        title="Update Computation"
+                    >
+                        <mat-icon>autorenew</mat-icon>
+                        <span>Compute</span>
+                    </button>
+                    <button
+                        mat-menu-item
+                        (click)="delete(row)"
+                        type="button"
+                        title="delete bonus"
+                    >
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                    </button>
+                </mat-menu>
             </td>
         </ng-container>
 

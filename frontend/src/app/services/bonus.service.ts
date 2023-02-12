@@ -73,8 +73,8 @@ export class BonusService {
         });
     }
 
-    calculateAllBonuses() {
-        const url = `${this.bonusesUrl}/calculateBonus/all/2022`;
+    calculateAllBonuses(year: number) {
+        const url = `${this.bonusesUrl}/calculateBonus/all/${year}`;
         return this.http.get<Bonus>(url, {
             observe: 'response',
             withCredentials: true
