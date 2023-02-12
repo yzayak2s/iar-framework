@@ -3,9 +3,6 @@
     <button mat-raised-button id="sync_button" (click)="syncButton_click()" *ngIf="allowedSync">Sync Salesman</button>
 </header>
 
-
-<h2>SalesMans table:</h2>
-
 <ng-template #mymodal let-modal >
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Evaluation Records</h4>
@@ -35,9 +32,13 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsEvaluatinRecord"></tr>
 
-            <mat-row
-                *matRowDef="let row; columns: displayedColumnsEvaluatinRecord;"
-            ></mat-row>
+            <tr mat-row *matRowDef="let evaluation; columns: displayedColumnsEvaluatinRecord;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="displayedColumnsEvaluatinRecord.length">
+                    No evaluation records for selected Sales Man
+                </td>
+            </tr>
         </table>
 
     </div>
