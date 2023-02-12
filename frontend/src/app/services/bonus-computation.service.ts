@@ -8,6 +8,7 @@ import {Bonus} from '../models/Bonus';
 })
 export class BonusComputationService {
     private bonusesUrl = `${environment.apiEndpoint}/api/bonuses`; // URL to web api
+    private bonusComputationUrl = `${environment.apiEndpoint}/api/bonusComputations`; // URL to web api
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         withCredentials: true
@@ -29,6 +30,14 @@ export class BonusComputationService {
     calculateAllBonuses(year: number) {
         const url = `${this.bonusesUrl}/calculateBonus/all/${year}`;
         return this.http.get<Bonus>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
+    getBonusComputationBySalesManIDAndYear(salesManID: number, year: number) {
+        const url = `${this.bonusComputationUrl}/read/salesManID/${salesManID}/${year}`
+        return this.http.get<any>(url, {
             observe: 'response',
             withCredentials: true
         });
