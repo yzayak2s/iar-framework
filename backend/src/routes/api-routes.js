@@ -52,6 +52,9 @@ router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
 router.delete('/bonuses/delete/salesmanId/:salesManID', bonusApi.deleteAllBonusesOfSalesmanById);
 
+const bonusComputationApi = require('../apis/bonus-computation-api')
+router.get('/bonusComputations/read/salesManID/:salesManID/:year', bonusComputationApi.getBonusComputationBySalesManIDAndYear);
+
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
 router.get('/accounts/read/uid/:uid', openCRX.getAccountByUID);
