@@ -32,9 +32,13 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumnsEvaluatinRecord"></tr>
 
-            <mat-row
-                *matRowDef="let row; columns: displayedColumnsEvaluatinRecord;"
-            ></mat-row>
+            <tr mat-row *matRowDef="let evaluation; columns: displayedColumnsEvaluatinRecord;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="displayedColumnsEvaluatinRecord.length">
+                    No evaluation records for selected Sales Man
+                </td>
+            </tr>
         </table>
 
     </div>
