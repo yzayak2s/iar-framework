@@ -67,7 +67,8 @@ router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
-router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
+router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
+router.get('/employees/read/id/:id/photo', orangeHRM.getEmployeePhotoById);
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
