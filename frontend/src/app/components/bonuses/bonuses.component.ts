@@ -12,7 +12,7 @@ import {BonusComputationService} from '../../services/bonus-computation.service'
 export class BonusesComponent implements OnInit {
     bonuses: Bonus[] = [];
     currentYear: number = new Date().getFullYear();
-    years: number[] = Array.from(Array(8).keys()).map(x => this.currentYear - x);
+    years: number[] = Array.from(Array(8).keys()).map((x): number => this.currentYear - x);
     displayedColumns = ['year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
 
     constructor(
@@ -49,7 +49,7 @@ export class BonusesComponent implements OnInit {
         if (confirm('Are you sure to recalculate this bonus? Your remark will be lost!')) {
             this.bonusComputationService.calculateBonus(bonus)
                 .subscribe((): void => {
-                    window.location.reload()
+                    window.location.reload();
                 });
 
         }

@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {Bonus} from '../models/Bonus';
+import {Bonus_calc} from '../models/bonus_calc';
 
 @Injectable({
     providedIn: 'root'
@@ -19,25 +21,25 @@ export class BonusComputationService {
     ) {
     }
 
-    calculateBonus(bonus: Bonus) {
+    calculateBonus(bonus: Bonus): Observable<HttpResponse<Bonus_calc>> {
         const url = `${this.bonusesUrl}/calculateBonus/sid/${bonus.salesManID}/${bonus.year}`;
-        return this.http.get<Bonus>(url, {
+        return this.http.get<Bonus_calc>(url, {
             observe: 'response',
             withCredentials: true
         });
     }
 
-    calculateAllBonuses(year: number) {
+    calculateAllBonuses(year: number): Observable<HttpResponse<Bonus_calc[]>> {
         const url = `${this.bonusesUrl}/calculateBonus/all/${year}`;
-        return this.http.get<Bonus>(url, {
+        return this.http.get<Bonus_calc[]>(url, {
             observe: 'response',
             withCredentials: true
         });
     }
 
-    getBonusComputationBySalesManIDAndYear(salesManID: number, year: number) {
-        const url = `${this.bonusComputationUrl}/read/salesManID/${salesManID}/${year}`
-        return this.http.get<any>(url, {
+    getBonusComputationBySalesManIDAndYear(salesManID: number, year: number): Observable<HttpResponse<Bonus_calc>> {
+        const url = `${this.bonusComputationUrl}/read/salesManID/${salesManID}/${year}`;
+        return this.http.get<Bonus_calc>(url, {
             observe: 'response',
             withCredentials: true
         });

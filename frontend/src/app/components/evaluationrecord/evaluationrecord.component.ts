@@ -25,15 +25,15 @@ export class EvaluationrecordComponent implements OnInit {
         this.getEvaluationRecords();
     }
 
-    private getEvaluationRecords() {
+    private getEvaluationRecords(): void {
         const id = this.route.snapshot.paramMap.get('id');
         this.bonusService.getBonus(id)
             .subscribe((bonus): void => {
                 this.bonus = bonus.body;
                 this.bonusComputationService.getBonusComputationBySalesManIDAndYear(this.bonus.salesManID, this.bonus.year)
-                    .subscribe((bonusComputation) => {
-                        this.bonusComputation = bonusComputation.body
-                    })
-            })
+                    .subscribe((bonusComputation): void => {
+                        this.bonusComputation = bonusComputation.body;
+                    });
+            });
     }
 }

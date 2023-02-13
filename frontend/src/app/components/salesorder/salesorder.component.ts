@@ -31,10 +31,10 @@ export class SalesorderComponent implements OnInit {
             .subscribe((bonus): void => {
                 this.bonus = bonus.body;
                 this.bonusComputationService.getBonusComputationBySalesManIDAndYear(this.bonus.salesManID, this.bonus.year)
-                    .subscribe((bonusComputation) => {
+                    .subscribe((bonusComputation): void => {
                         this.bonusComputation = bonusComputation.body;
-                    })
-            })
+                    });
+            });
     }
 
 }
