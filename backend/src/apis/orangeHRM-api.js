@@ -28,6 +28,15 @@ exports.getBonusSalariesByEmployee = (req, res) => {
     });
 }
 
+exports.getEmployeePhotoById = (req, res) => {
+    orangeHRMService.getEmployeePhotoById(req.params.id)
+        .then((photo) => {
+            res.send(photo);
+        }).catch(_ => {
+            res.status(500).send();
+    });
+}
+
 exports.addBonusSalary = (req, res) => {
     orangeHRMService.add(req.body)
         .then(_ => {
