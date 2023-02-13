@@ -307,18 +307,25 @@ exports.updateVerified = async (db, _id, status, user) => {
         throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
     }
 
-    const userRole = user.role;
-    let allowed;
-
-    switch (existingBonusById.verified.toUpperCase()) {
-        case 'CALCULATED': (userRole === 'CEO' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
-        case 'APPROVEDCEO': (userRole === 'HR' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
-        case 'APPROVEDHR': (userRole === 'SALESMAN' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
-    } 
-    
-    if (!allowed) {
-        throw new Error("You are not authorized for this stage!");
+    if (!["CALCULATED", "APPROVEDCEO", "APPROVEDHR"].includes(status.toUpperCase())) {
+        throw new Error('Unknown status');
     }
+
+    if (!(status.toUpperCase() === "CALCULATED")) {
+        const userRole = user.role;
+        let allowed;
+
+        switch (existingBonusById.verified.toUpperCase()) {
+            case 'CALCULATED': (userRole === 'CEO' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            case 'APPROVEDCEO': (userRole === 'HR' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            case 'APPROVEDHR': (userRole === 'SALESMAN' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            default: allowed = false;
+        } 
+        
+        if (!allowed) {
+            throw new Error("You are not authorized for this stage!");
+        }
+    }w
 
     return await db.collection('bonus').updateOne(
         {
