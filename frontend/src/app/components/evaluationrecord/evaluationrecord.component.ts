@@ -33,7 +33,6 @@ export class EvaluationrecordComponent implements OnInit {
                 this.bonusComputationService.getBonusComputationBySalesManIDAndYear(this.bonus.salesManID, this.bonus.year)
                     .subscribe((bonusComputation) => {
                         this.bonusComputation = bonusComputation.body
-                        console.log(this.bonusComputation);
                     })
             })
     }
