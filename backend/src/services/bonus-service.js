@@ -262,8 +262,58 @@ exports.update = async (db, _id, bonus) => {
             $set: {
                 year: bonus.year,
                 value: bonus.value,
-                remark: bonus.remark,
-                verified: bonus.verified,
+            }
+        }
+    );
+}
+
+/**
+ * 
+ * @param {*} db target database
+ * @param {*} _id 
+ * @param {*} remark new Remark for Bonus
+ * @returns {Promise<Bonus>} bonus
+ */
+exports.updateRemark = async (db, _id, remark) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
+
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+    }
+
+    return await db.collection('bonus').updateOne(
+        {
+            _id: _id
+        },
+        {
+            $set: {
+                remark: remark
+            }
+        }
+    );
+}
+
+/**
+ * 
+ * @param {*} db target database
+ * @param {*} _id 
+ * @param {*} status new Status for Bonus
+ * @returns {Promise<Bonus>} bonus
+ */
+exports.updateVerified = async (db, _id, status) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
+
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+    }
+
+    return await db.collection('bonus').updateOne(
+        {
+            _id: _id
+        },
+        {
+            $set: {
+                verified: status
             }
         }
     );
