@@ -3,6 +3,5 @@
 }
 
 .example-header-image {
-    background-image: url('../../../assets/images/user.png');
     background-size: cover;
 }
