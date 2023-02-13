@@ -35,6 +35,15 @@ export class BonusService {
         });
     }
 
+    /** GET single Bonus by salesman ID from the backend */
+    getBonusesBySalesManID(id: string): Observable<HttpResponse<Bonus[]>> {
+        const url = `${this.bonusesUrl}/read/salesmanId/${id}`;
+        return this.http.get<Bonus[]>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
     /** UPDATE single bonus */
     updateBonus(bonus: Bonus): Observable<any> {
         const url = `${this.bonusesUrl}/update/id/${bonus._id}`;
