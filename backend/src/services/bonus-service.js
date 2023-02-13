@@ -300,11 +300,24 @@ exports.updateRemark = async (db, _id, remark) => {
  * @param {*} status new Status for Bonus
  * @returns {Promise<Bonus>} bonus
  */
-exports.updateVerified = async (db, _id, status) => {
+exports.updateVerified = async (db, _id, status, user) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: _id});
 
     if (!existingBonusById) {
         throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+    }
+
+    const userRole = user.role;
+    let allowed;
+
+    switch (existingBonusById.verified.toUpperCase()) {
+        case 'CALCULATED': (userRole === 'CEO' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+        case 'APPROVEDCEO': (userRole === 'HR' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+        case 'APPROVEDHR': (userRole === 'SALESMAN' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+    } 
+    
+    if (!allowed) {
+        throw new Error("You are not authorized for this stage!");
     }
 
     return await db.collection('bonus').updateOne(

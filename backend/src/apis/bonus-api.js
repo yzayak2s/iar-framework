@@ -78,11 +78,15 @@ exports.updateBonusRemarkById = (req, res) => {
 exports.updateBonusStatusById = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.updateVerified(db, ObjectId(req.params._id), req.body.status)
+    bonusService.updateVerified(db, ObjectId(req.params._id), req.body.status, req.session.user)
         .then((bonus) => {
             res.send(bonus);
-        }).catch(() => {
-            res.status(500).send({"message": "Something went wrong"});
+        }).catch((e) => {
+            if (e.message === 'You are not authorized for this stage!'){
+                res.status(401).send();
+            }else {
+                res.status(500).send("Something went wrong");
+            }
         })
 }
 
