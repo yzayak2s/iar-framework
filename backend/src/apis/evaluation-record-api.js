@@ -46,6 +46,17 @@ exports.getEvaluationRecordsOfSalesmanById = (req, res) => {
     })
 }
 
+exports.getEvaluationRecordsOfSalesmanByIdAndYear = (req, res) => {
+    const db = req.app.get('db');
+
+    evaluationService.getBySalesmanIDAndYear(db, req.params.salesManID, req.params.year)
+        .then(evaRec => {
+        res.send(evaRec);
+    }).catch(_ => {
+        res.status(500).send();
+    })
+}
+
 exports.addEvaluationRecord = (req, res) => {
     const db = req.app.get('db');
 

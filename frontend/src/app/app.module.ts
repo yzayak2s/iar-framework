@@ -31,6 +31,8 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {MatMenuModule} from '@angular/material/menu';
 import { SalesmanComponent } from './components/salesman/salesman.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { EvaluationrecordComponent } from './components/evaluationrecord/evaluationrecord.component';
+import { SalesorderComponent } from './components/salesorder/salesorder.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +50,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         BonusesComponent,
         BonusDetailComponent,
         SalesmanComponent,
-        SalesOrderComponent
+        SalesOrderComponent,
+        EvaluationrecordComponent,
+        SalesorderComponent
     ],
     imports: [
         BrowserModule,

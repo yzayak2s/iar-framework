@@ -93,7 +93,7 @@ exports.deleteAllBonusesOfSalesmanById = (req, res) => {
 exports.calculateBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.calculateBonusBySalesmanID(db, req.params.salesManID, req.params.year)
+    bonusService.calculateBonusBySalesmanID(db, parseInt(req.params.salesManID), parseInt(req.params.year))
         .then((calculatedBonus) => {
             res.send(calculatedBonus);
         }).catch((e) => {
@@ -106,7 +106,7 @@ exports.calculateBonus = (req, res) => {
 exports.calculateAllBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.calculateAllBonus(db, req.params.year)
+    bonusService.calculateAllBonus(db, parseInt(req.params.year))
         .then((calculatedBonuses) => {
             res.send(calculatedBonuses);
         }).catch((e) => {

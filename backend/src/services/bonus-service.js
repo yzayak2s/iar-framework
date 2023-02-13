@@ -1,5 +1,6 @@
 const {getBySalesmanID} = require('./evaluation-record-service')
 const salesmanService = require('./salesman-service')
+const bonusComputationService = require('./bonus-computation-service');
 const openCRXService = require('./openCRX-service')
 const {fitsModel} = require('../helper/creation-helper')
 const Bonus = require('../models/Bonus')
@@ -129,7 +130,13 @@ async function calculateBonusPerformance(db, salesmanID, year) {
  * @param {*} db source database
  * @param {*} salesmanID salesman ID
  * @param {*} year current year
- * @returns {Promise<{total: number, orderBonus: orderBonus, perfBonus: perfBonus}>} Total bonus, Sales orders with bonuses and the performance records with bonuses
+ * @returns {Promise<{
+ *              year: year,
+ *              salesManID: salesManID,
+ *              totalBonus: totalBonus,
+ *              orderBonus: orderBonus,
+ *              perfBonus: perfBonus
+ *           }>} Total bonus, Sales orders with bonuses and the performance records with bonuses
  */
 exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const existingBonus = (await this.getBonusBySalesmanID(db, salesmanID)).filter(bonus => bonus.year == year);
@@ -144,9 +151,23 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const totalBonus = orderBonus.total + perfBonus.total;
 
     // Save this bonus to the database
-    this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
+    this.add(db, new Bonus(year, totalBonus, "", "calculated", salesmanID));
 
-    return {salesManID: salesmanID, totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
+    const bonusComputation = {
+        year: year,
+        salesManID: salesmanID,
+        totalBonus: totalBonus,
+        orderBonus: orderBonus,
+        perfBonus: perfBonus
+    };
+    const existingBonusComputation = await bonusComputationService
+        .getBonusComputationBySalesmanIDAndYear(db, salesmanID, year);
+    if (existingBonusComputation) {
+        await bonusComputationService.deleteBonusComputation(db, existingBonusComputation._id);
+    }
+    await bonusComputationService.addBonusComputation(db, bonusComputation);
+
+    return bonusComputation;
 }
 
 /**

@@ -27,6 +27,14 @@ export class EvaluationRecordService {
         });
     }
 
+    getEvaluationRecordsBySalesManIDAndYear(salesManID: number, year: number): Observable<HttpResponse<EvaluationRecord[]>> {
+        const url = `${environment.apiEndpoint}/api/evaluationRecords/read/salesmanId/${salesManID}/${year}`;
+        return this.http.get<EvaluationRecord[]>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
     getGoals(): Observable<HttpResponse<Goal[]>> {
         return this.http.get<Goal[]>(environment.apiEndpoint + '/api/goals/read/all', {
             observe: 'response',

@@ -66,6 +66,17 @@ exports.getBySalesmanID = async (db, salesManID) => {
     return await db.collection('evaluation_record').find({salesManID: parseInt(salesManID)}).toArray();
 }
 
+/**
+ * Retrieve all evaluationRecords of a salesman by its id and year
+ * @param {*} db source database
+ * @param {*} salesManID salesman ID
+ * @param {*} year year
+ * @returns {EvaluationRecord} evaluationRecord
+ */
+exports.getBySalesmanIDAndYear = async (db, salesManID, year) => {
+    return await db.collection('evaluation_record').find({salesManID: parseInt(salesManID), year: year}).toArray();
+}
+
 
 /**
  * insert a new evaluationRecord into database
