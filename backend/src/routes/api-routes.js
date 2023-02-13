@@ -42,6 +42,9 @@ router.get('/bonuses/read/all', roleAuthentification([Roles.CEO, Roles.HR]),  bo
 router.get('/bonuses/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusApi.getBonusById); // Not sure how to deal with this
 router.get('/bonuses/read/salesmanId/:salesManID', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), bonusApi.getBonusesOfSalesmanById);
 
+const orangeHRM = require('../apis/orangeHRM-api');
+router.get('/employees/read/id/:id/photo', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.getEmployeePhotoById);
+
 //From here everything allowed to CEO and HR
 router.use(roleAuthentification([Roles.CEO, Roles.HR]));
 
@@ -64,11 +67,9 @@ router.get('/salesOrders/read/all', openCRX.getSalesOrders);
 router.get('/salesOrders/read/uid/:uid', openCRX.getSalesOrderByUID);
 router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 
-const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee);
-router.get('/employees/read/id/:id/photo', orangeHRM.getEmployeePhotoById);
 router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
