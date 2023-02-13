@@ -41,7 +41,7 @@
         <!-- Verified Column -->
         <ng-container matColumnDef="verified">
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let bonus">{{bonus.verified}}</td>
+            <td mat-cell *matCellDef="let bonus">{{bonus.verified[0] | uppercase}}{{bonus.verified.substring(1)}}</td>
         </ng-container>
 
         <!-- Salesman ID Column -->
