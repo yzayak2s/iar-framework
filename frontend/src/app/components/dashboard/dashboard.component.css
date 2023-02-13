@@ -5,3 +5,8 @@
 .example-header-image {
     background-size: cover;
 }
+
+.main-card {
+    display: flex;
+    flex-direction: column;
+}
