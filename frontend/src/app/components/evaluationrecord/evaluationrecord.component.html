@@ -1,5 +1,5 @@
 <h2>B.) Social Performance Evaluation</h2>
-<table mat-table class="full-width-table" *ngIf="evaluationRecords" [dataSource]="evaluationRecords" >
+<table mat-table class="full-width-table" *ngIf="bonusComputation" [dataSource]="bonusComputation.perfBonus.evalRecords" >
     <!-- Goal Description Column -->
     <ng-container matColumnDef="goalDescription">
         <th mat-header-cell *matHeaderCellDef>Goal Description</th>
@@ -22,9 +22,9 @@
     </ng-container>
 
     <!-- Bonus Column -->
-    <ng-container matColumnDef="bonus" *ngIf="bonusComputation">
+    <ng-container matColumnDef="bonus">
         <th mat-header-cell *matHeaderCellDef>Bonus</th>
-        <td mat-cell *matCellDef="let evaluationRecord">{{filterBonus(evaluationRecord, bonusComputation)}}</td>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.bonus}}</td>
         <td mat-footer-cell *matFooterCellDef>{{bonusComputation.perfBonus.total}}</td>
     </ng-container>
 
