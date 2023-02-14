@@ -18,17 +18,29 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus remark:</mat-label>
-                <textarea name="remarks" rows="5" matInput [(ngModel)]="bonus.remark" [disabled]="!allowedWrite"></textarea>
+                <textarea
+                    name="remarks"
+                    rows="5"
+                    matInput
+                    [(ngModel)]="bonus.remark"
+                    [disabled]="!allowedWrite || bonus.verified.toUpperCase() !== 'CALCULATED'"
+                ></textarea>
             </mat-form-field>
             <mat-card class="card-buttons">
                 <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
-                <button mat-raised-button color="warn" type="button" (click)="rejectBonus()">Reject</button>
+                <button
+                    mat-raised-button
+                    color="warn"
+                    type="button"
+                    (click)="rejectBonus()"
+                    [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
+                >Reject</button>
                 <button
                     mat-raised-button
                     color="green"
                     type="button"
                     (click)="approveBonus()"
-                    [disabled]="user.role === 'CEO' && bonus.verified.toUpperCase() !== 'CALCULATED'"
+                    [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
                 >Approve</button>
             </mat-card>
         </form>

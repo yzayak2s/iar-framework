@@ -86,4 +86,16 @@ export class BonusDetailComponent implements OnInit {
                 .subscribe((): void => this.goBack());
         }*/
     }
+
+    checkApprover(userRole: string, verified: string ): boolean {
+        switch (userRole) {
+        case 'CEO':
+            return verified !== 'CALCULATED';
+        case 'HR':
+            return verified !== 'APPROVEDCEO';
+        case 'SALESMAN':
+            return verified !== 'APPROVEDHR';
+        }
+        return true;
+    }
 }
