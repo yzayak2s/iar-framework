@@ -46,6 +46,7 @@ router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN
 
 const orangeHRM = require('../apis/orangeHRM-api');
 router.get('/employees/read/id/:id/photo', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.getEmployeePhotoById);
+router.post('/employees/create/bonussalary', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.addBonusSalary);
 
 const bonusComputationApi = require('../apis/bonus-computation-api')
 router.get('/bonusComputations/read/salesManID/:salesManID/:year', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusComputationApi.getBonusComputationBySalesManIDAndYear);
@@ -72,7 +73,6 @@ router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
-router.post('/employees/create/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
 
