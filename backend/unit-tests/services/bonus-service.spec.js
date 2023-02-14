@@ -14,6 +14,7 @@ const SalesMan = require('../../src/models/SalesMan');
 const {copyObject} = require('../support/copyObject');
 const openCRXService = require('../../src/services/openCRX-service');
 const evaluationRecordService = require('../../src/services/evaluation-record-service');
+const bonus_comp_service = require('../../src/services/bonus-computation-service');
 const EvaluationRecord = require('../../src/models/EvaluationRecord');
 
 const bonusExample1 = new Bonus(2020, 2000, 'Some remark1', false, 1);
@@ -348,4 +349,63 @@ describe("bonus-service Unit-tests", function() {
         });
     });
     
+    describe("Bonus Computation Service Tests", function() {
+        let calculation1, calculation2;
+
+        beforeEach(() => {
+            calculation1 = {
+                "_id": "63e99ee8fcdf9d934a4820b7",
+                "year": 2023,
+                "salesManID": 1,
+                "totalBonus": 0,
+                "orderBonus": {
+                  "total": 0,
+                  "salesOrders": []
+                },
+                "perfBonus": {
+                  "total": 0,
+                  "evalRecords": []
+                }
+              };
+            
+            calculation2 = {
+                "_id": "63e99ee8fcdf9d934a4820b9",
+                "year": 2022,
+                "salesManID": 1,
+                "totalBonus": 0,
+                "orderBonus": {
+                  "total": 0,
+                  "salesOrders": []
+                },
+                "perfBonus": {
+                  "total": 50,
+                  "evalRecords": []
+                }
+              }
+        })
+        
+        it('Able to add bonus', async function() {
+            await expect(bonus_comp_service.getBonusComputationBySalesmanID(db, 1)).to.eventually.exist;
+        });
+
+        it('If bonus already exists it is overwritten', async function() {
+            await bonus_comp_service.addBonusComputation(db, calculation1);
+            await expect(bonus_comp_service.getBonusComputationBySalesmanID(db, 1)).to.eventually.exist;
+            await bonus_comp_service.addBonusComputation(db, calculation1);
+            await expect(bonus_comp_service.getBonusComputationBySalesmanID(db, 1)).to.eventually.exist;
+        });
+
+        it('Able to delete Bonus', async function() {
+            await bonus_comp_service.addBonusComputation(db, calculation1);
+            await bonus_comp_service.deleteBonusComputation(db, calculation1._id);
+            await expect(bonus_comp_service.getBonusComputationBySalesmanID(db, 1)).to.eventually.not.exist;
+        });
+
+        it('Able to get by id and year', async function() {
+            await bonus_comp_service.addBonusComputation(db, calculation1);
+            await bonus_comp_service.addBonusComputation(db, calculation2);
+
+            await expect(bonus_comp_service.getBonusComputationBySalesmanIDAndYear(db, 1, 2022)).to.eventually.eql(calculation2);
+        });
+    });
 });
