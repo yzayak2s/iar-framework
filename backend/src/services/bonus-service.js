@@ -325,7 +325,7 @@ exports.updateVerified = async (db, _id, status, user) => {
         if (!allowed) {
             throw new Error("You are not authorized for this stage!");
         }
-    }w
+    }
 
     return await db.collection('bonus').updateOne(
         {
