@@ -278,7 +278,7 @@ exports.updateRemark = async (db, _id, remark) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: _id});
 
     if (!existingBonusById) {
-        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+        throw new Error(`Bonus with ID ${_id} doesn't exist!`);
     }
 
     return await db.collection('bonus').updateOne(
@@ -304,7 +304,7 @@ exports.updateVerified = async (db, _id, status, user) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: _id});
 
     if (!existingBonusById) {
-        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+        throw new Error(`Bonus with ID ${_id} doesn't exist!`);
     }
 
     if (user.role === 'SALESMAN' && !(existingBonusById.salesManID === user._id)) {
@@ -323,7 +323,6 @@ exports.updateVerified = async (db, _id, status, user) => {
             case 'CALCULATED': (userRole === 'CEO' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
             case 'APPROVEDCEO': (userRole === 'HR' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
             case 'APPROVEDHR': (userRole === 'SALESMAN' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
-            default: allowed = false;
         } 
         
         if (!allowed) {
