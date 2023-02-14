@@ -134,6 +134,16 @@ describe('salesman-service unit-tests', function() {
         it('throws if trying to delete not existing salesman', async function() {
             await expect(salesmanService.delete(db, 1)).to.be.rejectedWith("Salesman with id 1 doesn't exist!");
         });
+
+        it('Able to delete all salesman', async function() {
+            await salesmanService.add(db, copyObject(salesMan));
+            await salesmanService.add(db, copyObject(salesMan2));
+            await expect(salesmanService.getAll(db)).to.eventually.have.lengthOf(2);
+
+            const response = await salesmanService.deleteAll(db);
+            expect(response.deletedCount == 2).to.be.true;
+            await expect(salesmanService.getAll(db)).to.eventually.have.lengthOf(0);
+        })
     });
 
     describe('stubbed tests for getting API salesman', function() {
