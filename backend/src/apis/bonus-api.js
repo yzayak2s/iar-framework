@@ -84,7 +84,7 @@ exports.updateBonusStatusById = (req, res) => {
         }).catch((e) => {
             if (e.message === 'You are not authorized for this stage!'){
                 res.status(401).send();
-            }else {
+            } else {
                 res.status(500).send("Something went wrong");
             }
         })

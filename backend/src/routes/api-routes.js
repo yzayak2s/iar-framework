@@ -42,7 +42,7 @@ router.get('/bonuses/read/all', roleAuthentification([Roles.CEO, Roles.HR]),  bo
 router.get('/bonuses/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusApi.getBonusById); // Not sure how to deal with this
 router.get('/bonuses/read/salesmanId/:salesManID', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), bonusApi.getBonusesOfSalesmanById);
 router.put('/bonuses/updateRemark/id/:_id', roleAuthentification([Roles.CEO]), bonusApi.updateBonusRemarkById);
-router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO]), bonusApi.updateBonusStatusById);
+router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO], true), bonusApi.updateBonusStatusById);
 
 //From here everything allowed to CEO and HR
 router.use(roleAuthentification([Roles.CEO, Roles.HR]));
