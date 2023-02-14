@@ -383,8 +383,9 @@ describe("bonus-service Unit-tests", function() {
                 }
               }
         })
-        
+
         it('Able to add bonus', async function() {
+            await bonus_comp_service.addBonusComputation(db, calculation1);
             await expect(bonus_comp_service.getBonusComputationBySalesmanID(db, 1)).to.eventually.exist;
         });
 
