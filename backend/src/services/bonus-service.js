@@ -307,7 +307,7 @@ exports.updateVerified = async (db, _id, status, user) => {
         throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
     }
 
-    if (!(existingBonusById.salesManID === user._id)) {
+    if (user.role === 'SALESMAN' && !(existingBonusById.salesManID === user._id)) {
         throw new Error ('Salesman are only allowed to access their own bonuses!');
     }
 
