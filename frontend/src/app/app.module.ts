@@ -33,6 +33,7 @@ import { SalesmanComponent } from './components/salesman/salesman.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EvaluationrecordComponent } from './components/evaluationrecord/evaluationrecord.component';
 import { SalesorderComponent } from './components/salesorder/salesorder.component';
+import { BonusesOfSalesmanComponent } from './components/bonuses-of-salesman/bonuses-of-salesman.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { SalesorderComponent } from './components/salesorder/salesorder.componen
         SalesmanComponent,
         SalesOrderComponent,
         EvaluationrecordComponent,
-        SalesorderComponent
+        SalesorderComponent,
+        BonusesOfSalesmanComponent
     ],
     imports: [
         BrowserModule,

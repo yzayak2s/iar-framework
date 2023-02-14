@@ -16,12 +16,17 @@ import {UserService} from '../../services/user.service';
 })
 export class DashboardComponent implements OnInit {
     currentUser: User;
+    photo: string;
 
     constructor(private userService: UserService) { }
 
     ngOnInit(): void {
         this.userService.getOwnUser().subscribe((user): void => {
             this.currentUser = user;
+            this.userService.getUserPhoto(this.currentUser._id)
+                .subscribe((photoBase64): void => {
+                    this.photo = `data:image/png;base64,${photoBase64.body.base64}`;
+                });
         });
     }
 }

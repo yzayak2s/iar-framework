@@ -46,20 +46,20 @@ export class BonusesComponent implements OnInit {
     }
 
     calculate(bonus: Bonus): void {
-        if (confirm('Are you sure to recalculate this bonus? Your remark will be lost!')) {
+        if (confirm('Are you sure to recalculate this bonus?\nYour remark will be lost!')) {
             this.bonusComputationService.calculateBonus(bonus)
                 .subscribe((): void => {
-                    window.location.reload();
+                    this.getBonuses();
                 });
 
         }
     }
 
     calculateAll(year: number): void {
-        if (confirm('Are you sure to calculate all bonuses? Your remarks may will be lost!')) {
+        if (confirm('Are you sure to calculate all bonuses?\nYour remarks will be lost!')) {
             this.bonusComputationService.calculateAllBonuses(year)
                 .subscribe((): void => {
-                    window.location.reload();
+                    this.getBonuses();
                 });
         }
     }
@@ -70,5 +70,29 @@ export class BonusesComponent implements OnInit {
             this.bonusService.deleteBonus(bonus._id)
                 .subscribe();
         }
+    }
+
+    displayStatus(verified: string): string {
+        let displayStatus = '';
+        switch (verified.toUpperCase()) {
+        case 'CALCULATED':
+            displayStatus = 'Calculated'; break;
+        case 'APPROVEDCEO':
+            displayStatus = 'Approved by CEO'; break;
+        case 'APPROVEDHR':
+            displayStatus = 'Approved by HR'; break;
+        case 'ACCEPTED':
+            displayStatus = 'Accepted'; break;
+        case 'REJECTEDCEO':
+            displayStatus = 'Rejected by CEO'; break;
+        case 'REJECTEDHR':
+            displayStatus = 'Rejected by HR'; break;
+        case 'REJECTED':
+            displayStatus = 'Rejected'; break;
+        default:
+            break;
+
+        }
+        return displayStatus;
     }
 }

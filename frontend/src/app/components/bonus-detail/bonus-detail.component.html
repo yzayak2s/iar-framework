@@ -10,18 +10,41 @@
         <app-evaluationrecord></app-evaluationrecord>
     </mat-card>
     <mat-card>
-        <form *ngIf="bonus">
-            <h2 id="bonus-verified">{{bonus.verified | uppercase}}</h2>
+        <form *ngIf="bonus && user">
+            <h2 id="bonus-verified">{{bonus.verified[0] | uppercase}}{{bonus.verified.substring(1)}}</h2>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus value:</mat-label>
                 <input name="value" matInput [(ngModel)]="bonus.value" disabled>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus remark:</mat-label>
-                <textarea name="remarks" rows="5" matInput [(ngModel)]="bonus.remark" [disabled]="!allowedWrite"></textarea>
+                <textarea
+                    name="remarks"
+                    rows="5"
+                    matInput
+                    [(ngModel)]="bonus.remark"
+                    [disabled]="!allowedWrite || bonus.verified.toUpperCase() !== 'CALCULATED'"
+                    required
+                    autofocus
+                ></textarea>
             </mat-form-field>
-            <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
-            <button mat-raised-button color="primary" type="button" (click)="save()">Save</button>
+            <mat-card class="card-buttons">
+                <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
+                <button
+                    mat-raised-button
+                    color="warn"
+                    type="submit"
+                    (click)="rejectBonus()"
+                    [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
+                >Reject</button>
+                <button
+                    mat-raised-button
+                    color="green"
+                    type="submit"
+                    (click)="approveBonus()"
+                    [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
+                >{{this.user.role !== 'SALESMAN' ? 'Approve' : 'Accept'}}</button>
+            </mat-card>
         </form>
     </mat-card>
 </div>

@@ -44,6 +44,13 @@ router.get('/bonuses/read/salesmanId/:salesManID', roleAuthentification([Roles.S
 router.put('/bonuses/updateRemark/id/:_id', roleAuthentification([Roles.CEO]), bonusApi.updateBonusRemarkById);
 router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO], true), bonusApi.updateBonusStatusById);
 
+const orangeHRM = require('../apis/orangeHRM-api');
+router.get('/employees/read/id/:id/photo', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.getEmployeePhotoById);
+router.post('/employees/create/bonussalary', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.addBonusSalary);
+
+const bonusComputationApi = require('../apis/bonus-computation-api')
+router.get('/bonusComputations/read/salesManID/:salesManID/:year', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusComputationApi.getBonusComputationBySalesManIDAndYear);
+
 //From here everything allowed to CEO and HR
 router.use(roleAuthentification([Roles.CEO, Roles.HR]));
 
@@ -54,9 +61,6 @@ router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
 router.delete('/bonuses/delete/salesmanId/:salesManID', bonusApi.deleteAllBonusesOfSalesmanById);
 
-const bonusComputationApi = require('../apis/bonus-computation-api')
-router.get('/bonusComputations/read/salesManID/:salesManID/:year', bonusComputationApi.getBonusComputationBySalesManIDAndYear);
-
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
 router.get('/accounts/read/uid/:uid', openCRX.getAccountByUID);
@@ -66,11 +70,9 @@ router.get('/salesOrders/read/all', openCRX.getSalesOrders);
 router.get('/salesOrders/read/uid/:uid', openCRX.getSalesOrderByUID);
 router.get('/salesOrders/:uid/positions/read/all', openCRX.getPositions);
 
-const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
-router.post('/employees/create/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
 

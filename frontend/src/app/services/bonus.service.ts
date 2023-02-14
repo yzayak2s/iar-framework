@@ -9,6 +9,7 @@ import {environment} from '../../../environments/environment';
 })
 export class BonusService {
     private bonusesUrl = `${environment.apiEndpoint}/api/bonuses`; // URL to web api
+    private orangeHRMUrl = `${environment.apiEndpoint}/api/employees`;
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         withCredentials: true
@@ -35,10 +36,31 @@ export class BonusService {
         });
     }
 
+    /** GET single Bonus by salesman ID from the backend */
+    getBonusesBySalesManID(id: string): Observable<HttpResponse<Bonus[]>> {
+        const url = `${this.bonusesUrl}/read/salesmanId/${id}`;
+        return this.http.get<Bonus[]>(url, {
+            observe: 'response',
+            withCredentials: true
+        });
+    }
+
     /** UPDATE single bonus */
     updateBonus(bonus: Bonus): Observable<any> {
         const url = `${this.bonusesUrl}/update/id/${bonus._id}`;
         return this.http.put(url, bonus, this.httpOptions);
+    }
+
+    /** UPDATE single bonus its remark */
+    updateBonusRemark(bonus: Bonus): Observable<any> {
+        const url = `${this.bonusesUrl}/updateRemark/id/${bonus._id}`;
+        return this.http.put(url, bonus, this.httpOptions);
+    }
+
+    /** UPDATE single bonus its status (verified) */
+    updateBonusStatus(bonus: Bonus): Observable<any> {
+        const url = `${this.bonusesUrl}/updateStatus/id/${bonus._id}`;
+        return this.http.put(url, {status: bonus.verified}, this.httpOptions);
     }
 
     /** ADD new bonus */
@@ -63,5 +85,10 @@ export class BonusService {
         return this.http.get<Bonus[]>(`${this.bonusesUrl}/read/year/${term}`, {
             withCredentials: true
         });
+    }
+
+    createBonusInOrangeHRM(bonus: Bonus): Observable<any> {
+        const url = `${this.orangeHRMUrl}/create/bonussalary`;
+        return this.http.post(url, bonus, this.httpOptions);
     }
 }

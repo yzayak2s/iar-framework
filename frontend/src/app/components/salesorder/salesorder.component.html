@@ -18,7 +18,7 @@
     </ng-container>
     <ng-container matColumnDef="clientRanking">
         <th mat-header-cell *matHeaderCellDef>Client Ranking</th>
-        <td mat-cell *matCellDef="let salesOrder">{{salesOrder.rating}}</td>
+        <td mat-cell *matCellDef="let salesOrder">{{salesOrder.rating[0] | uppercase}}{{salesOrder.rating.substring(1)}}</td>
         <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <ng-container matColumnDef="items">

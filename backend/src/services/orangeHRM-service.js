@@ -1,4 +1,3 @@
-const salesmanService = require('./salesman-service')
 const axios = require('axios');
 const https = require('https');
 const qs = require("querystring");
@@ -6,7 +5,6 @@ const httpsAgent = new https.Agent({rejectUnauthorized: false});
 
 // OrangeHRM HTTP Request Header definition
 const {orangeHRMConfig} = require('../../environments/apiEnvironment');
-const SalesMan = require('../models/SalesMan');
 const baseUrl = orangeHRMConfig.baseUrl;
 
 const body = qs.stringify({
@@ -91,6 +89,22 @@ exports.getBonusSalariesByEmployee = async (employeeId) => {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
 
     const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}/bonussalary`, config);
+    return bonusSalariesByEmployee.data.data;
+}
+
+/**
+ * retrieves photo of an employee
+ */
+exports.getEmployeePhotoById = async (employeeId) => {
+    const currentToken = await checkToken(issueToken);
+    const {accessToken, expires_at} = currentToken;
+
+    issueToken.accessToken = accessToken;
+    issueToken.expires_at = expires_at;
+
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+
+    const bonusSalariesByEmployee = await axios.get(`${baseUrl}/api/v1/employee/${employeeId}/photo`, config);
     return bonusSalariesByEmployee.data.data;
 }
 
