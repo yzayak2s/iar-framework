@@ -50,6 +50,18 @@ export class BonusService {
         return this.http.put(url, bonus, this.httpOptions);
     }
 
+    /** UPDATE single bonus its remark */
+    updateBonusRemark(bonus: Bonus): Observable<any> {
+        const url = `${this.bonusesUrl}/updateRemark/id/${bonus._id}`;
+        return this.http.put(url, bonus, this.httpOptions);
+    }
+
+    /** UPDATE single bonus its status (verified) */
+    updateBonusStatus(bonus: Bonus): Observable<any> {
+        const url = `${this.bonusesUrl}/updateStatus/id/${bonus._id}`;
+        return this.http.put(url, {status: bonus.verified}, this.httpOptions);
+    }
+
     /** ADD new bonus */
     addBonus(bonus: Bonus): Observable<Bonus> {
         const url = `${this.bonusesUrl}/create`;
