@@ -1067,11 +1067,11 @@
               "application/json": {
                 "schema": {
                   "type":"array",
-                  "items": {
+                  "items": {      
                     "type": "array",
                     "items": {
                       "allOf": [
-                        {
+                        {          
                           "type": "object",
                           "properties": {
                             "accountType": {
@@ -1100,7 +1100,7 @@
                             }
                           }
                         },
-                        {
+                        {                             
                           "type": "object",
                           "properties": {
                             "accountType": {
@@ -1123,11 +1123,11 @@
                               "type": "number",
                               "example": 90399
                             }
-                          }
+                          }                 
                         }
                       ]
-                    }
-                  }
+                    }      
+                  }  
                 }
               }
             }
@@ -1162,7 +1162,7 @@
                 "application/json": {
                   "schema": {
                     "type":"object",
-                    "properties": {
+                    "properties": {      
                       "accountType": {
                         "type": "string",
                         "example": "LegalEntity"
@@ -1189,8 +1189,8 @@
                       }
                     }
                   }
-                }
-              }
+                }      
+              }  
             },
             "401": {
               "description": "Unauthorized"
@@ -1237,8 +1237,8 @@
                     }
                   }
                 }
-              }
-            }
+              }      
+            }  
           },
           "401": {
             "description": "Unauthorized"
@@ -1288,8 +1288,8 @@
                     }
                   }
                 }
-              }
-            }
+              }      
+            }  
           },
           "401": {
             "description": "Unauthorized"
@@ -1356,8 +1356,8 @@
                     }
                   }
                 }
-              }
-            }
+              }      
+            }  
           },
           "401": {
             "description": "Unauthorized"
@@ -1432,8 +1432,8 @@
                       }
                     }
                   }
-                }
-              }
+                }      
+              }  
             },
             "401": {
               "description": "Unauthorized"
@@ -1495,8 +1495,8 @@
                     }
                   }
                 }
-              }
-            }
+              }      
+            }  
           },
           "401": {
             "description": "Unauthorized"
@@ -1784,7 +1784,7 @@
         }
       }
     }
-  },
+  }, 
   "components": {
     "schemas": {
       "SalesMan": {
