@@ -76,7 +76,7 @@ describe('evaluation-record-service unit-tests', function () {
             await expect(evaluationRecordService.getBySalesmanID(db, 'salesManID')).to.eventually.be.eqls([]);
         });
 
-        it.skip('expect list of all evaluation records', async function() {
+        it.skip('expect list of all evaluation records', async function() { // skipped as mongo mock does not support aggregate functions.
             await evaluationRecordService.add(db, copyObject(evaluationRecord));
             await evaluationRecordService.add(db, copyObject(evaluationRecord2));
             await evaluationRecordService.add(db, copyObject(evaluationRecord3));
@@ -91,6 +91,17 @@ describe('evaluation-record-service unit-tests', function () {
 
             await expect(evaluationRecordService.getById(db, recordID)).to.eventually.excluding('_id').be.eql(evaluationRecord);
         });
+
+        it('Get records by salesman id and year', async function() {
+            await evaluationRecordService.add(db, copyObject(evaluationRecord))
+            await evaluationRecordService.add(db, copyObject(evaluationRecord2))
+            await evaluationRecordService.add(db, copyObject(evaluationRecord3))
+
+            await expect(evaluationRecordService.getBySalesmanIDAndYear(db, 1, 2022)).to.eventually.be.an('array').with.lengthOf(1);
+            const records = await evaluationRecordService.getBySalesmanIDAndYear(db, 1, 2022);
+
+            expect(records[0]).to.excluding('_id').eql(evaluationRecord);
+        })
     });
 
     describe('evaluation record update tests', function () {
@@ -133,5 +144,24 @@ describe('evaluation-record-service unit-tests', function () {
         it('delete records by SalesmanId throws if salesman does not exist', async function(){
             await expect(evaluationRecordService.deleteBySalesmanID(db, 1)).to.be.rejectedWith('Salesman with id 1 does not exist!');
         });
+    });
+
+    describe('goal collection tests', function() {
+        it('Able to get all goals', async function() {
+            await evaluationRecordService.addGoal(db, "Leadership");
+            await evaluationRecordService.addGoal(db, "Companionship");
+
+            await expect(evaluationRecordService.getAllGoals(db)).to.eventually.be.an('array').lengthOf(2);
+        });
+
+        it('Able to add goal', async function() {
+            await expect(evaluationRecordService.addGoal(db, "Leadership")).to.eventually.be.fulfilled;
+            await expect(db.collection('goals').findOne()).to.eventually.exist.and.include({goal_description: "Leadership"});
+        });
+
+        it('Throws if already exists', async function() {
+            await evaluationRecordService.addGoal(db, "Leadership");
+            await expect(evaluationRecordService.addGoal(db, "Leadership")).to.eventually.be.rejectedWith('Goal with same description already exists!');
+        })
     });
 });

@@ -12,7 +12,7 @@ exports.addBonusComputation = async (db, bonusComputation) => {
         await db.collection('bonus_calculations').deleteOne({_id: bonusComputation._id});
     }
 
-    return await db.collection('bonus_calculations').insertOne(bonusComputation).insertedId;
+    return (await db.collection('bonus_calculations').insertOne(bonusComputation)).insertedId;
 }
 
 exports.deleteBonusComputation = async (db, _id) => {
