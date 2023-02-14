@@ -64,6 +64,32 @@ exports.updateBonusById = (req, res) => {
     });
 }
 
+exports.updateBonusRemarkById = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.updateRemark(db, ObjectId(req.params._id), req.body.remark)
+        .then((bonus) => {
+            res.send(bonus);
+        }).catch(() => {
+            res.status(500).send({"message": "Something went wrong"});
+        })
+}
+
+exports.updateBonusStatusById = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.updateVerified(db, ObjectId(req.params._id), req.body.status, req.session.user)
+        .then((bonus) => {
+            res.send(bonus);
+        }).catch((e) => {
+            if (e.message === 'You are not authorized for this stage!'){
+                res.status(401).send();
+            } else {
+                res.status(500).send("Something went wrong");
+            }
+        })
+}
+
 exports.deleteBonus = (req, res) => {
     const db = req.app.get('db');
 

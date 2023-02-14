@@ -41,6 +41,8 @@ const bonusApi = require('../apis/bonus-api');
 router.get('/bonuses/read/all', roleAuthentification([Roles.CEO, Roles.HR]),  bonusApi.getBonuses);
 router.get('/bonuses/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusApi.getBonusById); // Not sure how to deal with this
 router.get('/bonuses/read/salesmanId/:salesManID', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), bonusApi.getBonusesOfSalesmanById);
+router.put('/bonuses/updateRemark/id/:_id', roleAuthentification([Roles.CEO]), bonusApi.updateBonusRemarkById);
+router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO], true), bonusApi.updateBonusStatusById);
 
 //From here everything allowed to CEO and HR
 router.use(roleAuthentification([Roles.CEO, Roles.HR]));
@@ -68,7 +70,7 @@ const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
-router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
+router.post('/employees/create/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
 
