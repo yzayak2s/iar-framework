@@ -190,6 +190,63 @@
         }
       }
     },
+    "/salesmen/delete/id/{_id}": {
+      "delete": {
+        "tags": [
+          "salesmen"
+        ],
+        "summary": "Delete a salesman by his id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of salesman"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Count of deleted entries and more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/salesmen/delete/all": {
+      "delete": {
+        "tags": [
+          "salesmen"
+        ],
+        "summary": "Delete a salesman by his id",
+        "responses": {
+          "200": {
+            "description": "Count of deleted entries and more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/salesmen/getApiSalesmen": {
       "get": {
         "tags":[
@@ -198,7 +255,7 @@
         "summary": "Get Salesman from OrangeHRM and add OpenCRx UID",
         "responses": {
           "200": {
-            "description": "successfully updated"
+            "description": "successfully updated database"
           }
         }
       }
@@ -224,8 +281,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "number",
-                  "example": 2
+                  "type": "string",
+                  "example": "63eaedd4f817986086761515"
                 }
               }
             }
@@ -333,6 +390,52 @@
         }
       }
     },
+    "/evaluationRecords/read/salesmanId/{salesManID}/{year}": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "Returns evaluation Records by salesmanID and year",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "salesManID",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "ID of salesman" 
+          },
+          {
+            "in": "path",
+            "name": "year",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "year of the evaluation record"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Evaluation Records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "$ref": "#/components/schemas/EvaluationRecord"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/bonuses/read/id/{_id}": {
       "get": {
         "tags": [
@@ -400,7 +503,7 @@
         },
         "responses": {
           "200": {
-            "description": "The Bonus",
+            "description": "Update Count and more",
             "content": {
               "application/json": {
                 "type": "object",
@@ -449,7 +552,7 @@
         },
         "responses": {
           "200": {
-            "description": "The Bonus",
+            "description": "Update Count and more",
             "content": {
               "application/json": {
                 "type": "object",
@@ -621,8 +724,8 @@
         },
         "example": {
           "goalDescription": "Make 2000€ of sales this year",
-          "targetValue": 2000,
-          "actualValue": 1520,
+          "targetValue": 5,
+          "actualValue": 4,
           "year": 2021,
           "salesManID": 5
         }
@@ -684,6 +787,18 @@
           },
           "matchedCount": {
             "type": "number"
+          }
+        }
+      },
+      "DeleteResponse": {
+        "type": "object",
+        "properties": {
+          "acknowledged": {
+            "type": "boolean"
+          },
+          "deletedCount": {
+            "type": "number",
+            "example": 1
           }
         }
       }
