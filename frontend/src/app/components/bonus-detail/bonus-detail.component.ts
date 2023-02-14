@@ -45,7 +45,8 @@ export class BonusDetailComponent implements OnInit {
     }
 
     approveBonus(): void {
-        if (confirm(`Are you sure to ${this.user.role !== 'SALESMAN' ? 'approve' : 'accept'} this bonus?`)) {
+        if (this.bonus.remark === '') {
+        } else if (confirm(`Are you sure to ${this.user.role !== 'SALESMAN' ? 'approve' : 'accept'} this bonus?`)) {
             switch (this.bonus.verified.toUpperCase()) {
             case 'CALCULATED':
                 this.bonus.verified = 'APPROVEDCEO';
@@ -66,15 +67,15 @@ export class BonusDetailComponent implements OnInit {
                     this.bonusService.updateBonusRemark(this.bonus)
                         .subscribe();
                     this.bonusService.updateBonusStatus(this.bonus)
-                        .subscribe(/* (): void => this.goBack()*/);
+                        .subscribe((): void => this.goBack());
                     break;
                 case 'HR':
                     this.bonusService.updateBonusStatus(this.bonus)
-                        .subscribe(/* (): void => this.goBack()*/);
+                        .subscribe((): void => this.goBack());
                     break;
                 case 'SALESMAN':
-                    /*this.bonusService.updateBonusStatus(this.bonus)
-                        .subscribe(/!* (): void => this.goBack()*!/);*/
+                    this.bonusService.updateBonusStatus(this.bonus)
+                        .subscribe((): void => this.goBack());
                     this.bonusService.createBonusInOrangeHRM(this.bonus)
                         .subscribe();
                     break;
@@ -96,7 +97,7 @@ export class BonusDetailComponent implements OnInit {
         }
     }
 
-    checkApprover(userRole: string, verified: string ): boolean {
+    checkApprover(userRole: string, verified: string): boolean {
         switch (userRole) {
         case 'CEO':
             return verified !== 'CALCULATED';

@@ -24,6 +24,8 @@
                     matInput
                     [(ngModel)]="bonus.remark"
                     [disabled]="!allowedWrite || bonus.verified.toUpperCase() !== 'CALCULATED'"
+                    required
+                    autofocus
                 ></textarea>
             </mat-form-field>
             <mat-card class="card-buttons">
@@ -31,17 +33,17 @@
                 <button
                     mat-raised-button
                     color="warn"
-                    type="button"
+                    type="submit"
                     (click)="rejectBonus()"
                     [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
                 >Reject</button>
                 <button
                     mat-raised-button
                     color="green"
-                    type="button"
+                    type="submit"
                     (click)="approveBonus()"
                     [disabled]="checkApprover(user.role, bonus.verified.toUpperCase())"
-                >Approve</button>
+                >{{this.user.role !== 'SALESMAN' ? 'Approve' : 'Accept'}}</button>
             </mat-card>
         </form>
     </mat-card>
