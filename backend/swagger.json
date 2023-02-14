@@ -40,6 +40,39 @@
     }
   ],
   "paths": {
+    "/salesmen/create": {
+      "post": {
+        "tags": [
+          "salesmen"
+        ],
+        "summary": "Create a salesman",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalesMan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The salesman ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "example": 5
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/salesmen/read/all": {
       "get": {
         "tags": [
@@ -134,35 +167,15 @@
         }
       }
     },
-    "/salesmen/create": {
-      "post": {
-        "tags": [
+    "/salesmen/getApiSalesmen": {
+      "get": {
+        "tags":[
           "salesmen"
         ],
-        "summary": "Create a salesman",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SalesMan"
-              }
-            }
-          }
-        },
+        "summary": "Get Salesman from OrangeHRM and add OpenCRx UID",
         "responses": {
           "200": {
-            "description": "The salesman ID",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number",
-                  "example": 5
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
+            "description": "successfully updated database"
           }
         }
       }
@@ -243,19 +256,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/salesmen/getApiSalesmen": {
-      "get": {
-        "tags":[
-          "salesmen"
-        ],
-        "summary": "Get Salesman from OrangeHRM and add OpenCRx UID",
-        "responses": {
-          "200": {
-            "description": "successfully updated database"
           }
         }
       }
@@ -436,6 +436,42 @@
         }
       }
     },
+    "/goals/read/all": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "returns all goals",
+        "responses": {
+          "200": {
+            "description": "Array of goals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "63eaedd4f817986086761515"
+                      },
+                      "goal_description": {
+                        "type": "string",
+                        "example": "Leadership Competence"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/evaluationRecords/update/id/{_id}": {
       "put": {
         "tags": [
@@ -550,31 +586,54 @@
         }
       }
     },
-    "/goals/read/all": {
-      "get": {
+    "/bonuses/create": {
+      "post": {
         "tags": [
-          "evaluationRecords"
+          "bonuses"
         ],
-        "summary": "returns all goals",
+        "summary": "Create a Bonus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bonus"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Array of goals",
+            "description": "The Bonus ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "63eaedd4f817986086761515"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bonuses/read/all": {
+      "get": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "returns all bonuses",
+        "responses": {
+          "200": {
+            "description": "Array of Bonus",
             "content": {
               "application/json": {
                 "schema": {
                   "type":"array",
                   "items":{
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "63eaedd4f817986086761515"
-                      },
-                      "goal_description": {
-                        "type": "string",
-                        "example": "Leadership Competence"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Bonus"
                   }
                 }
               }
@@ -610,6 +669,43 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Bonus"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bonuses/read/salesmanId/{salesManID}": {
+      "get": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "returns all bonuses of a salesman",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "salesManID",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "ID of salesman the bonuses belong to"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The Bonus",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "$ref": "#/components/schemas/Bonus"
+                  }
                 }
               }
             }
@@ -718,12 +814,58 @@
         }
       }
     },
+    "/bonuses/update/id/{_id}": {
+      "put": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "Update a Bonus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of bonus"
+          }
+        ],
+        "requestBody": {
+          "description": "New Bonus to update to",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bonus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update Count and more",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/bonuses/calculateBonus/sid/{salesManID}/{year}": {
       "get": {
         "tags": [
           "bonuses"
         ],
-        "summary": "returns bonus of salesman",
+        "summary": "returns bonus of salesman of a year",
         "parameters": [
           {
             "in": "path",
@@ -748,13 +890,112 @@
         ],
         "responses": {
           "200": {
-            "description": "The Bonus"
+            "description": "Bonus calculation"
           },
           "401": {
             "description": "Unauthorized"
           }
         }
       }
+    },
+    "/bonuses/calculateBonus/all/{year}": {
+      "get": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "returns bonus for all salesman of a year",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "year",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 2020
+            },
+            "description": "Year to be calculated"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of Bonus calculations"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bonuses/delete/id/{_id}": {
+      "delete": {
+        "tags": [
+          "bonuses"
+        ],
+        "summary": "Delete a bonus by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of bonus"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Count of deleted entries and more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/bonuses/delete/salesmanId/{salesManID}": {
+        "delete": {
+          "tags": [
+            "bonuses"
+          ],
+          "summary": "Delete all bonuse of a salesman",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "salesManID",
+              "schema": {
+                "type": "number"
+              },
+              "required": true,
+              "description": "id of salesman"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Count of deleted entries and more",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DeleteResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+    },
+    "/bonusComputations/read/salesManID/{salesManID}/{year}": {
+
     },
     "/employees/read/all": {
       "get": {
