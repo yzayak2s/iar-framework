@@ -1731,7 +1731,14 @@
                   "items": {
                     "type": "object",
                     "properties": {
-
+                      "year": {
+                        "type": "string",
+                        "example": "2020"
+                      },
+                      "value": {
+                        "type": "string",
+                        "example": "500"
+                      }
                     }
                   }
                 }
@@ -1744,8 +1751,38 @@
         }
       }
     },
-    "/employees/id/{id}/bonussalary": {
-
+    "/employees/create/bonussalary": {
+      "post": {
+        "tags": [
+          "orangeHRM"
+        ],
+        "summary": "Post bonus to orangeHRM",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bonus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The bonus salary",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Successfully saved"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   }, 
   "components": {
