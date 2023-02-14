@@ -31,4 +31,28 @@ export class BonusesOfSalesmanComponent implements OnInit {
                     });
             });
     }
+
+    displayStatus(verified: string): string {
+        let displayStatus = '';
+        switch (verified.toUpperCase()) {
+        case 'CALCULATED':
+            displayStatus = 'Calculated'; break;
+        case 'APPROVEDCEO':
+            displayStatus = 'Approved by CEO'; break;
+        case 'APPROVEDHR':
+            displayStatus = 'Approved by HR'; break;
+        case 'ACCEPTED':
+            displayStatus = 'Accepted'; break;
+        case 'REJECTEDCEO':
+            displayStatus = 'Rejected by CEO'; break;
+        case 'REJECTEDHR':
+            displayStatus = 'Rejected by HR'; break;
+        case 'REJECTED':
+            displayStatus = 'Rejected'; break;
+        default:
+            break;
+
+        }
+        return displayStatus;
+    }
 }
