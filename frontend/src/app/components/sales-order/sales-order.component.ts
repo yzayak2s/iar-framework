@@ -28,19 +28,13 @@ export class SalesOrderComponent implements OnInit {
 
     constructor(private router: Router, private salesOrderService: SalesOrderService) { }
     ngOnInit(): void {
-        console.log('test');
         this.fetchSalesorders();
     }
     fetchSalesorders(): void{
         this.salesOrderService.getAllSalesOrder().subscribe((response): void => {
             if (response.status === 200){
-                console.log('inside 200');
                 this.salesoders = response.body;
             }
-            console.log(this.salesoders);
         });
-    }
-    showSalesOrder(row: SalesOrder): void{
-        console.log(row);
     }
 }
