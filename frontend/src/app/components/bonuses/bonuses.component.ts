@@ -56,7 +56,7 @@ export class BonusesComponent implements OnInit {
     }
 
     calculateAll(year: number): void {
-        if (confirm('Are you sure to calculate all bonuses? Your remarks may will be lost!')) {
+        if (confirm('Are you sure to calculate all bonuses?\nYour remarks will be lost!')) {
             this.bonusComputationService.calculateAllBonuses(year)
                 .subscribe((): void => {
                     window.location.reload();

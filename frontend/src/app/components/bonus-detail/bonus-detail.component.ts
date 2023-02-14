@@ -45,46 +45,55 @@ export class BonusDetailComponent implements OnInit {
     }
 
     approveBonus(): void {
-        switch (this.bonus.verified.toUpperCase()) {
-        case 'CALCULATED':
-            this.bonus.verified = 'APPROVEDCEO'; break;
-        case 'APPROVEDCEO':
-            this.bonus.verified = 'APPROVEDHR'; break;
-        case 'APPROVEDHR':
-            this.bonus.verified = 'ACCEPTED'; break;
-        default: break;
-        }
-
-        console.log(this.bonus);
-
-        if (this.bonus) {
-            switch (this.user.role) {
-            case 'CEO':
-                this.bonusService.updateBonusRemark(this.bonus)
-                    .subscribe();
-                this.bonusService.updateBonusStatus(this.bonus)
-                    .subscribe(/*(): void => this.goBack()*/);
+        if (confirm(`Are you sure to ${this.user.role !== 'SALESMAN' ? 'approve' : 'accept'} this bonus?`)) {
+            switch (this.bonus.verified.toUpperCase()) {
+            case 'CALCULATED':
+                this.bonus.verified = 'APPROVEDCEO';
                 break;
-            case 'HR':
-                this.bonusService.updateBonusStatus(this.bonus)
-                    .subscribe(/*(): void => this.goBack()*/);
+            case 'APPROVEDCEO':
+                this.bonus.verified = 'APPROVEDHR';
                 break;
-            case 'SALESMAN':
-                this.bonusService.updateBonusStatus(this.bonus)
-                    .subscribe(/*(): void => this.goBack()*/);
+            case 'APPROVEDHR':
+                this.bonus.verified = 'ACCEPTED';
                 break;
-            default: break;
+            default:
+                break;
+            }
 
+            if (this.bonus) {
+                switch (this.user.role) {
+                case 'CEO':
+                    this.bonusService.updateBonusRemark(this.bonus)
+                        .subscribe();
+                    this.bonusService.updateBonusStatus(this.bonus)
+                        .subscribe(/* (): void => this.goBack()*/);
+                    break;
+                case 'HR':
+                    this.bonusService.updateBonusStatus(this.bonus)
+                        .subscribe(/* (): void => this.goBack()*/);
+                    break;
+                case 'SALESMAN':
+                    /*this.bonusService.updateBonusStatus(this.bonus)
+                        .subscribe(/!* (): void => this.goBack()*!/);*/
+                    this.bonusService.createBonusInOrangeHRM(this.bonus)
+                        .subscribe();
+                    break;
+                default:
+                    break;
+
+                }
             }
         }
     }
 
     rejectBonus(): void {
-        console.log('Rejected!');
-        /*if (this.bonus) {
-            this.bonusService.updateBonus(this.bonus)
-                .subscribe((): void => this.goBack());
-        }*/
+        if (confirm('You are going to reject this bonus.\nAre you sure?')) {
+            console.log('Rejected!');
+            /* if (this.bonus) {
+                    this.bonusService.updateBonus(this.bonus)
+                        .subscribe((): void => this.goBack());
+                }*/
+        }
     }
 
     checkApprover(userRole: string, verified: string ): boolean {
