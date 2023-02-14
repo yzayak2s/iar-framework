@@ -40,7 +40,7 @@ exports.getEmployeePhotoById = (req, res) => {
 exports.addBonusSalary = (req, res) => {
     orangeHRMService.add(req.body)
         .then(_ => {
-            res.send('Successfully saved');
+            res.send({message: 'Successfully saved'});
         }).catch((e) => {
             res.send(e.message);
     }).catch(_ => {

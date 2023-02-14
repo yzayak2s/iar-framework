@@ -88,8 +88,7 @@ export class BonusService {
     }
 
     createBonusInOrangeHRM(bonus: Bonus): Observable<any> {
-        console.log(bonus);
         const url = `${this.orangeHRMUrl}/create/bonussalary`;
-        return this.http.put(url, bonus, this.httpOptions);
+        return this.http.post(url, bonus, this.httpOptions);
     }
 }
