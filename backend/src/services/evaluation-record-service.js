@@ -85,6 +85,12 @@ exports.getBySalesmanIDAndYear = async (db, salesManID, year) => {
  */
 exports.add = async (db, evaluationRecord) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
+    const existingEvaluationRecordCriteria = await db.collection('evaluation_record').findOne(
+        {
+            goalDescription: evaluationRecord.goalDescription,
+            year: parseInt(evaluationRecord.year)
+        }
+    )
 
     await fitsModel(evaluationRecord, EvaluationRecord) // Check given Object
 
@@ -92,7 +98,17 @@ exports.add = async (db, evaluationRecord) => {
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
 
-    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
+    if (existingEvaluationRecordCriteria) {
+        throw new Error(`EvaluationRecord criteria with ${evaluationRecord.goalDescription} already exist!`);
+    }
+
+    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(
+        evaluationRecord.goalDescription,
+        parseInt(evaluationRecord.targetValue),
+        parseInt(evaluationRecord.actualValue),
+        parseInt(evaluationRecord.year),
+        parseInt(evaluationRecord.salesManID)
+    ))).insertedId;
 }
 
 /**
@@ -115,10 +131,10 @@ exports.updateById = async (db, _id, evaluationRecord) => {
         {
             $set: {
                 goalDescription: evaluationRecord.goalDescription,
-                targetValue: evaluationRecord.targetValue,
-                actualValue: evaluationRecord.actualValue,
-                year: evaluationRecord.year,
-                salesManID: evaluationRecord.salesManID,
+                targetValue: parseInt(evaluationRecord.targetValue),
+                actualValue: parseInt(evaluationRecord.actualValue),
+                year: parseInt(evaluationRecord.year),
+                salesManID: parseInt(evaluationRecord.salesManID),
             }
         }
     );

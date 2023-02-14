@@ -62,7 +62,7 @@ exports.addEvaluationRecord = (req, res) => {
 
    evaluationService.add(db, req.body)
     .then(_id => {
-        res.send(_id.toString());
+        res.send({_id: _id.toString()});
     }).catch((e) => {
         res.status(404).send(e.message);
     }).catch(_ => {
