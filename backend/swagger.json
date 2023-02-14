@@ -1160,8 +1160,119 @@
           "salesManID": 9
         }
       },
-      "UpdateResponse":
-      {
+      "Bonus_calc": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "example": 2022
+          },
+          "salesManID": {
+            "type": "number",
+            "example": 9
+          },
+          "totalBonus": {
+            "type": "number",
+            "example": 466.53
+          },
+          "orderBonus": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 532.55
+              },
+              "salesOrders": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Company AG"
+                    },
+                    "rating": {
+                      "type": "string",
+                      "example": "excellent"
+                    },
+                    "itemsSold": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "example": "Cleanbot 2000"
+                          },
+                          "amount": {
+                            "type": "number",
+                            "example": 5
+                          },
+                          "bonus": {
+                            "type": "number",
+                            "example": 400.25
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "perfBonus": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number",
+                "example": 150
+              },
+              "evalRecords": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "63eaedd4f817986086761515"
+                    },
+                    "goalDescription": {
+                      "type": "string",
+                      "example": "Leadership Competence"
+                    },
+                    "targetValue": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "actualValue": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "year": {
+                      "type": "number",
+                      "example": 2022
+                    },
+                    "salesManID": {
+                      "type": "number",
+                      "example": 9
+                    },
+                    "bonus": {
+                      "type": "number",
+                      "example": 100
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "_id": {
+            "type": "string",
+            "example": "63eaedd4f817986086761515"
+          }
+
+        }
+      },
+      "UpdateResponse": {
         "type": "object",
         "properties": {
           "acknowledged": {
