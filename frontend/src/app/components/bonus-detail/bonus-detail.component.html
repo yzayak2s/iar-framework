@@ -10,7 +10,7 @@
         <app-evaluationrecord></app-evaluationrecord>
     </mat-card>
     <mat-card>
-        <form *ngIf="bonus">
+        <form *ngIf="bonus && user">
             <h2 id="bonus-verified">{{bonus.verified[0] | uppercase}}{{bonus.verified.substring(1)}}</h2>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus value:</mat-label>
@@ -20,8 +20,17 @@
                 <mat-label>Bonus remark:</mat-label>
                 <textarea name="remarks" rows="5" matInput [(ngModel)]="bonus.remark" [disabled]="!allowedWrite"></textarea>
             </mat-form-field>
-            <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
-            <button mat-raised-button color="primary" type="button" (click)="save()">Save</button>
+            <mat-card class="card-buttons">
+                <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
+                <button mat-raised-button color="warn" type="button" (click)="rejectBonus()">Reject</button>
+                <button
+                    mat-raised-button
+                    color="green"
+                    type="button"
+                    (click)="approveBonus()"
+                    [disabled]="user.role === 'CEO' && bonus.verified.toUpperCase() !== 'CALCULATED'"
+                >Approve</button>
+            </mat-card>
         </form>
     </mat-card>
 </div>
