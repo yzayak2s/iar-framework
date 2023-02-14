@@ -5,6 +5,7 @@ import {BonusService} from '../../services/bonus.service';
 import {Location} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {User} from '../../models/User';
+import {displayStatus} from '../../helper/displayStatus';
 
 @Component({
     selector: 'app-bonus-detail',
@@ -15,7 +16,7 @@ export class BonusDetailComponent implements OnInit {
     bonus: Bonus | undefined;
     user: User;
     allowedWrite = false;
-
+    displayStatus = displayStatus;
     constructor(
         private route: ActivatedRoute,
         private bonusService: BonusService,
