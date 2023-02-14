@@ -1054,6 +1054,456 @@
           }
         }
     },
+    "/accounts/read/all": {
+      "get": {
+        "tags": [
+          "openCRX"
+        ],
+        "summary": "returns all accounts",
+        "responses": {
+          "200": {
+            "description": "Array of accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items": {      
+                    "type": "array",
+                    "items": {
+                      "allOf": [
+                        {          
+                          "type": "object",
+                          "properties": {
+                            "accountType": {
+                              "type": "string",
+                              "example": "LegalEntity"
+                            },
+                            "accountUID": {
+                              "type": "string",
+                              "example": "59NB4O91UERORTH2SA4T2TYKTS"
+                            },
+                            "fullName": {
+                              "type": "string",
+                              "example": "Company AG"
+                            },
+                            "accountRating": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "accessLevelBrowse": {
+                              "type": "number",
+                              "example": 3
+                            },
+                            "accountState": {
+                              "type": "number",
+                              "example": 1
+                            }
+                          }
+                        },
+                        {                             
+                          "type": "object",
+                          "properties": {
+                            "accountType": {
+                              "type": "string",
+                              "example": "Contact"
+                            },
+                            "accountUID": {
+                              "type": "string",
+                              "example": "837BCDRCBESBTH2MA4T2JLNMS"
+                            },
+                            "firstName": {
+                              "type": "string",
+                              "example": "Bob"
+                            },
+                            "lastName": {
+                              "type": "string",
+                              "example": "Bobbington"
+                            },
+                            "governmentId": {
+                              "type": "number",
+                              "example": 90399
+                            }
+                          }                 
+                        }
+                      ]
+                    }      
+                  }  
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/accounts/read/uid/{uid}": {
+        "get": {
+          "tags": [
+            "openCRX"
+          ],
+          "summary": "returns one accounts",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "uid",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "uid of account"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "the account",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type":"object",
+                    "properties": {      
+                      "accountType": {
+                        "type": "string",
+                        "example": "LegalEntity"
+                      },
+                      "accountUID": {
+                        "type": "string",
+                        "example": "59NB4O91UERORTH2SA4T2TYKTS"
+                      },
+                      "fullName": {
+                        "type": "string",
+                        "example": "Company AG"
+                      },
+                      "accountRating": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "accessLevelBrowse": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "accountState": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }      
+              }  
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+      }
+    },
+    "/products/read/all": {
+      "get": {
+        "tags": [
+          "openCRX"
+        ],
+        "summary": "returns all products",
+        "responses": {
+          "200": {
+            "description": "array of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "productType": {
+                        "type": "string",
+                        "example": "Product"
+                      },
+                      "productUID": {
+                        "type": "string",
+                        "example": "59NB4O91UERORTH2SA4T2TYKTS"
+                      },
+                      "productNumber": {
+                        "type": "number",
+                        "example": 100
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Product thingy"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "This product does something"
+                      }
+                    }
+                  }
+                }
+              }      
+            }  
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/products/read/uid/{uid}": {
+      "get": {
+        "tags": [
+          "openCRX"
+        ],
+        "summary": "returns all products",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uid",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "uid of product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "productType": {
+                      "type": "string",
+                      "example": "Product"
+                    },
+                    "productNumber": {
+                      "type": "number",
+                      "example": 100
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Product thingy"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "This product does something"
+                    }
+                  }
+                }
+              }      
+            }  
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/salesOrders/read/all": {
+      "get": {
+        "tags": [
+          "openCRX"
+        ],
+        "summary": "returns all sales Orders",
+        "responses": {
+          "200": {
+            "description": "array of sales Orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "contractType": {
+                        "type": "string",
+                        "example": "SalesOrder"
+                      },
+                      "salesOrderUID": {
+                        "type": "string",
+                        "example": "59NB4O91UERORTH2SA4T2TYKTS"
+                      },
+                      "customerUID": {
+                        "type": "string",
+                        "example": "837BCDRCBESBTH2MA4T2JLNMS"
+                      },
+                      "salesRep": {
+                        "type": "string",
+                        "example": "GESHRCBESBTH2MA4T2JLNMOS"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020"
+                      },
+                      "priority": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "contractNumber": {
+                        "type": "string",
+                        "example": "Contract_GMBH_2020"
+                      },
+                      "totalTaxAmount": {
+                        "type": "string",
+                        "example": "467.5000000"
+                      },
+                      "totalBaseAmount": {
+                        "type": "string",
+                        "example": "5500.0000000000"
+                      },
+                      "totalAmountIncludingTax": {
+                        "type": "string",
+                        "example": "5967.500000000"
+                      }
+                    }
+                  }
+                }
+              }      
+            }  
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/salesOrders/read/uid/{uid}": {
+        "get": {
+          "tags": [
+            "openCRX"
+          ],
+          "summary": "returns one sales Order",
+          "parameters": [
+            {
+              "in": "path",
+              "name": "uid",
+              "schema": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "uid of sales Order"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "One sale Order",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "contractType": {
+                        "type": "string",
+                        "example": "SalesOrder"
+                      },
+                      "salesOrderUID": {
+                        "type": "string",
+                        "example": "59NB4O91UERORTH2SA4T2TYKTS"
+                      },
+                      "customerUID": {
+                        "type": "string",
+                        "example": "837BCDRCBESBTH2MA4T2JLNMS"
+                      },
+                      "salesRep": {
+                        "type": "string",
+                        "example": "GESHRCBESBTH2MA4T2JLNMOS"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020"
+                      },
+                      "priority": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "contractNumber": {
+                        "type": "string",
+                        "example": "Contract_GMBH_2020"
+                      },
+                      "totalTaxAmount": {
+                        "type": "string",
+                        "example": "467.5000000"
+                      },
+                      "totalBaseAmount": {
+                        "type": "string",
+                        "example": "5500.0000000000"
+                      },
+                      "totalAmountIncludingTax": {
+                        "type": "string",
+                        "example": "5967.500000000"
+                      }
+                    }
+                  }
+                }      
+              }  
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+    },
+    "/salesOrders/{uid}/positions/read/all": {
+      "get": {
+        "tags": [
+          "openCRX"
+        ],
+        "summary": "returns all positions of a sales order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "uid",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "uid of sales Order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of positions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "contractType": {
+                        "type": "string",
+                        "example": "SalesOrderPosition"
+                      },
+                      "positionUID": {
+                        "type": "string",
+                        "example": "GEOAMSXR06DLHPM0EBHQAEG6GS7J"
+                      },
+                      "productUID": {
+                        "type": "string",
+                        "example": "GECGDHRER06DLHPM0HEHAFQAEG66S7J"
+                      },
+                      "quantity": {
+                        "type": "string",
+                        "example": "10.00000000"
+                      },
+                      "pricePerUnit": {
+                        "type": "string",
+                        "example": "250.0000000"
+                      },
+                      "amount": {
+                        "type": "string",
+                        "example": "2712.00000000"
+                      }
+                    }
+                  }
+                }
+              }      
+            }  
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/employees/read/all": {
       "get": {
         "tags": [
@@ -1066,7 +1516,80 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "example": "Max"
+                      },
+                      "middleName": {
+                        "type": "string",
+                        "example": "Bob"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "example": "Mustermann"
+                      },
+                      "code": {
+                        "type": "string",
+                        "example": "90032"
+                      },
+                      "employeeId": {
+                        "type": "string",
+                        "example": "7"
+                      },
+                      "fullName": {
+                        "type": "string",
+                        "example": "Max Bob Mustermann"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "dob": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "driversLicenseNumber": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "licenseExpiryDate": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "maritalStatus": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "gender": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "otherId": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "nationality": {
+                        "type": "string",
+                        "example": null
+                      },
+                      "unit": {
+                        "type": "string",
+                        "example": "Sales"
+                      },
+                      "jobTitle": {
+                        "type": "string",
+                        "example": "Senior Salesman"
+                      },
+                      "supervisor": {
+                        "type": "string",
+                        "example": null
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -1076,10 +1599,155 @@
           }
         }
       }
+    },
+    "/employees/read/id/{id}": {
+      "get": {
+        "tags": [
+          "orangeHRM"
+        ],
+        "summary": "Returns a employee",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of employee"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The employee",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string",
+                      "example": "Max"
+                    },
+                    "middleName": {
+                      "type": "string",
+                      "example": "Bob"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Mustermann"
+                    },
+                    "code": {
+                      "type": "string",
+                      "example": "90032"
+                    },
+                    "employeeId": {
+                      "type": "string",
+                      "example": "7"
+                    },
+                    "fullName": {
+                      "type": "string",
+                      "example": "Max Bob Mustermann"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "dob": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "driversLicenseNumber": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "licenseExpiryDate": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "maritalStatus": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "gender": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "otherId": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "nationality": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "unit": {
+                      "type": "string",
+                      "example": "Sales"
+                    },
+                    "jobTitle": {
+                      "type": "string",
+                      "example": "Senior Salesman"
+                    },
+                    "supervisor": {
+                      "type": "string",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/employees/read/id/{id}/bonussalary": {
+      "get": {
+        "tags": [
+          "orangeHRM"
+        ],
+        "summary": "Returns the bonus salaries of an employees",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of employee"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The bonus salaries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/employees/id/{id}/bonussalary": {
+
     }
-  },
-
-
+  }, 
   "components": {
     "schemas": {
       "SalesMan": {
