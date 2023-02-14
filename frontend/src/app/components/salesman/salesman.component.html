@@ -1,4 +1,8 @@
 <table *ngIf="salesman">
+    <thead>
+        <h4>Master Data</h4>
+    </thead>
+    <tbody>
     <tr>
         <th>Name:</th>
         <td>{{salesman.firstname}} {{salesman.lastname}}</td>
@@ -19,4 +23,5 @@
         <th>Year of Performance:</th>
         <td>{{bonus.year}}</td>
     </tr>
+    </tbody>
 </table>

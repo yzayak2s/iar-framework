@@ -4,6 +4,12 @@
         <app-salesman></app-salesman>
     </mat-card>
     <mat-card>
+        <app-salesorder></app-salesorder>
+    </mat-card>
+    <mat-card>
+        <app-evaluationrecord></app-evaluationrecord>
+    </mat-card>
+    <mat-card>
         <form *ngIf="bonus">
             <h2 id="bonus-verified">{{bonus.verified | uppercase}}</h2>
             <mat-form-field appearance="fill">
@@ -12,7 +18,7 @@
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus remark:</mat-label>
-                <textarea name="remarks" rows="5" matInput [(ngModel)]="bonus.remark"></textarea>
+                <textarea name="remarks" rows="5" matInput [(ngModel)]="bonus.remark" [disabled]="!allowedWrite"></textarea>
             </mat-form-field>
             <button mat-raised-button color="primary" type="button" (click)="goBack()">Go back</button>
             <button mat-raised-button color="primary" type="button" (click)="save()">Save</button>

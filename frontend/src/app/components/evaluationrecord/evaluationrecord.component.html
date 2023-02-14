@@ -1,0 +1,34 @@
+<h2>B.) Social Performance Evaluation</h2>
+<table mat-table class="full-width-table" *ngIf="bonusComputation" [dataSource]="bonusComputation.perfBonus.evalRecords" >
+    <!-- Goal Description Column -->
+    <ng-container matColumnDef="goalDescription">
+        <th mat-header-cell *matHeaderCellDef>Goal Description</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.goalDescription}}</td>
+        <td mat-footer-cell *matFooterCellDef>Total</td>
+    </ng-container>
+
+    <!-- Target Value Column -->
+    <ng-container matColumnDef="targetValue">
+        <th mat-header-cell *matHeaderCellDef>Target Value</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.targetValue}}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Actual Value Column -->
+    <ng-container matColumnDef="actualValue">
+        <th mat-header-cell *matHeaderCellDef>Actual Value</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.actualValue}}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Bonus Column -->
+    <ng-container matColumnDef="bonus">
+        <th mat-header-cell *matHeaderCellDef>Bonus</th>
+        <td mat-cell *matCellDef="let evaluationRecord">{{evaluationRecord.bonus}}</td>
+        <td mat-footer-cell *matFooterCellDef>{{bonusComputation.perfBonus.total}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+</table>

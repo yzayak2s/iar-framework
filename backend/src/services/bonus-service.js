@@ -1,5 +1,6 @@
 const {getBySalesmanID} = require('./evaluation-record-service')
 const salesmanService = require('./salesman-service')
+const bonusComputationService = require('./bonus-computation-service');
 const openCRXService = require('./openCRX-service')
 const {fitsModel} = require('../helper/creation-helper')
 const Bonus = require('../models/Bonus')
@@ -129,7 +130,13 @@ async function calculateBonusPerformance(db, salesmanID, year) {
  * @param {*} db source database
  * @param {*} salesmanID salesman ID
  * @param {*} year current year
- * @returns {Promise<{total: number, orderBonus: orderBonus, perfBonus: perfBonus}>} Total bonus, Sales orders with bonuses and the performance records with bonuses
+ * @returns {Promise<{
+ *              year: year,
+ *              salesManID: salesManID,
+ *              totalBonus: totalBonus,
+ *              orderBonus: orderBonus,
+ *              perfBonus: perfBonus
+ *           }>} Total bonus, Sales orders with bonuses and the performance records with bonuses
  */
 exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const existingBonus = (await this.getBonusBySalesmanID(db, salesmanID)).filter(bonus => bonus.year == year);
@@ -144,9 +151,23 @@ exports.calculateBonusBySalesmanID = async (db, salesmanID, year) => {
     const totalBonus = orderBonus.total + perfBonus.total;
 
     // Save this bonus to the database
-    this.add(db, new Bonus(year, totalBonus, "", 0, salesmanID));
+    this.add(db, new Bonus(year, totalBonus, "", "calculated", salesmanID));
 
-    return {salesManID: salesmanID, totalBonus: totalBonus, orderBonus: orderBonus, perfBonus: perfBonus};
+    const bonusComputation = {
+        year: year,
+        salesManID: salesmanID,
+        totalBonus: totalBonus,
+        orderBonus: orderBonus,
+        perfBonus: perfBonus
+    };
+    const existingBonusComputation = await bonusComputationService
+        .getBonusComputationBySalesmanIDAndYear(db, salesmanID, year);
+    if (existingBonusComputation) {
+        await bonusComputationService.deleteBonusComputation(db, existingBonusComputation._id);
+    }
+    await bonusComputationService.addBonusComputation(db, bonusComputation);
+
+    return bonusComputation;
 }
 
 /**
@@ -241,8 +262,82 @@ exports.update = async (db, _id, bonus) => {
             $set: {
                 year: bonus.year,
                 value: bonus.value,
-                remark: bonus.remark,
-                verified: bonus.verified,
+            }
+        }
+    );
+}
+
+/**
+ * 
+ * @param {*} db target database
+ * @param {*} _id 
+ * @param {*} remark new Remark for Bonus
+ * @returns {Promise<Bonus>} bonus
+ */
+exports.updateRemark = async (db, _id, remark) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
+
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+    }
+
+    return await db.collection('bonus').updateOne(
+        {
+            _id: _id
+        },
+        {
+            $set: {
+                remark: remark
+            }
+        }
+    );
+}
+
+/**
+ * 
+ * @param {*} db target database
+ * @param {*} _id 
+ * @param {*} status new Status for Bonus
+ * @returns {Promise<Bonus>} bonus
+ */
+exports.updateVerified = async (db, _id, status, user) => {
+    const existingBonusById = await db.collection('bonus').findOne({_id: _id});
+
+    if (!existingBonusById) {
+        throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
+    }
+
+    if (user.role === 'SALESMAN' && !(existingBonusById.salesManID === user._id)) {
+        throw new Error ('Salesman are only allowed to access their own bonuses!');
+    }
+
+    if (!["CALCULATED", "APPROVEDCEO", "APPROVEDHR", "ACCEPTED"].includes(status.toUpperCase())) {
+        throw new Error('Unknown status');
+    }
+
+    if (!(status.toUpperCase() === "CALCULATED")) {
+        const userRole = user.role;
+        let allowed;
+
+        switch (existingBonusById.verified.toUpperCase()) {
+            case 'CALCULATED': (userRole === 'CEO' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            case 'APPROVEDCEO': (userRole === 'HR' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            case 'APPROVEDHR': (userRole === 'SALESMAN' || userRole === 'ADMIN') ? allowed = true : allowed = false; break;
+            default: allowed = false;
+        } 
+        
+        if (!allowed) {
+            throw new Error("You are not authorized for this stage!");
+        }
+    }
+
+    return await db.collection('bonus').updateOne(
+        {
+            _id: _id
+        },
+        {
+            $set: {
+                verified: status
             }
         }
     );

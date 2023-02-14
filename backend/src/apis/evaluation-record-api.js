@@ -46,6 +46,17 @@ exports.getEvaluationRecordsOfSalesmanById = (req, res) => {
     })
 }
 
+exports.getEvaluationRecordsOfSalesmanByIdAndYear = (req, res) => {
+    const db = req.app.get('db');
+
+    evaluationService.getBySalesmanIDAndYear(db, req.params.salesManID, req.params.year)
+        .then(evaRec => {
+        res.send(evaRec);
+    }).catch(_ => {
+        res.status(500).send();
+    })
+}
+
 exports.addEvaluationRecord = (req, res) => {
     const db = req.app.get('db');
 
@@ -77,7 +88,7 @@ exports.deleteEvaluationRecord = (req, res) => {
 
    evaluationService.delete(db, ObjectId(req.params._id))
         .then(_id => {
-            res.send(_id.toString());
+            res.send(_id);
         }).catch(() => {
             res.status(404).send('ID not found!');
     }).catch(_ => {

@@ -3,6 +3,7 @@ import {Bonus} from '../../models/Bonus';
 import {ActivatedRoute} from '@angular/router';
 import {BonusService} from '../../services/bonus.service';
 import {Location} from '@angular/common';
+import {UserService} from '../../services/user.service';
 
 @Component({
     selector: 'app-bonus-detail',
@@ -11,15 +12,22 @@ import {Location} from '@angular/common';
 })
 export class BonusDetailComponent implements OnInit {
     bonus: Bonus | undefined;
+    allowedWrite = false;
 
     constructor(
         private route: ActivatedRoute,
         private bonusService: BonusService,
-        private location: Location
+        private location: Location,
+        private userService: UserService
     ) { }
 
     ngOnInit(): void {
         this.getBonus();
+        this.userService.getOwnUser().subscribe((user): void => {
+            if (user.role === 'CEO' || user.isAdmin) {
+                this.allowedWrite = true;
+            }
+        });
     }
 
     getBonus(): void {

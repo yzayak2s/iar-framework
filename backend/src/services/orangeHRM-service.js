@@ -108,7 +108,7 @@ exports.add = async (bonus) => {
 
     await axios.post(
         `${baseUrl}/api/v1/employee/${bonus.salesManID}/bonussalary`,
-        {year: bonus.year, value: bonus.value},
+        {year: bonus.year, value: Math.ceil(bonus.value)},
         config
     );
 }

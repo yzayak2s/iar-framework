@@ -64,6 +64,32 @@ exports.updateBonusById = (req, res) => {
     });
 }
 
+exports.updateBonusRemarkById = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.updateRemark(db, ObjectId(req.params._id), req.body.remark)
+        .then((bonus) => {
+            res.send(bonus);
+        }).catch(() => {
+            res.status(500).send({"message": "Something went wrong"});
+        })
+}
+
+exports.updateBonusStatusById = (req, res) => {
+    const db = req.app.get('db');
+
+    bonusService.updateVerified(db, ObjectId(req.params._id), req.body.status, req.session.user)
+        .then((bonus) => {
+            res.send(bonus);
+        }).catch((e) => {
+            if (e.message === 'You are not authorized for this stage!'){
+                res.status(401).send();
+            } else {
+                res.status(500).send("Something went wrong");
+            }
+        })
+}
+
 exports.deleteBonus = (req, res) => {
     const db = req.app.get('db');
 
@@ -93,7 +119,7 @@ exports.deleteAllBonusesOfSalesmanById = (req, res) => {
 exports.calculateBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.calculateBonusBySalesmanID(db, req.params.salesManID, req.params.year)
+    bonusService.calculateBonusBySalesmanID(db, parseInt(req.params.salesManID), parseInt(req.params.year))
         .then((calculatedBonus) => {
             res.send(calculatedBonus);
         }).catch((e) => {
@@ -106,7 +132,7 @@ exports.calculateBonus = (req, res) => {
 exports.calculateAllBonus = (req, res) => {
     const db = req.app.get('db');
 
-    bonusService.calculateAllBonus(db, req.params.year)
+    bonusService.calculateAllBonus(db, parseInt(req.params.year))
         .then((calculatedBonuses) => {
             res.send(calculatedBonuses);
         }).catch((e) => {

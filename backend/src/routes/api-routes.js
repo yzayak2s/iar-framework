@@ -30,6 +30,7 @@ const evaRecApi = require('../apis/evaluation-record-api');
 router.get('/evaluationRecords/read/all', roleAuthentification([Roles.CEO, Roles.HR]), evaRecApi.getAllEvaluationRecords);
 router.get('/evaluationRecords/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), evaRecApi.getEvaluationRecordsById); // Not sure how to deal with this
 router.get('/evaluationRecords/read/salesmanId/:salesManID', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), evaRecApi.getEvaluationRecordsOfSalesmanById);
+router.get('/evaluationRecords/read/salesmanId/:salesManID/:year', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), evaRecApi.getEvaluationRecordsOfSalesmanByIdAndYear);
 router.get('/goals/read/all', roleAuthentification([Roles.CEO, Roles.HR]),evaRecApi.getGoals);
 router.post('/evaluationRecords/create', roleAuthentification([Roles.CEO, Roles.HR]),  evaRecApi.addEvaluationRecord);
 router.put('/evaluationRecords/update/id/:_id', roleAuthentification([Roles.CEO, Roles.HR]),  evaRecApi.updateEvaluationRecordById);
@@ -40,6 +41,8 @@ const bonusApi = require('../apis/bonus-api');
 router.get('/bonuses/read/all', roleAuthentification([Roles.CEO, Roles.HR]),  bonusApi.getBonuses);
 router.get('/bonuses/read/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), bonusApi.getBonusById); // Not sure how to deal with this
 router.get('/bonuses/read/salesmanId/:salesManID', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), bonusApi.getBonusesOfSalesmanById);
+router.put('/bonuses/updateRemark/id/:_id', roleAuthentification([Roles.CEO]), bonusApi.updateBonusRemarkById);
+router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO], true), bonusApi.updateBonusStatusById);
 
 //From here everything allowed to CEO and HR
 router.use(roleAuthentification([Roles.CEO, Roles.HR]));
@@ -50,6 +53,9 @@ router.post('/bonuses/create', bonusApi.addBonus);
 router.put('/bonuses/update/id/:_id', bonusApi.updateBonusById);
 router.delete('/bonuses/delete/id/:_id', bonusApi.deleteBonus);
 router.delete('/bonuses/delete/salesmanId/:salesManID', bonusApi.deleteAllBonusesOfSalesmanById);
+
+const bonusComputationApi = require('../apis/bonus-computation-api')
+router.get('/bonusComputations/read/salesManID/:salesManID/:year', bonusComputationApi.getBonusComputationBySalesManIDAndYear);
 
 const openCRX = require('../apis/openCRX-api');
 router.get('/accounts/read/all', openCRX.getAccounts);
@@ -64,7 +70,7 @@ const orangeHRM = require('../apis/orangeHRM-api')
 router.get('/employees/read/all', orangeHRM.getEmployees);
 router.get('/employees/read/id/:id', orangeHRM.getEmployeeById);
 router.get('/employees/read/id/:id/bonussalary', orangeHRM.getBonusSalariesByEmployee)
-router.post('/employees/id/:id/bonussalary', orangeHRM.addBonusSalary);
+router.post('/employees/create/bonussalary', orangeHRM.addBonusSalary);
 
 router.get('/salesmen/getApiSalesmen', salesmenApi.createApiSalesmen);
 

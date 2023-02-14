@@ -96,3 +96,10 @@ button.delete:hover {
 table{
     width: 100%;
 }
+
+.mat-card-calculation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: fit-content;
+}
