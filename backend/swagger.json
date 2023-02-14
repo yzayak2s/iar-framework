@@ -550,6 +550,42 @@
         }
       }
     },
+    "/goals/read/all": {
+      "get": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "returns all goals",
+        "responses": {
+          "200": {
+            "description": "Array of goals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items":{
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "63eaedd4f817986086761515"
+                      },
+                      "goal_description": {
+                        "type": "string",
+                        "example": "Leadership Competence"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/bonuses/read/id/{_id}": {
       "get": {
         "tags": [
