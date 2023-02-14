@@ -307,7 +307,11 @@ exports.updateVerified = async (db, _id, status, user) => {
         throw new Error(`Bonus with ID ${bonus._id} doesn't exist!`);
     }
 
-    if (!["CALCULATED", "APPROVEDCEO", "APPROVEDHR"].includes(status.toUpperCase())) {
+    if (!(existingBonusById.salesManID === user._id)) {
+        throw new Error ('Salesman are only allowed to access their own bonuses!');
+    }
+
+    if (!["CALCULATED", "APPROVEDCEO", "APPROVEDHR", "ACCEPTED"].includes(status.toUpperCase())) {
         throw new Error('Unknown status');
     }
 
