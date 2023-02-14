@@ -88,7 +88,7 @@ exports.deleteEvaluationRecord = (req, res) => {
 
    evaluationService.delete(db, ObjectId(req.params._id))
         .then(_id => {
-            res.send(_id.toString());
+            res.send(_id);
         }).catch(() => {
             res.status(404).send('ID not found!');
     }).catch(_ => {

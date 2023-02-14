@@ -436,6 +436,120 @@
         }
       }
     },
+    "/evaluationRecords/update/id/{_id}": {
+      "put": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "Update a Evaluation Record",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of evaluationRecord"
+          }
+        ],
+        "requestBody": {
+          "description": "New Evaluation Record to update to",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationRecord"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update Count and more",
+            "content": {
+              "application/json": {
+                "type": "object",
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/evaluationRecords/delete/id/{_id}": {
+      "delete": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "Delete a evaluation record by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of evaluationRecord"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Count of deleted entries and more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/evaluationRecords/delete/salesmanId/{salesManID}": {
+      "delete": {
+        "tags": [
+          "evaluationRecords"
+        ],
+        "summary": "Delete all evaluation records of a salesman",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "salesManID",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "id of salesman"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Count of deleted entries and more",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/bonuses/read/id/{_id}": {
       "get": {
         "tags": [
@@ -777,16 +891,19 @@
             "type": "boolean" 
           },
           "modifiedCount": {
-            "type": "number"
+            "type": "number",
+            "example": 1
           },
           "upsertedId": {
-            "type": "string"
+            "type": "string",
+            "example": null
           },
           "upsertedCount": {
             "type": "number"
           },
           "matchedCount": {
-            "type": "number"
+            "type": "number",
+            "example": 1
           }
         }
       },
