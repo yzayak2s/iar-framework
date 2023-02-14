@@ -9,6 +9,7 @@ import {environment} from '../../../environments/environment';
 })
 export class BonusService {
     private bonusesUrl = `${environment.apiEndpoint}/api/bonuses`; // URL to web api
+    private orangeHRMUrl = `${environment.apiEndpoint}/api/employees`;
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         withCredentials: true
@@ -84,5 +85,11 @@ export class BonusService {
         return this.http.get<Bonus[]>(`${this.bonusesUrl}/read/year/${term}`, {
             withCredentials: true
         });
+    }
+
+    createBonusInOrangeHRM(bonus: Bonus): Observable<any> {
+        console.log(bonus);
+        const url = `${this.orangeHRMUrl}/create/bonussalary`;
+        return this.http.put(url, bonus, this.httpOptions);
     }
 }
