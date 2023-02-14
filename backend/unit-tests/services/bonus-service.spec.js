@@ -17,9 +17,9 @@ const evaluationRecordService = require('../../src/services/evaluation-record-se
 const bonus_comp_service = require('../../src/services/bonus-computation-service');
 const EvaluationRecord = require('../../src/models/EvaluationRecord');
 
-const bonusExample1 = new Bonus(2020, 2000, 'Some remark1', false, 1);
-const bonusExample2 = new Bonus(2021, 2555, 'Some remark2', true, 1);
-const bonusExample3 = new Bonus(2021, 1555, 'Some remark3', false, 2);
+const bonusExample1 = new Bonus(2020, 2000, 'Some remark1', "calculated", 1);
+const bonusExample2 = new Bonus(2021, 2555, 'Some remark2', "approvedCEO", 1);
+const bonusExample3 = new Bonus(2021, 1555, 'Some remark3', "approvedHR", 2);
 
 const salesmanExample1 = new SalesMan('Max', '', 'Mustermann', 'Max Mustermann', 'Sales', 'Senior Salesman', 1, '9ENFSDRCBESBTH2MA4T2TYJFL');
 const salesmanExample2 = new SalesMan('John', '', 'Johny', 'John Johny', 'Sales', 'Senior Salesman', 2);
@@ -79,11 +79,100 @@ describe("bonus-service Unit-tests", function() {
 
         it("Updated correctly", async function() {
             await expect(bonusService.update(db, bonusID1, copyObject(bonusExample2))).to.eventually.be.fulfilled;
-            await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.eql({_id: bonusID1, year:  2021, value: 2555, remark: 'Some remark1', verified: false, salesManID: 1});
+            await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.eql({_id: bonusID1, year:  2021, value: 2555, remark: 'Some remark1', verified: "calculated", salesManID: 1});
         });
 
         it("Throws if bonus does not exist", async function() {
             await expect(bonusService.update(db, 5, copyObject(bonusExample3))).to.eventually.be.rejectedWith(`Bonus with ID ${bonusExample3._id} doesn't exist!`)
+        });
+
+        describe('Updating remark', function() {
+            it('Successfully updates remark', async function() {
+                await bonusService.updateRemark(db, bonusID1, "This is very good!");
+                await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.include({remark: "This is very good!"});
+            });
+
+            it('Throws if trying to update a non existing record', async function() {
+                await expect(bonusService.updateRemark(db, "63eaf4c266dc42de02ca9b97", "This is very good!")).to.eventually.be.rejectedWith("Bonus with ID 63eaf4c266dc42de02ca9b97 doesn't exist!");
+            });
+        });
+
+        describe('Updating verified status', function() {
+            let user1, user2;
+            let hr, ceo;
+            beforeEach(() => {
+                user1  = {
+                    role: "SALESMAN",
+                    _id: 1
+                };
+
+                user2  = {
+                    role: "SALESMAN",
+                    _id: 2
+                };
+
+                ceo = {
+                    role: "CEO",
+                    _id: 5
+                };
+
+                hr = {
+                    role: "HR",
+                    _id: 6
+                }
+            });
+
+            it('Trying to update non existing throws', async function() {
+                await expect(bonusService.updateVerified(db, "63eaf4c266dc42de02ca9b97", "Accepted", user1)).to.eventually.be.rejectedWith("Bonus with ID 63eaf4c266dc42de02ca9b97 doesn't exist!");
+            });
+
+            it('Salesman are not allowed access to other peoples bonuses', async function() {
+                await expect(bonusService.updateVerified(db, bonusID1, "ACCEPTED", user2)).to.eventually.be.rejectedWith('Salesman are only allowed to access their own bonuses!');
+            });
+
+            it('Unknown statuses are not allowed', async function() {
+                await expect(bonusService.updateVerified(db, bonusID1, "ICECREAM", user1)).to.eventually.be.rejectedWith('Unknown status');
+            });
+
+            it('Correct Order verification works', async function() {
+                await expect(bonusService.updateVerified(db, bonusID1, "approvedCEO", ceo)).to.eventually.be.fulfilled;
+                await expect(bonusService.updateVerified(db, bonusID1, "approvedHR", hr)).to.eventually.be.fulfilled;
+                await expect(bonusService.updateVerified(db, bonusID1, "Accepted", user1)).to.eventually.be.fulfilled;
+                await expect(bonusService.getBonusById(db, bonusID1)).to.eventually.include({verified: 'Accepted'});
+            });
+
+            it('Only CEO can approve first step', async function() {
+                await expect(bonusService.updateVerified(db, bonusID1, "approvedCEO", hr)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID1, "approvedCEO", user1)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID1, "approvedCEO", ceo)).to.eventually.be.fulfilled;
+            });
+
+            it('Only HR can approve second step', async function() {
+                bonusID2 = await bonusService.add(db, bonusExample2);
+
+                await expect(bonusService.updateVerified(db, bonusID2, "approvedHR", ceo)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID2, "approvedHR", user1)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID2, "approvedHR", hr)).to.eventually.be.fulfilled;
+            });
+
+            it('Only Salesman can approve last step', async function() {
+                await salesmanService.add(db, salesmanExample2);
+                bonusID3 = await bonusService.add(db, bonusExample3);
+
+                await expect(bonusService.updateVerified(db, bonusID3, "accepted", ceo)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID3, "accepted", hr)).to.eventually.be.rejected;
+                await expect(bonusService.updateVerified(db, bonusID3, "accepted", user2)).to.eventually.be.fulfilled;
+            });
+
+            it('Calculated is always allowed', async function() {
+                await salesmanService.add(db, salesmanExample2);
+                bonusID2 = await bonusService.add(db, bonusExample2);
+                bonusID3 = await bonusService.add(db, bonusExample3);
+
+                await expect(bonusService.updateVerified(db, bonusID1, "Calculated", ceo)).to.eventually.be.fulfilled;
+                await expect(bonusService.updateVerified(db, bonusID2, "Calculated", hr)).to.eventually.be.fulfilled;
+                await expect(bonusService.updateVerified(db, bonusID3, "Calculated", user2)).to.eventually.be.fulfilled;
+            });
         });
     });
 
@@ -108,9 +197,9 @@ describe("bonus-service Unit-tests", function() {
         it("Able to get all bonuses", async function() {
             await expect(bonusService.getAll(db)).to.eventually.be.an('array').lengthOf(3);
             await expect(bonusService.getAll(db)).to.eventually.excluding('_id').have.deep.members([
-                { year: 2020, value: 2000, remark: 'Some remark1', verified: false, salesManID: 1 },
-                { year: 2021, value: 2555, remark: 'Some remark2', verified: true, salesManID: 1 },
-                { year: 2021, value: 1555, remark: 'Some remark3', verified: false, salesManID: 2 }
+                bonusExample1,
+                bonusExample2,
+                bonusExample3
               ]);
         });
 
