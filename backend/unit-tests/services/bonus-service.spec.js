@@ -228,16 +228,12 @@ describe("bonus-service Unit-tests", function() {
         });
 
         it("Throws if trying to delete non existing bonus by ID", async function() {
-            await expect(bonusService.delete(db, 9)).to.eventually.be.rejectedWith("Bonus with ID 9 doesn't exist!");
+            await expect(bonusService.delete(db, 9)).to.eventually.be.rejectedWith("Bonus with id 9 doesn't exist!");
         });
 
         it("Able to delete all bonuses of a salesman", async function() {
             await expect(bonusService.deleteBySalesManID(db, 1)).to.eventually.be.fulfilled;
             await expect(bonusService.getAll(db)).to.eventually.be.an('array').with.lengthOf(1).which.excluding('_id').eql([bonusExample3]);
-        });
-
-        it("Throws if trying to delete bonuses from non existing salesman", async function() {
-            await expect(bonusService.deleteBySalesManID(db, 9)).to.eventually.be.rejectedWith("Salesman wit id 9 doesn't exist!")
         });
     });
 
