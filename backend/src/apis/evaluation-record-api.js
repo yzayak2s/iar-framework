@@ -62,11 +62,13 @@ exports.addEvaluationRecord = (req, res) => {
 
    evaluationService.add(db, req.body)
     .then(_id => {
-        res.send({_id: _id.toString()});
+        res.status(201).send({_id: _id.toString()});
     }).catch((e) => {
-        res.status(404).send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
+        if (e.type === 'goalError') {
+            res.status(409).send();
+        } else {
+            res.status(500).send();
+        }
     })
 }
 

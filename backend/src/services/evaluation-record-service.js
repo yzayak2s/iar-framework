@@ -88,7 +88,8 @@ exports.add = async (db, evaluationRecord) => {
     const existingEvaluationRecordCriteria = await db.collection('evaluation_record').findOne(
         {
             goalDescription: evaluationRecord.goalDescription,
-            year: parseInt(evaluationRecord.year)
+            year: parseInt(evaluationRecord.year),
+            salesManID: evaluationRecord.salesManID
         }
     )
 
@@ -99,7 +100,9 @@ exports.add = async (db, evaluationRecord) => {
     }
 
     if (existingEvaluationRecordCriteria) {
-        throw new Error(`EvaluationRecord criteria with ${evaluationRecord.goalDescription} already exist!`);
+        const e = new Error(`EvaluationRecord criteria with ${evaluationRecord.goalDescription} already exist!`);
+        e.type = "goalError"
+        throw e;
     }
 
     return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(
