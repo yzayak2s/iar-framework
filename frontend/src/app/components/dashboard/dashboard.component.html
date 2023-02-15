@@ -28,7 +28,7 @@
             </mat-list>
         </mat-card-content>
     </mat-card>
-    <mat-card *ngIf="currentUser && currentUser.role === 'SALESMAN'">
+    <mat-card id="bonuses" *ngIf="currentUser && currentUser.role === 'SALESMAN'">
         <app-bonuses-of-salesman></app-bonuses-of-salesman>
     </mat-card>
 </mat-card>

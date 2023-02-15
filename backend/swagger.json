@@ -1783,6 +1783,42 @@
           }
         }
       }
+    },
+    "/employees/read/id/{id}/photo": {
+      "get": {
+        "tags": [
+          "orangeHRM"
+        ],
+        "summary": "Returns the image of an employees",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "id of employee"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The bonus salaries",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "contentMediaType": "image/png",
+                  "contentEncoding": "base64"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   }, 
   "components": {

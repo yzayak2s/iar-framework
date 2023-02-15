@@ -45,7 +45,7 @@ router.put('/bonuses/updateRemark/id/:_id', roleAuthentification([Roles.CEO]), b
 router.put('/bonuses/updateStatus/id/:_id', roleAuthentification([Roles.SALESMAN, Roles.HR, Roles.CEO], true), bonusApi.updateBonusStatusById);
 
 const orangeHRM = require('../apis/orangeHRM-api');
-router.get('/employees/read/id/:id/photo', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.getEmployeePhotoById);
+router.get('/employees/read/id/:id/photo', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR]), orangeHRM.getEmployeePhotoById);
 router.post('/employees/create/bonussalary', roleAuthentification([Roles.SALESMAN, Roles.CEO, Roles.HR], true), orangeHRM.addBonusSalary);
 
 const bonusComputationApi = require('../apis/bonus-computation-api')
