@@ -2,7 +2,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EvaluationRecordService} from '../../services/evaluation-record.service';
 import {SalesManService} from '../../services/sales-man.service';
-import {Router} from '@angular/router';
 import {EvaluationRecord, Goal} from '../../models/EvaluationRecord';
 import {SalesMan} from '../../models/SalesMan';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
@@ -13,8 +12,6 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./evaluation-record.component.css']
 })
 
-
-
 export class EvaluationRecordComponent implements OnInit {
     currentYear = String(new Date().getFullYear());
     closeResult = '';
@@ -23,25 +20,11 @@ export class EvaluationRecordComponent implements OnInit {
     goals: Goal[] = [];
     salesMenArray: SalesMan[] = [];
     evaluationrecord: EvaluationRecord;
-    createdEvaluationRecord: EvaluationRecord = new EvaluationRecord();
+    createdEvaluationRecord: EvaluationRecord = new EvaluationRecord('5', '4', this.currentYear);
 
-    /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
-       goalDescription: string;
-       targetValue: string;
-       actualValue: string;
-       year: string;
-       salesManID: string);*/
-    activeEvaluationRecord: EvaluationRecord;
-
-    targetValue: string;
-    actualValue: string;
-    constructor(private router: Router,
-                private evaluationRecordService: EvaluationRecordService,
+    constructor(private evaluationRecordService: EvaluationRecordService,
                 private salesManService: SalesManService,
                 private modalService: NgbModal) { }
-
-    selectedValue: string;
-    selectedCar: string;
 
     ngOnInit(): void {
         this.fetchEvaluationRecords();
@@ -89,15 +72,7 @@ export class EvaluationRecordComponent implements OnInit {
     open(content: any, row: EvaluationRecord): void {
         if (row)
         {
-            this.evaluationrecord = row;/*
-            this.evaluationrecord.actualValue = row.actualValue;
-            this.evaluationrecord.targetValue = row.targetValue;
-            this.evaluationrecord.year = row.year;
-            this.evaluationrecord.goalDescription = row.goalDescription;
-            this.evaluationrecord.salesManID = row.salesManID;
-            this.evaluationrecord.salesMan = row.salesMan;*/
-            console.log(row);
-            console.log(this.evaluationrecord);
+            this.evaluationrecord = row;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
@@ -113,10 +88,9 @@ export class EvaluationRecordComponent implements OnInit {
         else {
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
-                console.log(this.createdEvaluationRecord);
-                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
-                delete this.evaluationrecord.salesMan;
-                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
+                this.createdEvaluationRecord.salesManID = this.createdEvaluationRecord.salesMan._id;
+                delete this.createdEvaluationRecord.salesMan;
+                this.evaluationRecordService.saveEvaluationRecord(this.createdEvaluationRecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
                 }, (): void => {
                     this.fetchEvaluationRecords();
