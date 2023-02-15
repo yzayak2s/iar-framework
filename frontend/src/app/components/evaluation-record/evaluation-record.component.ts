@@ -16,12 +16,14 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 
 export class EvaluationRecordComponent implements OnInit {
+    currentYear = String(new Date().getFullYear());
     closeResult = '';
     displayedColumns = ['salesMan', 'year', 'goal', 'targetValue', 'actualValue', 'actions'];
     evaluationrecords: EvaluationRecord[] = [];
     goals: Goal[] = [];
     salesMenArray: SalesMan[] = [];
-    evaluationrecord: EvaluationRecord = new EvaluationRecord();
+    evaluationrecord: EvaluationRecord;
+    createdEvaluationRecord: EvaluationRecord = new EvaluationRecord();
 
     /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
        goalDescription: string;
@@ -29,7 +31,7 @@ export class EvaluationRecordComponent implements OnInit {
        actualValue: string;
        year: string;
        salesManID: string);*/
-    activeEvaluationRecord: EvaluationRecord = new EvaluationRecord();
+    activeEvaluationRecord: EvaluationRecord;
 
     targetValue: string;
     actualValue: string;
@@ -87,12 +89,15 @@ export class EvaluationRecordComponent implements OnInit {
     open(content: any, row: EvaluationRecord): void {
         if (row)
         {
+            this.evaluationrecord = row;/*
             this.evaluationrecord.actualValue = row.actualValue;
             this.evaluationrecord.targetValue = row.targetValue;
             this.evaluationrecord.year = row.year;
             this.evaluationrecord.goalDescription = row.goalDescription;
             this.evaluationrecord.salesManID = row.salesManID;
-            this.evaluationrecord.salesMan = row.salesMan;
+            this.evaluationrecord.salesMan = row.salesMan;*/
+            console.log(row);
+            console.log(this.evaluationrecord);
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
@@ -106,9 +111,9 @@ export class EvaluationRecordComponent implements OnInit {
             });
         }
         else {
-            this.evaluationrecord = new EvaluationRecord();
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
+                console.log(this.createdEvaluationRecord);
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
                 delete this.evaluationrecord.salesMan;
                 this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
@@ -144,7 +149,7 @@ export class EvaluationRecordComponent implements OnInit {
     }
 
     compareSalesMen(o1: SalesMan, o2: SalesMan): boolean {
-        return o1.fullName === o2.fullName;
+        return o1.fullName === o2.fullName && o1._id === o2._id;
     }
 
 }
