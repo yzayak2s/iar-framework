@@ -111,12 +111,7 @@ exports.deleteAllEvaluationRecordsOfSalesmanById = (req, res) => {
     evaluationService.deleteBySalesmanID(db, req.params.salesManID)
         .then(salesManID => {
             res.send(salesManID);
-        }).catch(e => {
-            if (e.type === 'notFound') {
-                res.status(404).send();
-            }
-            else {
-                res.status(500).send();
-            }
+        }).catch(_ => {
+             res.status(500).send();
         })
 }

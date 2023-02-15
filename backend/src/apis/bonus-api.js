@@ -92,8 +92,13 @@ exports.deleteBonus = (req, res) => {
     bonusService.delete(db, ObjectId(req.params._id))
         .then(_id => {
             res.send(_id.toString());
-        }).catch(_ => {
-            res.status(500).send();
+        }).catch(e => {
+            if (e.type === 'notFound') {
+                res.status(404).send();
+            }
+            else {
+                res.status(500).send();
+            }
         })
 }
 
