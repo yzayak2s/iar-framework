@@ -1,6 +1,6 @@
-<mat-card class="main-card">
+<div class="main-card">
     <mat-card class="example-card">
-        <mat-card-header>
+        <mat-card-header id="salesmanInfo">
             <div
                 mat-card-avatar
                 class="example-header-image"
@@ -27,7 +27,7 @@
             </mat-list>
         </mat-card-content>
     </mat-card>
-    <mat-card id="bonuses" *ngIf="currentUser && currentUser.role === 'SALESMAN'">
+    <mat-card *ngIf="currentUser && currentUser.role === 'SALESMAN'">
         <app-bonuses-of-salesman></app-bonuses-of-salesman>
     </mat-card>
-</mat-card>
+</div>
