@@ -1,5 +1,6 @@
 table{
     width: 100%;
+    min-width: 800px;
 }
 .mat-column-_goalID {
     width: 32px;
