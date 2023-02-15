@@ -1,7 +1,11 @@
 table{
     width: 100%;
+}
+
+#mainTable {
     min-width: 800px;
 }
+
 .mat-column-_id {
     width: 32px;
     border-right: 1px solid currentColor;

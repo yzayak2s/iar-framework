@@ -47,7 +47,7 @@
     </div>
 </ng-template>
 
-<table mat-table class="mat-elevation-z8 cdk-table" [dataSource]="dataSource">
+<table id="mainTable" mat-table class="mat-elevation-z8 cdk-table" [dataSource]="dataSource">
     <ng-container matColumnDef="_id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let person">{{person._id}}</td>
