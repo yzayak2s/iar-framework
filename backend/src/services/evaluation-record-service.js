@@ -85,6 +85,13 @@ exports.getBySalesmanIDAndYear = async (db, salesManID, year) => {
  */
 exports.add = async (db, evaluationRecord) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: evaluationRecord.salesManID});
+    const existingEvaluationRecordCriteria = await db.collection('evaluation_record').findOne(
+        {
+            goalDescription: evaluationRecord.goalDescription,
+            year: parseInt(evaluationRecord.year),
+            salesManID: evaluationRecord.salesManID
+        }
+    )
 
     await fitsModel(evaluationRecord, EvaluationRecord) // Check given Object
 
@@ -92,7 +99,19 @@ exports.add = async (db, evaluationRecord) => {
         throw new Error('Salesman with id ' + evaluationRecord.salesManID + ' does not exist!');
     }
 
-    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(evaluationRecord.goalDescription, evaluationRecord.targetValue, evaluationRecord.actualValue, evaluationRecord.year, evaluationRecord.salesManID))).insertedId;
+    if (existingEvaluationRecordCriteria) {
+        const e = new Error(`EvaluationRecord criteria with ${evaluationRecord.goalDescription} already exist!`);
+        e.type = "goalError"
+        throw e;
+    }
+
+    return (await db.collection('evaluation_record').insertOne(new EvaluationRecord(
+        evaluationRecord.goalDescription,
+        parseInt(evaluationRecord.targetValue),
+        parseInt(evaluationRecord.actualValue),
+        parseInt(evaluationRecord.year),
+        parseInt(evaluationRecord.salesManID)
+    ))).insertedId;
 }
 
 /**
@@ -105,7 +124,9 @@ exports.updateById = async (db, _id, evaluationRecord) => {
     const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: _id});
 
     if (!existingEvaluationRecord){
-        throw new Error("No EvaluationRecord with id " + _id + " exists!");
+        const e = new Error("No EvaluationRecord with id " + _id + " exists!");
+        e.type = 'notFound';
+        throw e;
     }
 
     return await db.collection('evaluation_record').updateOne(
@@ -115,10 +136,10 @@ exports.updateById = async (db, _id, evaluationRecord) => {
         {
             $set: {
                 goalDescription: evaluationRecord.goalDescription,
-                targetValue: evaluationRecord.targetValue,
-                actualValue: evaluationRecord.actualValue,
-                year: evaluationRecord.year,
-                salesManID: evaluationRecord.salesManID,
+                targetValue: parseInt(evaluationRecord.targetValue),
+                actualValue: parseInt(evaluationRecord.actualValue),
+                year: parseInt(evaluationRecord.year),
+                salesManID: parseInt(evaluationRecord.salesManID),
             }
         }
     );
@@ -134,7 +155,9 @@ exports.delete = async (db, _id) => {
     const existingEvaluationRecord = await db.collection('evaluation_record').findOne({_id: _id});
 
     if (!existingEvaluationRecord) {
-        throw new Error("EvaluationRecord with id " + _id + " doesn't exist!")
+        const e = new Error("No EvaluationRecord with id " + _id + " exists!");
+        e.type = 'notFound';
+        throw e;
     }
 
     return db.collection('evaluation_record').deleteOne({_id: _id})
@@ -146,11 +169,5 @@ exports.delete = async (db, _id) => {
  * @param {*} salesManID salesmanID
  */
 exports.deleteBySalesmanID = async (db, salesManID) => {
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
-
-    if (!existingSalesMan){
-        throw new Error('Salesman with id ' + salesManID + ' does not exist!');
-    }
-
     return db.collection('evaluation_record').deleteMany({salesManID: parseInt(salesManID)});
 }

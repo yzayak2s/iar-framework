@@ -11,7 +11,7 @@
     </mat-card>
     <mat-card>
         <form *ngIf="bonus && user">
-            <h2 id="bonus-verified">{{bonus.verified[0] | uppercase}}{{bonus.verified.substring(1)}}</h2>
+            <h2 id="bonus-verified">{{displayStatus(bonus.verified)}}</h2>
             <mat-form-field appearance="fill">
                 <mat-label>Bonus value:</mat-label>
                 <input name="value" matInput [(ngModel)]="bonus.value" disabled>

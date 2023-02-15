@@ -2,10 +2,10 @@
 import {Component, OnInit} from '@angular/core';
 import {EvaluationRecordService} from '../../services/evaluation-record.service';
 import {SalesManService} from '../../services/sales-man.service';
-import {Router} from '@angular/router';
 import {EvaluationRecord, Goal} from '../../models/EvaluationRecord';
 import {SalesMan} from '../../models/SalesMan';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-evaluation-record',
@@ -13,33 +13,19 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./evaluation-record.component.css']
 })
 
-
-
 export class EvaluationRecordComponent implements OnInit {
+    currentYear = String(new Date().getFullYear());
     closeResult = '';
     displayedColumns = ['salesMan', 'year', 'goal', 'targetValue', 'actualValue', 'actions'];
     evaluationrecords: EvaluationRecord[] = [];
     goals: Goal[] = [];
     salesMenArray: SalesMan[] = [];
-    evaluationrecord: EvaluationRecord = new EvaluationRecord();
+    evaluationrecord: EvaluationRecord;
+    createdEvaluationRecord: EvaluationRecord = new EvaluationRecord('5', '4', this.currentYear);
 
-    /* evaluationRecord: EvaluationRecord= new EvaluationRecord( _id: number;
-       goalDescription: string;
-       targetValue: string;
-       actualValue: string;
-       year: string;
-       salesManID: string);*/
-    activeEvaluationRecord: EvaluationRecord = new EvaluationRecord();
-
-    targetValue: string;
-    actualValue: string;
-    constructor(private router: Router,
-                private evaluationRecordService: EvaluationRecordService,
+    constructor(private evaluationRecordService: EvaluationRecordService,
                 private salesManService: SalesManService,
                 private modalService: NgbModal) { }
-
-    selectedValue: string;
-    selectedCar: string;
 
     ngOnInit(): void {
         this.fetchEvaluationRecords();
@@ -87,12 +73,7 @@ export class EvaluationRecordComponent implements OnInit {
     open(content: any, row: EvaluationRecord): void {
         if (row)
         {
-            this.evaluationrecord.actualValue = row.actualValue;
-            this.evaluationrecord.targetValue = row.targetValue;
-            this.evaluationrecord.year = row.year;
-            this.evaluationrecord.goalDescription = row.goalDescription;
-            this.evaluationrecord.salesManID = row.salesManID;
-            this.evaluationrecord.salesMan = row.salesMan;
+            this.evaluationrecord = row;
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result: any): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
                 this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
@@ -106,15 +87,18 @@ export class EvaluationRecordComponent implements OnInit {
             });
         }
         else {
-            this.evaluationrecord = new EvaluationRecord();
             this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result): void => {
                 this.closeResult = `Closed with: ${String(result)}`;
-                this.evaluationrecord.salesManID = this.evaluationrecord.salesMan._id;
-                delete this.evaluationrecord.salesMan;
-                this.evaluationRecordService.saveEvaluationRecord(this.evaluationrecord).subscribe((): void => {
+                this.createdEvaluationRecord.salesManID = this.createdEvaluationRecord.salesMan._id;
+                delete this.createdEvaluationRecord.salesMan;
+                this.evaluationRecordService.saveEvaluationRecord(this.createdEvaluationRecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
-                }, (): void => {
-                    this.fetchEvaluationRecords();
+                }, (error: HttpErrorResponse): void => {
+                    if (error.status === 409) {
+                        alert(
+                            `Evaluationrecord criteria with ${this.createdEvaluationRecord.goalDescription} already exist!`
+                        );
+                    }
                 });
             }, (reason): void => {
                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -137,14 +121,8 @@ export class EvaluationRecordComponent implements OnInit {
         }
     }
 
-    sortBy(list?: SalesMan[], attribute?: string): SalesMan[] {
-        if (list) {
-            return list.sort((a, b): any => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
-        }
-    }
-
     compareSalesMen(o1: SalesMan, o2: SalesMan): boolean {
-        return o1.fullName === o2.fullName;
+        return o1.fullName === o2.fullName && o1._id === o2._id;
     }
 
 }

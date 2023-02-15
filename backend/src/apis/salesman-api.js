@@ -18,7 +18,7 @@ exports.getSalesManByFirstname = (req, res) => {
             res.send(salesmenByFirstname);
         }).catch(_ => {
             res.status(500).send();
-    })
+        })
 }
 
 exports.getSalesManById = (req, res) => {
@@ -29,7 +29,7 @@ exports.getSalesManById = (req, res) => {
             res.send(salesmenById);
         }).catch(_ => {
             res.status(500).send();
-    })
+        })
 }
 
 exports.addSalesman = (req, res) => {
@@ -37,12 +37,15 @@ exports.addSalesman = (req, res) => {
 
     salesmenService.add(db, req.body)
         .then(_id => {
-            res.send(_id.toString());
-        }).catch((e) => {
-        res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    })
+            res.status(201).send(_id.toString());
+        }).catch(e => {
+            if (e.type === 'duplicateError') {
+                res.status(409).send();
+            }
+            else {
+                res.status(500).send();
+            }
+        })
 }
 
 exports.updateSalesManById = (req, res) => {
@@ -51,11 +54,14 @@ exports.updateSalesManById = (req, res) => {
     salesmenService.update(db, req.params._id, req.body)
         .then((salesMan) => {
             res.send(salesMan);
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    })
+        }).catch(e => {
+            if (e.type === 'notFound') {
+                res.status(404).send();
+            }
+            else {
+                res.status(500).send();
+            }
+        })
 }
 
 exports.deleteSalesMan = (req, res) => {
@@ -64,24 +70,25 @@ exports.deleteSalesMan = (req, res) => {
     salesmenService.delete(db, req.params._id)
         .then(_id => {
             res.send(_id);
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    })
+        }).catch(e => {
+            if (e.type === 'notFound') {
+                res.status(404).send();
+            }
+            else {
+                res.status(500).send();
+            }
+        })
 }
 
 exports.createApiSalesmen = (req, res) => {
     const db = req.app.get('db');
 
     salesmenService.getSalesmenFromAPI(db)
-        .then(_id => {
+        .then(_ => {
             res.send({"message": "Successfully updated DB"});
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.deleteAllSalesmen = (req, res) => {
@@ -90,9 +97,7 @@ exports.deleteAllSalesmen = (req, res) => {
     salesmenService.deleteAll(db)
         .then(response => {
             res.send(response);
-        }).catch((e) => {
-        res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    })
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }

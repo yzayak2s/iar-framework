@@ -11,6 +11,16 @@ export class EvaluationRecord{
     public year: string;
     public salesManID: string;
     public salesMan: SalesMan;
+
+    constructor(
+        targetValue: string,
+        actualValue: string,
+        year: string,
+    ) {
+        this.targetValue = targetValue;
+        this.actualValue = actualValue;
+        this.year = year;
+    }
 }
 
 export class Goal {

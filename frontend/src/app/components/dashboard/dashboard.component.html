@@ -2,10 +2,9 @@
     <mat-card class="example-card">
         <mat-card-header>
             <div
-                *ngIf="photo"
                 mat-card-avatar
                 class="example-header-image"
-                [style]="{'background-image': 'url(\'' + photo + '\')'}"
+                [style]="{'background-image': 'url(\'' + (photo ? photo : '../../../assets/images/user.png') + '\')'}"
             ></div>
             <mat-card-title>{{currentUser?.username}}</mat-card-title>
             <mat-card-subtitle *ngIf="currentUser?.isAdmin">Admin</mat-card-subtitle>
@@ -13,7 +12,7 @@
         </mat-card-header>
         <img
             mat-card-image
-            src="{{photo && photo}}"
+            src="{{photo ? photo : 'assets/images/user.png'}}"
             alt="User Photo"
         >
         <mat-card-content>

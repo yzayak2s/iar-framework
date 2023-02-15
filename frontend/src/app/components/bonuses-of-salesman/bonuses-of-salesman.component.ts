@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BonusService} from '../../services/bonus.service';
 import {Bonus} from '../../models/Bonus';
 import {UserService} from '../../services/user.service';
+import {displayStatus} from '../../helper/displayStatus';
 
 @Component({
     selector: 'app-bonuses-of-salesman',
@@ -11,6 +12,7 @@ import {UserService} from '../../services/user.service';
 export class BonusesOfSalesmanComponent implements OnInit {
     bonuses: Bonus[] = [];
     displayedColumns = ['year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
+    displayStatus = displayStatus;
 
     constructor(
         private bonusService: BonusService,
@@ -30,29 +32,5 @@ export class BonusesOfSalesmanComponent implements OnInit {
                         this.bonuses = bonuses.body;
                     });
             });
-    }
-
-    displayStatus(verified: string): string {
-        let displayStatus = '';
-        switch (verified.toUpperCase()) {
-        case 'CALCULATED':
-            displayStatus = 'Calculated'; break;
-        case 'APPROVEDCEO':
-            displayStatus = 'Approved by CEO'; break;
-        case 'APPROVEDHR':
-            displayStatus = 'Approved by HR'; break;
-        case 'ACCEPTED':
-            displayStatus = 'Accepted'; break;
-        case 'REJECTEDCEO':
-            displayStatus = 'Rejected by CEO'; break;
-        case 'REJECTEDHR':
-            displayStatus = 'Rejected by HR'; break;
-        case 'REJECTED':
-            displayStatus = 'Rejected'; break;
-        default:
-            break;
-
-        }
-        return displayStatus;
     }
 }

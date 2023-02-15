@@ -352,7 +352,9 @@ exports.delete = async (db, _id) => {
     const existingBonusById = await db.collection('bonus').findOne({_id: _id});
 
     if (!existingBonusById) {
-        throw new Error(`Bonus with ID ${_id} doesn't exist!`);
+        const e = new Error("Bonus with id " + _id + " doesn't exist!");
+        e.type = 'notFound';
+        throw e;
     }
 
     return db.collection('bonus').deleteOne({_id: _id});
@@ -365,11 +367,5 @@ exports.delete = async (db, _id) => {
  * @return {Promise<void>}
  */
 exports.deleteBySalesManID = async (db, salesManID) => {
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
-
-    if (!existingSalesMan) {
-        throw new Error(`Salesman wit id ${salesManID} doesn't exist!`);
-    }
-
     return db.collection('bonus').deleteMany({salesManID: parseInt(salesManID)});
 }

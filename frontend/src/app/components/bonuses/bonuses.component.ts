@@ -3,6 +3,7 @@ import {Bonus} from '../../models/Bonus';
 import {BonusService} from '../../services/bonus.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {BonusComputationService} from '../../services/bonus-computation.service';
+import {displayStatus} from '../../helper/displayStatus';
 
 @Component({
     selector: 'app-bonuses',
@@ -14,6 +15,7 @@ export class BonusesComponent implements OnInit {
     currentYear: number = new Date().getFullYear();
     years: number[] = Array.from(Array(8).keys()).map((x): number => this.currentYear - x);
     displayedColumns = ['year', 'value', 'remark', 'verified', 'salesManID', 'actions'];
+    displayStatus = displayStatus;
 
     constructor(
         private bonusService: BonusService,
@@ -70,29 +72,5 @@ export class BonusesComponent implements OnInit {
             this.bonusService.deleteBonus(bonus._id)
                 .subscribe();
         }
-    }
-
-    displayStatus(verified: string): string {
-        let displayStatus = '';
-        switch (verified.toUpperCase()) {
-        case 'CALCULATED':
-            displayStatus = 'Calculated'; break;
-        case 'APPROVEDCEO':
-            displayStatus = 'Approved by CEO'; break;
-        case 'APPROVEDHR':
-            displayStatus = 'Approved by HR'; break;
-        case 'ACCEPTED':
-            displayStatus = 'Accepted'; break;
-        case 'REJECTEDCEO':
-            displayStatus = 'Rejected by CEO'; break;
-        case 'REJECTEDHR':
-            displayStatus = 'Rejected by HR'; break;
-        case 'REJECTED':
-            displayStatus = 'Rejected'; break;
-        default:
-            break;
-
-        }
-        return displayStatus;
     }
 }

@@ -25,6 +25,12 @@
             {{button.title}}
         </button>
     </ng-container>
+    <a
+        class="anchor-swagger-link"
+        mat-raised-button href="http://iar-backend.inf.h-brs.de/you_touch_you_die/api-docs/"
+        target="_blank"
+        *ngIf="user.isAdmin"
+    >Swagger</a>
     <!-- *ngFor specifies a foreach loop for rendering an element repeatedly; in double curly braces {{}} javascript-expressions/variables can be printed out to the page -->
     <span class="spacer"></span>
     <span *ngIf="user" class="user-displayname">{{user.firstname + ' ' + user.lastname}}</span>

@@ -62,11 +62,13 @@ exports.addEvaluationRecord = (req, res) => {
 
    evaluationService.add(db, req.body)
     .then(_id => {
-        res.send(_id.toString());
+        res.status(201).send({_id: _id.toString()});
     }).catch((e) => {
-        res.status(404).send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
+        if (e.type === 'goalError') {
+            res.status(409).send();
+        } else {
+            res.status(500).send();
+        }
     })
 }
 
@@ -76,10 +78,13 @@ exports.updateEvaluationRecordById = (req, res) => {
     evaluationService.updateById(db, ObjectId(req.params._id), req.body)
         .then(evaluationRecord => {
             res.send(evaluationRecord);
-        }).catch((e) => {
-            res.status(404).send(e.message);
-        }).catch(_ => {
-            res.status(500).send();
+        }).catch(e => {
+            if (e.type === 'notFound') {
+                res.status(404).send();
+            }
+            else {
+                res.status(500).send();
+            }
         })
 }
 
@@ -89,11 +94,14 @@ exports.deleteEvaluationRecord = (req, res) => {
    evaluationService.delete(db, ObjectId(req.params._id))
         .then(_id => {
             res.send(_id);
-        }).catch(() => {
-            res.status(404).send('ID not found!');
-    }).catch(_ => {
-        res.status(500).send();
-    })
+        }).catch(e => {
+            if (e.type === 'notFound') {
+                res.status(404).send();
+            }
+            else {
+                res.status(500).send();
+            }
+        })
 
 }
 
@@ -103,9 +111,7 @@ exports.deleteAllEvaluationRecordsOfSalesmanById = (req, res) => {
     evaluationService.deleteBySalesmanID(db, req.params.salesManID)
         .then(salesManID => {
             res.send(salesManID);
-        }).catch((e) => {
-            res.status(404).send(e.message);
         }).catch(_ => {
-            res.status(500).send();
+             res.status(500).send();
         })
 }
