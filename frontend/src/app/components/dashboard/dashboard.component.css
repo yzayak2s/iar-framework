@@ -1,6 +1,6 @@
 .example-card {
-    width: 20%;
     min-width: 200px;
+    width: 20%;
 }
 
 .example-header-image {
@@ -12,9 +12,5 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-}
-
-#bonuses {
-    width: 80%;
-    min-width: 600px;
+    min-width: 800px;
 }
