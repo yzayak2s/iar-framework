@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" *ngIf="user">
-    <mat-icon class="app-icon">token</mat-icon>
-    <span class="appName">Integration Architectures</span>
+    <mat-icon class="app-icon d-none d-md-block">token</mat-icon>
+    <span class="appName d-none d-lg-block">Integration Architectures</span>
     <ng-container *ngIf="user.role === 'CEO' || user.role === 'HR' || user.isAdmin">
         <button
             class="menu-button"

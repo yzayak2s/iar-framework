@@ -1,5 +1,6 @@
 table {
     width: 100%;
+    min-width: 800px;
 }
 
 tr.mat-footer-row {

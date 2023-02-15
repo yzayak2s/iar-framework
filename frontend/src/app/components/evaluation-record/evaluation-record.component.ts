@@ -5,6 +5,7 @@ import {SalesManService} from '../../services/sales-man.service';
 import {EvaluationRecord, Goal} from '../../models/EvaluationRecord';
 import {SalesMan} from '../../models/SalesMan';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-evaluation-record',
@@ -92,8 +93,12 @@ export class EvaluationRecordComponent implements OnInit {
                 delete this.createdEvaluationRecord.salesMan;
                 this.evaluationRecordService.saveEvaluationRecord(this.createdEvaluationRecord).subscribe((): void => {
                     this.fetchEvaluationRecords();
-                }, (): void => {
-                    this.fetchEvaluationRecords();
+                }, (error: HttpErrorResponse): void => {
+                    if (error.status === 409) {
+                        alert(
+                            `Evaluationrecord criteria with ${this.createdEvaluationRecord.goalDescription} already exist!`
+                        );
+                    }
                 });
             }, (reason): void => {
                 this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -113,12 +118,6 @@ export class EvaluationRecordComponent implements OnInit {
             return 'by clicking on a backdrop';
         } else {
             return  `with: ${String(reason)}`;
-        }
-    }
-
-    sortBy(list?: SalesMan[], attribute?: string): SalesMan[] {
-        if (list) {
-            return list.sort((a, b): any => a[attribute] > b[attribute] ? 1 : b[attribute] > a[attribute] ? -1 : 0);
         }
     }
 
