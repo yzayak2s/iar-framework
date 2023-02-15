@@ -23,8 +23,8 @@ exports.getBonusById = (req, res) => {
 
             res.send(bonusById);
         }).catch(_ => {
-        res.status(500).send();
-    });
+            res.status(500).send();
+        });
 }
 
 exports.getBonusesOfSalesmanById = (req, res) => {
@@ -34,8 +34,8 @@ exports.getBonusesOfSalesmanById = (req, res) => {
         .then((bonusesBySalesManID) => {
             res.send(bonusesBySalesManID);
         }).catch(_ => {
-        res.status(500).send();
-    });
+            res.status(500).send();
+        });
 }
 
 exports.addBonus = (req, res) => {
@@ -43,12 +43,10 @@ exports.addBonus = (req, res) => {
 
     bonusService.add(db, req.body)
         .then((_id) => {
-            res.send(_id.toString());
-        }).catch((e) => {
-        res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+            res.status(201).send(_id.toString());
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.updateBonusById = (req, res) => {
@@ -57,11 +55,9 @@ exports.updateBonusById = (req, res) => {
     bonusService.update(db, ObjectId(req.params._id), req.body)
         .then((bonus) => {
             res.send(bonus);
-        }).catch((e) => {
-        res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send()
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.updateBonusRemarkById = (req, res) => {
@@ -70,8 +66,8 @@ exports.updateBonusRemarkById = (req, res) => {
     bonusService.updateRemark(db, ObjectId(req.params._id), req.body.remark)
         .then((bonus) => {
             res.send(bonus);
-        }).catch(() => {
-            res.status(500).send({"message": "Something went wrong"});
+        }).catch(_ => {
+            res.status(500).send();
         })
 }
 
@@ -96,11 +92,9 @@ exports.deleteBonus = (req, res) => {
     bonusService.delete(db, ObjectId(req.params._id))
         .then(_id => {
             res.send(_id.toString());
-        }).catch((e) => {
-        res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.deleteAllBonusesOfSalesmanById = (req, res) => {
@@ -109,11 +103,9 @@ exports.deleteAllBonusesOfSalesmanById = (req, res) => {
     bonusService.deleteBySalesManID(db, req.params.salesManID)
         .then((salesManID) => {
             res.send(salesManID);
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.calculateBonus = (req, res) => {
@@ -122,11 +114,9 @@ exports.calculateBonus = (req, res) => {
     bonusService.calculateBonusBySalesmanID(db, parseInt(req.params.salesManID), parseInt(req.params.year))
         .then((calculatedBonus) => {
             res.send(calculatedBonus);
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }
 
 exports.calculateAllBonus = (req, res) => {
@@ -135,9 +125,7 @@ exports.calculateAllBonus = (req, res) => {
     bonusService.calculateAllBonus(db, parseInt(req.params.year))
         .then((calculatedBonuses) => {
             res.send(calculatedBonuses);
-        }).catch((e) => {
-            res.status(500).send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }

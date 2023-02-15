@@ -5,9 +5,8 @@ exports.getEmployees = (req, res) => {
         .then((employees) => {
             res.send(employees);
         }).catch(_ => {
-            res.send(_);
-            // res.status(500).send();
-    });
+            res.status(500).send();
+        });
 }
 
 exports.getEmployeeById = (req, res) => {
@@ -40,10 +39,8 @@ exports.getEmployeePhotoById = (req, res) => {
 exports.addBonusSalary = (req, res) => {
     orangeHRMService.add(req.body)
         .then(_ => {
-            res.send({message: 'Successfully saved'});
-        }).catch((e) => {
-            res.send(e.message);
-    }).catch(_ => {
-        res.status(500).send();
-    });
+            res.status(201).send({message: 'Successfully saved'});
+        }).catch(_ => {
+            res.status(500).send();
+        })
 }

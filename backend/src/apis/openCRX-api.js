@@ -13,8 +13,8 @@ exports.getAccountByUID = (req, res) => {
         .then((accountByUID) => {
             res.send(accountByUID);
         }).catch(_ => {
-        res.status(500).send();
-    });
+            res.status(500).send();
+        });
 }
 
 exports.getProducts = (req, res) => {
@@ -30,9 +30,8 @@ exports.getProductByUID = (req, res) => {
         .then((productByUID) => {
             res.send(productByUID);
         }).catch(_ => {
-        res.status(500).send();
-    });
-
+            res.status(500).send();
+        });
 }
 
 exports.getSalesOrders = (req, res) => {
