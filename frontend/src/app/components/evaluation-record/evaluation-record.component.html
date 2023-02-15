@@ -13,12 +13,12 @@
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Please choose a SalesMan</mat-label>
                 <mat-select
-                    [ngModel]="createdEvaluationRecord"
+                    [(ngModel)]="createdEvaluationRecord.salesMan"
                     required
                 >
                     <mat-option
                         *ngFor="let salesMan of salesMenArray"
-                        [value]="salesMan.fullName"
+                        [value]="salesMan"
                     >{{salesMan.fullName}}
                     </mat-option>
                 </mat-select>
@@ -26,19 +26,18 @@
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Year</mat-label>
                 <input type="number"
+                       [(ngModel)]="createdEvaluationRecord.year"
                        min="{{currentYear - 8}}"
                        max="{{currentYear}}"
-                       onKeyDown="return false"
                        name="year"
                        matInput placeholder="Year"
-                       [value]="currentYear"
                        required
                 >
             </mat-form-field>
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Goal</mat-label>
                 <mat-select
-                    [(ngModel)]="goals[0].goal_description"
+                    [(ngModel)]="createdEvaluationRecord.goalDescription"
                     required
                 >
                     <mat-option
@@ -52,12 +51,11 @@
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Target Value</mat-label>
                 <input
-                    [value]="'5'"
+                    [(ngModel)]="createdEvaluationRecord.targetValue"
                     type="number"
                     maxlength="1"
                     min="0"
-                    max="5"
-                    onKeyDown="return false"
+                    max="9"
                     name="targetValue"
                     matInput
                     placeholder="Target Value"
@@ -67,11 +65,11 @@
             <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Actual Value</mat-label>
                 <input
+                    [(ngModel)]="createdEvaluationRecord.actualValue"
                     type="number"
                     maxlength="1"
                     min="0"
-                    max="5"
-                    onKeyDown="return false"
+                    max="9"
                     name="actualValue"
                     matInput
                     placeholder="Actual Value"
