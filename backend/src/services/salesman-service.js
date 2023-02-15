@@ -133,7 +133,7 @@ exports.update = async (db, _id, salesman) => {
 exports.delete = async (db, _id) => {
     const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(_id)});
 
-    if (!existingSalesmanId) {
+    if (!existingSalesMan) {
         const e = new Error("Salesmen with id " + _id + " doesn't exist!");
         e.type = 'notFound';
         throw e;
