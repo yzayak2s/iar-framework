@@ -169,13 +169,5 @@ exports.delete = async (db, _id) => {
  * @param {*} salesManID salesmanID
  */
 exports.deleteBySalesmanID = async (db, salesManID) => {
-    const existingSalesMan = await db.collection('salesmen').findOne({_id: parseInt(salesManID)});
-
-    if (!existingSalesMan){
-        const e = new Error('Salesman with id ' + salesManID + ' does not exist!');
-        e.type = 'notFound';
-        throw e;
-    }
-
     return db.collection('evaluation_record').deleteMany({salesManID: parseInt(salesManID)});
 }
